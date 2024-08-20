@@ -7,14 +7,75 @@
     <title>BoingaGames</title>
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e1e2f, #3a3a5b);
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        nav h1 {
+            font-size: 72px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .search button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #games {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #games a {
+            margin: 10px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        #games a:hover {
+            transform: scale(1.1);
+        }
+
+        .content hr {
+            border: none;
+            height: 2px;
+            background-color: #ffcc00;
+            margin: 40px 0;
+        }
+    </style>
 </head>
 <body>
     <nav>
         <h1>BOINGA</h1>
     </nav>
 
-        <div class="search">
-        <input type="text" placeholder="Search..." oninput="">
+    <div class="search">
+        <input type="text" placeholder="Search...">
         <button><i class="fas fa-search"></i></button>
     </div>
 
@@ -50,13 +111,9 @@
         <a href="games/soccerrandom/"><img src="images/soccerrandom.png" width="128" height="128" alt="Soccer Random"></a>
         <a href="games/fireboy/"><img src="images/fireboy.webp" width="128" height="128" alt="Fireboy and Watergirl"></a>
     </div>
-    </div>
 
     <div class="content">
-
-    <hr>
-
+        <hr>
+    </div>
 </body>
 </html>
-
-<script src="script.js"></script>
