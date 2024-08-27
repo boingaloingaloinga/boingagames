@@ -76,6 +76,54 @@
             background-color: #ffcc00;
             margin: 40px 0;
         }
+
+        /* Black bar styling */
+        #codeInputBar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #000;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #codeInputBar input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        #codeInputBar button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #codeInputBar .closeBtn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+            cursor: pointer;
+        }
+
+        #codeInputBar .message {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
+
+        #codeInputBar .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -90,7 +138,7 @@
     </div>
 
     <div id="games">
-        <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
+                <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
         <a href="games/vex7/"><img src="images/vex7.jpeg" width="128" height="128" alt="vex 7"></a>
         <a href="games/vex6/"><img src="images/vex6.jpeg" width="128" height="128" alt="vex 6"></a>
         <a href="games/moto-x3m/"><img src="images/moto-x3m.jpg" width="128" height="128" alt="Moto x3m"></a>
@@ -128,8 +176,55 @@
         <img src="curious-george.png" width="1024" height="1024">
     </div>
 
+        <!-- Curious George Image -->
+        <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
+    </div>
+
+    <div id="codeInputBar">
+        <span class="closeBtn">&times;</span>
+        <input type="text" id="codeInput" placeholder="Enter your code...">
+        <button id="submitCode">Enter</button>
+        <div class="message" id="message"></div>
+    </div>
+
     <div class="content">
         <hr>
     </div>
+
+    <script>
+        // Show the black bar when curiousGeorge image is clicked
+        document.getElementById('curiousGeorge').onclick = function() {
+            document.getElementById('codeInputBar').style.display = 'block';
+        };
+
+        // Close the black bar
+        document.querySelector('.closeBtn').onclick = function() {
+            document.getElementById('codeInputBar').style.display = 'none';
+            document.getElementById('codeInput').value = '';
+            document.getElementById('message').textContent = '';
+        };
+
+        // Function to check code
+        document.getElementById('submitCode').onclick = function() {
+            const input = document.getElementById('codeInput').value.trim();
+            const messageBox = document.getElementById('message');
+
+            fetch('codes.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const codes = data.split('\n').map(line => line.split(':'));
+                    const match = codes.find(code => code[0].trim() === input);
+
+                    if (match) {
+                        messageBox.textContent = match[1].trim();
+                        messageBox.className = 'message';
+                    } else {
+                        messageBox.textContent = 'X';
+                        messageBox.className = 'message error';
+                        document.getElementById('codeInput').value = '';
+                    }
+                });
+        };
+    </script>
 </body>
 </html>
