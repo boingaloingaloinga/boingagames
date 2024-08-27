@@ -208,12 +208,12 @@
             const messageBox = document.getElementById('message');
 
                 // Special case for "light mode"
-        if (input === "light mode") {
+            if (input === "light mode") {
             document.body.style.background = '#ffffff'; // Change background to white
-            document.body.style.color = '#000000';      // Change text to black
+            document.body.style.color = '#ffffff';      // Change text to black
             const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
             elements.forEach(el => {
-                el.style.color = '#000000';             // Change other elements to black
+                el.style.color = '#ffffff';             // Change other elements to black
                 el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
             });
             return;
