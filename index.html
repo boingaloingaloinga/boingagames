@@ -12,7 +12,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1e1e2f, #3a3a5b);
+            background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
             font-family: Arial, sans-serif;
             color: #fff;
         }
@@ -138,7 +138,7 @@
     </div>
 
     <div id="games">
-                <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
+        <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
         <a href="games/vex7/"><img src="images/vex7.jpeg" width="128" height="128" alt="vex 7"></a>
         <a href="games/vex6/"><img src="images/vex6.jpeg" width="128" height="128" alt="vex 6"></a>
         <a href="games/moto-x3m/"><img src="images/moto-x3m.jpg" width="128" height="128" alt="Moto x3m"></a>
@@ -174,7 +174,6 @@
         <a href="games/sandboxels/"><img src="images/sandboxels.png" width="128" height="128" alt="Sandboxels"></a>
         <a href="games/sm63/"><img src="images/sm63.webp" width="128" height="128" alt="Super Mario 63"></a>
     </div>
-
         <!-- Curious George Image -->
         <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
     </div>
@@ -209,7 +208,12 @@
             const messageBox = document.getElementById('message');
 
             fetch('codes.txt')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     const codes = data.split('\n').map(line => line.split(':'));
                     const match = codes.find(code => code[0].trim() === input);
@@ -220,8 +224,11 @@
                     } else {
                         messageBox.textContent = 'X';
                         messageBox.className = 'message error';
-                        document.getElementById('codeInput').value = '';
                     }
+                })
+                .catch(error => {
+                    messageBox.textContent = 'Error fetching codes';
+                    messageBox.className = 'message error';
                 });
         };
     </script>
