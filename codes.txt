@@ -1,18 +1,18 @@
-"jack":"stupid"
-"jackson":"i hate you"
-"quinn":"awesome guy"
-"lincoln":"gets called bald so much"
-"matthew":"the happiest man on earth"
-"boinga":"loinga"
-"boingagames":"what's that?"
-"rexintops":"very cool"
-"iridium":"rest in peace"
-"pablo":"real"
-"unblocker":"not making them anymore"
-"the bible":"2"
-"the bible 2":"the bible 3"
-"the bible 3":"the bible 4??"
-"the bible 4":"eventually"
-"games":"boinga"
-"boingaloingaloinga":"boingaloings"
-"abcdefghijklmnopqrstuvwxyz":"you're lazy"
+jack:stupid
+jackson:i hate you
+quinn:awesome guy
+lincoln:gets called bald so much
+matthew:the happiest man on earth
+boinga:loinga
+boingagames:what's that?
+rexintops:very cool
+iridium:rest in peace
+pablo:real
+unblocker:not making them anymore
+the bible:2
+the bible 2:the bible 3
+the bible 3:the bible 4??
+the bible 4:eventually
+games:boinga
+boingaloingaloinga:boingaloings
+abcdefghijklmnopqrstuvwxyz:you're lazy
