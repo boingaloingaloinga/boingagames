@@ -1,25 +1,50 @@
-<html>
-    <head>
-        <!--HTML file auto generated using EmulatorJS codehelper-->
-        <style>
-            body, html {
-                margin: 0;
-                padding: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <div style="width:100%;height:100%;max-width:100%">
-            <div id="game"></div>
-        </div>
-        <script>
-            EJS_player = '#game';
-            EJS_core = 'nes';
-            EJS_gameName = 'Super Mario Bros';
-            EJS_color = '#0064ff';
-            EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-            EJS_gameUrl = new Blob([Uint8Array.from(window.gameData)]);
-        </script>
-        <script src='https://cdn.emulatorjs.org/stable/data/loader.js'></script>
-    </body>
-</html>
+
+<div>
+	<div id="emulator">
+		<p>To play this game, please, download the latest Flash player!</p>
+		<br>
+		<a href="http://www.adobe.com/go/getflashplayer">
+			<img src="//www.adobe.com/images/shared/download_buttons/get_adobe_flash_player.png" alt="Get Adobe Flash player"/>
+		</a>
+	</div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+
+<script type="text/javascript">
+
+	var resizeOwnEmulator = function(width, height)
+	{
+		var emulator = $('#emulator');
+		emulator.css('width', width);
+		emulator.css('height', height);
+	}
+
+	$(function()
+	{
+		function embed()
+		{
+			var emulator = $('#emulator');
+			if(emulator)
+			{
+				var flashvars = 
+				{
+					system : 'nes',
+					url : '/games/smb/smb.nes'
+				};
+				var params = {};
+				var attributes = {};
+				
+				params.allowscriptaccess = 'sameDomain';
+				params.allowFullScreen = 'true';
+				params.allowFullScreenInteractive = 'true';
+				
+				swfobject.embedSWF('bin/Nesbox.swf', 'emulator', '640', '480', '11.2.0', 'bin/expressInstall.swf', flashvars, params, attributes);
+			}
+		}
+		
+		embed();
+	});
+	
+</script>
