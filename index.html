@@ -15,7 +15,7 @@
             background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
             font-family: Arial, sans-serif;
             color: #fff;
-            overflow: hidden; /* Prevent scrollbars from appearing */
+            /* Remove overflow: hidden to allow scrolling */
         }
 
         nav h1 {
@@ -163,7 +163,7 @@
 
         /* Styles for the moving characters */
         .moving-character {
-            position: absolute;
+            position: fixed; /* Use fixed to keep characters in view when scrolling */
             width: 50px; /* Adjust size as needed */
             height: 50px; /* Adjust size as needed */
             animation: moveCharacter 10s linear infinite;
@@ -260,7 +260,7 @@
         <hr>
     </div>
 
-    <img src="dinosaur.png" class="moving-character" style="top: 100px;">
+    <img src="dino.png" class="moving-character" style="top: 100px;">
     <img src="cube.png" class="moving-character" style="top: 200px;">
 
     <script>
@@ -308,68 +308,34 @@
         // Close the black bar
         document.querySelector('.closeBtn').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'none';
-            document.getElementById('codeInput').value = '';
-            document.getElementById('message').textContent = '';
+            document.getElementById('codeInput').value = ''; // Clear input
+            document.getElementById('message').textContent = ''; // Clear message
         };
 
-        // Function to handle rating submission
+        // Validate and submit code
+        document.getElementById('submitCode').onclick = function() {
+            const inputCode = document.getElementById('codeInput').value.trim();
+            const message = document.getElementById('message');
+
+            if (inputCode === 'curious-george.png' || inputCode === 'https://code.org/404') {
+                message.textContent = 'Correct code!';
+                message.classList.remove('error');
+            } else {
+                message.textContent = 'Incorrect code. Please try again.';
+                message.classList.add('error');
+            }
+        };
+
+        // Submit rating
         document.getElementById('submitRating').onclick = function() {
             const ratingInput = document.getElementById('ratingInput').value.trim();
             const ratingResult = document.getElementById('ratingResult');
 
-            ratingResult.textContent = "Thank you for rating! You gave us 5 stars! ★★★★★";
-        };
-
-        // Function to check code
-        document.getElementById('submitCode').onclick = function() {
-            const input = document.getElementById('codeInput').value.trim();
-            const messageBox = document.getElementById('message');
-
-            if (input === "light mode") {
-                document.body.style.background = '#ffffff';
-                document.body.style.color = '#ffffff';
-                const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
-                elements.forEach(el => {
-                    el.style.color = '#ffffff';
-                    el.style.backgroundColor = '#ffffff';
-                });
-                return;
+            if (ratingInput >= 1 && ratingInput <= 5) {
+                ratingResult.textContent = `Thank you for rating! You gave this website a ${ratingInput}/5.`;
+            } else {
+                ratingResult.textContent = 'Please enter a valid rating between 1 and 5.';
             }
-
-            if (input === "very dark mode") {
-                document.body.style.background = '#000000';
-                document.body.style.color = '#000000';
-                const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
-                elements.forEach(el => {
-                    el.style.color = '#000000';
-                    el.style.backgroundColor = '#000000';
-                });
-                return;
-            }
-
-            fetch('codes.txt')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    const codes = data.split('\n').map(line => line.split(':'));
-                    const match = codes.find(code => code[0].trim() === input);
-
-                    if (match) {
-                        messageBox.textContent = match[1].trim();
-                        messageBox.className = 'message';
-                    } else {
-                        messageBox.textContent = 'X';
-                        messageBox.className = 'message error';
-                    }
-                })
-                .catch(error => {
-                    messageBox.textContent = 'Error fetching codes';
-                    messageBox.className = 'message error';
-                });
         };
     </script>
 </body>
