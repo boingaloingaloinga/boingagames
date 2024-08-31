@@ -327,15 +327,10 @@
 
         // Submit rating
         document.getElementById('submitRating').onclick = function() {
-            const ratingInput = document.getElementById('ratingInput');
-            const ratingValue = parseInt(ratingInput.value);
+            const ratingInput = document.getElementById('ratingInput').value.trim();
             const ratingResult = document.getElementById('ratingResult');
 
-            if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
-                ratingResult.textContent = 'Please enter a rating between 1 and 5.';
-            } else {
-                ratingResult.textContent = `Thank you for rating the website ${ratingValue} stars!`;
-            }
+            ratingResult.textContent = "Thank you for rating! You gave us 5 stars! ★★★★★";
         };
     </script>
 </body>
