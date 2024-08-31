@@ -15,6 +15,7 @@
             background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
             font-family: Arial, sans-serif;
             color: #fff;
+            overflow: hidden; /* Prevent scrollbars from appearing */
         }
 
         nav h1 {
@@ -85,7 +86,6 @@
             margin: 40px 0;
         }
 
-        /* Black bar styling */
         #codeInputBar {
             display: none;
             position: fixed;
@@ -160,6 +160,23 @@
             font-size: 24px;
             color: #ffcc00;
         }
+
+        /* Styles for the moving characters */
+        .moving-character {
+            position: absolute;
+            width: 50px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+            animation: moveCharacter 10s linear infinite;
+        }
+
+        @keyframes moveCharacter {
+            from {
+                left: -50px; /* Start from off-screen left */
+            }
+            to {
+                left: 100%; /* Move to off-screen right */
+            }
+        }
     </style>
 </head>
 <body>
@@ -167,7 +184,7 @@
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">Added Rating System, Alphabetical Game Sort</p>
+        <p class="changelog">Added Rating System, Alphabetical Game Sort, Background Animations</p>
     </nav>
 
     <div class="search">
@@ -188,7 +205,7 @@
         <a href="games/paperio2/"><img src="images/paperio2.png" width="128" height="128" alt="Paperio 2"></a>
         <a href="games/stickmanhook/"><img src="images/stickmanhook.jpg" width="128" height="128" alt="Stickman Hook"></a>
         <a href="games/cookieclicker/"><img src="images/PerfectCookie.webp" width="128" height="128" alt="Cookie Clicker"></a>
-        <a href="games/sm64/"><img src="images/sm64.jpg" width="128" height="128" alt="SM64"></a>
+        <a href="games/sm64/"><img src="images/sm64.jpg" width="128" height="128" alt="Super Mario 64"></a>
         <a href="games/subwaysurfers/"><img src="images/subwaysurfers.jpg" width="128" height="128" alt="Subway Surfers"></a>
         <a href="games/gdash/"><img src="images/gdash.png" width="128" height="128" alt="Geometry Dash"></a>
         <a href="games/flappybird/"><img src="images/flappybird.png" width="128" height="128" alt="Flappy Bird"></a>
@@ -243,7 +260,27 @@
         <hr>
     </div>
 
+    <img src="dinosaur.png" class="moving-character" style="top: 100px;">
+    <img src="cube.png" class="moving-character" style="top: 200px;">
+
     <script>
+        // Function to randomly position the moving characters
+        function randomizeCharacterPosition() {
+            const characters = document.querySelectorAll('.moving-character');
+            characters.forEach(character => {
+                const randomY = Math.floor(Math.random() * window.innerHeight) + 'px';
+                character.style.top = randomY;
+            });
+        }
+
+        // Call randomizeCharacterPosition on page load and every 10 seconds
+        window.onload = function() {
+            randomizeCharacterPosition();
+            setInterval(randomizeCharacterPosition, 10000); // Adjust timing as needed
+        };
+
+        // Additional JavaScript functions go here
+
         // Sort games alphabetically by alt text
         function sortGames() {
             const gamesContainer = document.getElementById('games');
