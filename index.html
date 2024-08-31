@@ -33,7 +33,7 @@
             margin: 0 0 30px 0;
         }
 
-                nav p.changelog {
+        nav p.changelog {
             font-size: 12px;
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #ffcc00;
@@ -132,14 +132,42 @@
         #codeInputBar .error {
             color: red;
         }
+
+        .rating-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .rating-section input {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .rating-section button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .rating-result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
     <nav>
         <h1>BOINGA</h1>
-        <p class="quote">"Boingaloingaloinga!" </p>
+        <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">BIG PAPAS UPDATE: Added 4 Papa's Games </p>
+        <p class="changelog">BIG PAPAS UPDATE: Added 4 Papa's Games</p>
     </nav>
 
     <div class="search">
@@ -194,8 +222,15 @@
         <a href="games/papaswingeria/"><img src="images/wingeria.jfif" width="128" height="128" alt="Papa's Wingeria"></a>
         <a href="games/papaspastaria/"><img src="images/pastaria.jfif" width="128" height="128" alt="Papa's Pastaria"></a>
     </div>
-        <!-- Curious George Image -->
-        <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
+
+    <!-- Curious George Image -->
+    <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
+
+    <div class="rating-section">
+        <h2>Rate this website:</h2>
+        <input type="number" id="ratingInput" placeholder="Enter a rating (1-5)">
+        <button id="submitRating">Submit Rating</button>
+        <div id="ratingResult" class="rating-result"></div>
     </div>
 
     <div id="codeInputBar">
@@ -222,34 +257,40 @@
             document.getElementById('message').textContent = '';
         };
 
+        // Function to handle rating submission
+        document.getElementById('submitRating').onclick = function() {
+            const ratingInput = document.getElementById('ratingInput').value.trim();
+            const ratingResult = document.getElementById('ratingResult');
+
+            ratingResult.textContent = "Thank you for rating! You gave us 5 stars! ★★★★★";
+        };
+
         // Function to check code
         document.getElementById('submitCode').onclick = function() {
             const input = document.getElementById('codeInput').value.trim();
             const messageBox = document.getElementById('message');
 
-                // Special case for "light mode"
             if (input === "light mode") {
-            document.body.style.background = '#ffffff'; // Change background to white
-            document.body.style.color = '#ffffff';      // Change text to black
-            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
-            elements.forEach(el => {
-                el.style.color = '#ffffff';             // Change other elements to black
-                el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
-            });
-            return;
-        }
+                document.body.style.background = '#ffffff';
+                document.body.style.color = '#ffffff';
+                const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+                elements.forEach(el => {
+                    el.style.color = '#ffffff';
+                    el.style.backgroundColor = '#ffffff';
+                });
+                return;
+            }
 
             if (input === "very dark mode") {
-            document.body.style.background = '#000000'; // Change background to white
-            document.body.style.color = '#000000';      // Change text to black
-            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
-            elements.forEach(el => {
-                el.style.color = '#000000';             // Change other elements to black
-                el.style.backgroundColor = '#000000';   // Ensure buttons remain visible
-            });
-            return;
-        }
-
+                document.body.style.background = '#000000';
+                document.body.style.color = '#000000';
+                const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+                elements.forEach(el => {
+                    el.style.color = '#000000';
+                    el.style.backgroundColor = '#000000';
+                });
+                return;
+            }
 
             fetch('codes.txt')
                 .then(response => {
