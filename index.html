@@ -183,7 +183,7 @@
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">Added Rating System, Alphabetical Game Sort, Background Animations</p>
+        <p class="changelog">Added Rating System, Alphabetical Game Sort</p>
     </nav>
 
     <div class="search">
@@ -258,28 +258,6 @@
     <div class="content">
         <hr>
     </div>
-
-    <img src="dino.png" class="moving-character" id="character1">
-    <img src="cube.png" class="moving-character" id="character2">
-
-    <script>
-        // Function to randomize character positions and animation delay
-        function randomizeCharacterPositionAndAnimation() {
-            const characters = document.querySelectorAll('.moving-character');
-            characters.forEach(character => {
-                const randomY = Math.floor(Math.random() * window.innerHeight) + 'px';
-                const randomDelay = Math.random() * 5 + 's'; // Random delay between 0 and 5 seconds
-                character.style.top = randomY;
-                character.style.animationDelay = randomDelay;
-            });
-        }
-
-        // Call randomizeCharacterPositionAndAnimation on page load
-        window.onload = function() {
-            randomizeCharacterPositionAndAnimation();
-            // Sort games alphabetically
-            sortGames();
-        };
 
         // Additional JavaScript functions go here
 
