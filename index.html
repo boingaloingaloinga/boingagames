@@ -293,18 +293,58 @@
             document.getElementById('message').textContent = ''; // Clear message
         };
 
-        // Validate and submit code
+        // Function to check code
         document.getElementById('submitCode').onclick = function() {
-            const inputCode = document.getElementById('codeInput').value.trim();
-            const message = document.getElementById('message');
+            const input = document.getElementById('codeInput').value.trim();
+            const messageBox = document.getElementById('message');
 
-            if (inputCode === 'curious-george.png' || inputCode === 'https://code.org/404') {
-                message.textContent = 'Correct code!';
-                message.classList.remove('error');
-            } else {
-                message.textContent = 'Incorrect code. Please try again.';
-                message.classList.add('error');
-            }
+                // Special case for "light mode"
+            if (input === "light mode") {
+            document.body.style.background = '#ffffff'; // Change background to white
+            document.body.style.color = '#ffffff';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#ffffff';             // Change other elements to black
+                el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+            if (input === "very dark mode") {
+            document.body.style.background = '#000000'; // Change background to white
+            document.body.style.color = '#000000';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#000000';             // Change other elements to black
+                el.style.backgroundColor = '#000000';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+
+            fetch('codes.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const codes = data.split('\n').map(line => line.split(':'));
+                    const match = codes.find(code => code[0].trim() === input);
+
+                    if (match) {
+                        messageBox.textContent = match[1].trim();
+                        messageBox.className = 'message';
+                    } else {
+                        messageBox.textContent = 'X';
+                        messageBox.className = 'message error';
+                    }
+                })
+                .catch(error => {
+                    messageBox.textContent = 'Error fetching codes';
+                    messageBox.className = 'message error';
+                });
         };
 
         // Submit rating
