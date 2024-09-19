@@ -183,7 +183,7 @@
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">Crossy Road Added, One More Big Update Tonight</p>
+        <p class="changelog">THE BIG GAME UPDATE - Bunch Of Games!</p>
     </nav>
 
     <div class="search">
@@ -263,6 +263,7 @@
         <a href="games/jacksmith/"><img src="images/jacksmith.jpg" width="128" height="128" alt="Jack Smith"></a>
         <a href="games/1v1lol/"><img src="images/1v1.jpg" width="128" height="128" alt="1v1.lol"></a>
         <a href="games/crossyroad/"><img src="images/crossyroad.avif" width="128" height="128" alt="Crossy Road"></a>
+        <a href="games/baldisbasics/"><img src="images/baldisbasics.webp" width="128" height="128" alt="Baldi's Basics"></a>
     </div>
 
     <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
@@ -340,6 +341,12 @@
             return;
         }
 
+
+        // New secret code for "spinball"
+        if (input === "spinball") {
+            window.location.href = 'games/spinball/';
+            return;
+        }
 
             fetch('codes.txt')
                 .then(response => {
