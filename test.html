@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoingaGames</title>
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
+    <link rel="icon" href="bg.png" type="image/png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        nav h1 {
+            font-size: 72px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 20px 0 10px 0;
+        }
+
+        nav p.quote {
+            font-size: 24px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        nav p.changelog {
+            font-size: 12px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        nav p.left {
+            font-size: 36px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #FF0000;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        .search {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .search button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #games {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #games a {
+            margin: 10px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        #games a:hover {
+            transform: scale(1.1);
+        }
+
+        .content hr {
+            border: none;
+            height: 2px;
+            background-color: #ffcc00;
+            margin: 40px 0;
+        }
+
+        #codeInputBar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #000;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #codeInputBar input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        #codeInputBar button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #codeInputBar .closeBtn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+            cursor: pointer;
+        }
+
+        #codeInputBar .message {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
+
+        #codeInputBar .error {
+            color: red;
+        }
+
+        .rating-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .rating-section input {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .rating-section button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .rating-result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+        }
+
+        /* Styles for the moving characters */
+        .moving-character {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            animation: moveCharacter 10s linear infinite;
+        }
+
+        @keyframes moveCharacter {
+            from {
+                left: -50px;
+            }
+            to {
+                left: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>BOINGA</h1>
+        <p class="quote">"Boingaloingaloinga!"</p>
+        <p class="changelog">Changelog: </p>
+        <p class="changelog">Added Run 2 and Microsoft Edge Surf</p>
+        <p class="changelog">NEXT UPDATE WILL BE THE BIG BOINGA UPDATE, it will take a while</p>
+        <p class="left">1 GAME LEFT.</p>
+    </nav>
+
+    <div class="search">
+        <input type="text" placeholder="Search...">
+        <button><i class="fas fa-search"></i></button>
+    </div>
+
+    <div id="games">
+        <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
+        <a href="games/vex7/"><img src="images/vex7.jpeg" width="128" height="128" alt="vex 7"></a>
+        <a href="games/vex6/"><img src="images/vex6.jpeg" width="128" height="128" alt="vex 6"></a>
+        <a href="games/moto-x3m/"><img src="images/moto-x3m.jpg" width="128" height="128" alt="Moto x3m"></a>
+        <a href="games/retro-bowl/"><img src="images/retro-bowl.jpg" width="128" height="128" alt="Retro Bowl"></a>
+        <a href="games/drive-mad/"><img src="images/drive-mad.jpg" width="128" height="128" alt="Drive Mad"></a>
+        <a href="games/slope/"><img src="images/slope.jpg" width="128" height="128" alt="Slope"></a>
+        <a href="games/motox3m2/"><img src="images/motox3m2.jpg" width="128" height="128" alt="Moto x3m 2"></a>
+        <a href="games/2048/"><img src="images/2048.jpg" width="128" height="128" alt="2048"></a>
+        <a href="games/paperio2/"><img src="images/paperio2.png" width="128" height="128" alt="Paperio 2"></a>
+        <a href="games/stickmanhook/"><img src="images/stickmanhook.jpg" width="128" height="128" alt="Stickman Hook"></a>
+        <a href="games/OvO/"><img src="images/ovo.png" width="128" height="128" alt="OvO"></a>
+        <a href="games/cookieclicker/"><img src="images/PerfectCookie.webp" width="128" height="128" alt="Cookie Clicker"></a>
+        <a href="games/subwaysurfers/"><img src="images/subwaysurfers.jpg" width="128" height="128" alt="Subway Surfers"></a>
+        <a href="games/gdash/"><img src="images/gdash.png" width="128" height="128" alt="Geometry Dash"></a>
+        <a href="games/flappybird/"><img src="images/flappybird.png" width="128" height="128" alt="Flappy Bird"></a>
+        <a href="games/snake/"><img src="images/snake.png" width="128" height="128" alt="Snake"></a>
+        <a href="games/mc/"><img src="images/mc.png" width="128" height="128" alt="Minecraft Classic"></a>
+        <a href="games/worldshardestgame/"><img src="images/worldshardestgame.png" width="128" height="128" alt="World's Hardest Game"></a>
+        <a href="games/worldshardestgame2/"><img src="images/worldshardestgame2.jfif" width="128" height="128" alt="World's Hardest Game 2"></a>
+        <a href="games/theimpossiblequiz/"><img src="images/impossible.png" width="128" height="128" alt="The Impossible Quiz"></a>
+        <a href="games/tunnelrush/"><img src="images/tunnelrush.jpg" width="128" height="128" alt="Tunnel Rush"></a>
+        <a href="games/sortthecourt/"><img src="images/sortthecourt.webp" width="128" height="128" alt="Sort The Court"></a>
+        <a href="games/bitlife/"><img src="images/bitlife.webp" width="128" height="128" alt="BitLife"></a>
+        <a href="games/ducklife4/"><img src="images/ducklife4.png" width="128" height="128" alt="Duck Life 4"></a>
+        <a href="games/hackertype/"><img src="images/hackertype.png" width="128" height="128" alt="Hacker Typer"></a>
+        <a href="games/deathrun3d/"><img src="images/deathrun3d.png" width="128" height="128" alt="Death Run 3d"></a>
+        <a href="games/dino/"><img src="images/dino.png" width="128" height="128" alt="Dinosaur Game"></a>
+        <a href="games/basketrandom/"><img src="images/basketrandom.png" width="128" height="128" alt="Basket Random"></a>
+        <a href="games/soccerrandom/"><img src="images/soccerrandom.png" width="128" height="128" alt="Soccer Random"></a>
+        <a href="games/fireboy/"><img src="images/fireboy.webp" width="128" height="128" alt="Fireboy and Watergirl"></a>
+        <a href="games/drawthehill/"><img src="images/drawthehill.png" width="128" height="128" alt="Draw The Hill"></a>
+        <a href="games/bottleflip/"><img src="images/bottleflip.png" width="128" height="128" alt="Bottle Flip"></a>
+        <a href="games/uno/"><img src="images/uno.png" width="128" height="128" alt="Uno"></a>
+        <a href="games/sandboxels/"><img src="images/sandboxels.png" width="128" height="128" alt="Sandboxels"></a>
+        <a href="games/bloxorz/"><img src="images/bloxorz.png" width="128" height="128" alt="Bloxorz"></a>
+        <a href="games/minesweeper/"><img src="images/minesweeper.webp" width="128" height="128" alt="Minesweeper"></a>
+        <a href="games/papaspizzeria/"><img src="images/papas.jfif" width="128" height="128" alt="Papa's Pizzeria"></a>
+        <a href="games/papasfreezeria/"><img src="images/freeze.jfif" width="128" height="128" alt="Papa's Freezeria"></a>
+        <a href="games/papaspancakeria/"><img src="images/pancake.jfif" width="128" height="128" alt="Papa's Pancakeria"></a>
+        <a href="games/papastacomia/"><img src="images/tacomia.jpg" width="128" height="128" alt="Papa's Tacomia"></a>
+        <a href="games/papassushiria/"><img src="images/sushiria.webp" width="128" height="128" alt="Papa's Sushiria"></a>
+        <a href="games/papasbakeria/"><img src="images/bakeria.jfif" width="128" height="128" alt="Papa's Bakeria"></a>
+        <a href="games/papaswingeria/"><img src="images/wingeria.jfif" width="128" height="128" alt="Papa's Wingeria"></a>
+        <a href="games/papaspastaria/"><img src="images/pastaria.jfif" width="128" height="128" alt="Papa's Pastaria"></a>
+        <a href="games/smb/"><img src="images/mario.ico" width="128" height="128" alt="Super Mario Bros."></a>
+        <a href="games/smb2/"><img src="images/smb2.webp" width="128" height="128" alt="Super Mario Bros 2"></a>
+        <a href="games/smb3/"><img src="images/smb3.png" width="128" height="128" alt="Super Mario Bros 3"></a>
+        <a href="games/smw/"><img src="images/smw.png" width="128" height="128" alt="Super Mario World"></a>
+        <a href="games/sml/"><img src="images/sml.png" width="128" height="128" alt="Super Mario Land"></a>
+        <a href="games/sml2/"><img src="images/sml2.webp" width="128" height="128" alt="Super Mario Land 2"></a>
+        <a href="games/sm64/"><img src="images/sm64.jpg" width="128" height="128" alt="Super Mario 64"></a>
+        <a href="games/sm63/"><img src="images/sm63.webp" width="128" height="128" alt="Super Mario 63"></a>
+        <a href="games/drmario/"><img src="images/drmario.png" width="128" height="128" alt="Dr.Mario"></a>
+        <a href="games/sonic1/"><img src="images/sonic1.jfif" width="128" height="128" alt="Sonic 1"></a>
+        <a href="games/sonic2/"><img src="images/sonic2.png" width="128" height="128" alt="Sonic 2"></a>
+        <a href="games/sonic3/"><img src="images/sonic3.jfif" width="128" height="128" alt="Sonic 3"></a>
+        <a href="games/sonicadvance/"><img src="images/sonicadvance.webp" width="128" height="128" alt="Sonic Advance"></a>
+        <a href="games/sonicadvance2/"><img src="images/sonicadvance2.webp" width="128" height="128" alt="Sonic Advance 2"></a>
+        <a href="games/sonicadvance3/"><img src="images/sonicadvance3.webp" width="128" height="128" alt="Sonic Advance 3"></a>
+        <a href="games/firered/"><img src="images/firered.jfif" width="128" height="128" alt="Pokemon: Fire Red"></a>
+        <a href="games/gold/"><img src="images/gold.jpg" width="128" height="128" alt="Pokemon: Gold"></a>
+        <a href="games/sapphire/"><img src="images/sapphire.png" width="128" height="128" alt="Pokemon: Sapphire"></a>
+        <a href="games/unfair/"><img src="images/unfair.jpg" width="128" height="128" alt="Unfair Mario"></a>
+        <a href="games/tinyfishing/"><img src="images/tinyfishing.jpg" width="128" height="128" alt="Tiny Fishing"></a>
+        <a href="games/breakingthebank/"><img src="images/breakingthebank.jpg" width="128" height="128" alt="Henry Stickmin: Breaking the Bank"></a>
+        <a href="games/escapingtheprison/"><img src="images/escapingtheprison.ico" width="128" height="128" alt="Henry Stickmin: Escaping The Prison"></a>
+        <a href="games/infiltratingtheairship/"><img src="images/infiltratingtheairship.ico" width="128" height="128" alt="Henry Stickmin: Infiltrating The Airship"></a>
+        <a href="games/fleeingthecomplex/"><img src="images/fleeingthecomplex.webp" width="128" height="128" alt="Henry Stickmin: Fleeing The Complex"></a>
+        <a href="games/riddleschool3/"><img src="images/rs3.webp" width="128" height="128" alt="Riddle School 3"></a>
+        <a href="games/jacksmith/"><img src="images/jacksmith.jpg" width="128" height="128" alt="Jack Smith"></a>
+        <a href="games/1v1lol/"><img src="images/1v1.jpg" width="128" height="128" alt="1v1.lol"></a>
+        <a href="games/crossyroad/"><img src="images/crossyroad.avif" width="128" height="128" alt="Crossy Road"></a>
+        <a href="games/baldisbasics/"><img src="images/baldisbasics.webp" width="128" height="128" alt="Baldi's Basics"></a>
+        <a href="games/tetris/"><img src="images/tetris.jpg" width="128" height="128" alt="Twitch Tetris"></a>
+        <a href="games/jetpack-joyride/"><img src="images/jetpack.jpeg" width="128" height="128" alt="Jetpack Joyride"></a>
+        <a href="games/stack/"><img src="images/stack.jpeg" width="128" height="128" alt="Stack"></a>
+        <a href="games/doodle-jump/"><img src="images/doodle.webp" width="128" height="128" alt="Doodle Jump"></a>
+        <a href="games/alienhominid/"><img src="images/alien.png" width="128" height="128" alt="Alien Hominid"></a>
+        <a href="games/fancypantsadventures/"><img src="images/fancy.png" width="128" height="128" alt="Mr.Fancy Pants Adventures"></a>
+        <a href="games/there-is-no-game/"><img src="images/nogame.jpeg" width="128" height="128" alt="There Is No Game"></a>
+        <a href="games/zelda/"><img src="images/zelda.png" width="128" height="128" alt="The Legend Of Zelda"></a>
+        <a href="games/dkong/"><img src="images/dkong.jpg" width="128" height="128" alt="Donkey Kong"></a>
+        <a href="games/punch/"><img src="images/punch.png" width="128" height="128" alt="Punch Out!!!"></a>
+        <a href="games/metroid/"><img src="images/metroid.jpg" width="128" height="128" alt="Metroid"></a>
+        <a href="games/megaman2/"><img src="images/megaman2.jpg" width="128" height="128" alt="Mega Man 2"></a>
+        <a href="games/megaman3/"><img src="images/megaman3.jpg" width="128" height="128" alt="Mega Man 3"></a>
+        <a href="games/pacman/"><img src="images/pacman.png" width="128" height="128" alt="Pac-Man"></a>
+        <a href="games/idle-breakout/"><img src="images/idle.webp" width="128" height="128" alt="Idle Breakout"></a>
+        <a href="games/fruitninja/"><img src="images/fruit-ninja.avif" width="128" height="128" alt="Fruit Ninja"></a>
+        <a href="games/dkc/"><img src="images/dkc.jpg" width="128" height="128" alt="Donkey Kong Country"></a>
+        <a href="games/holeio/"><img src="images/holeio.jpg" width="128" height="128" alt="Hole.io"></a>
+        <a href="games/fued/"><img src="images/fued.png" width="128" height="128" alt="Google Fued"></a>
+        <a href="games/achivement/"><img src="images/achivement.jpg" width="128" height="128" alt="Achivement Unlocked"></a>
+        <a href="games/n-gon/"><img src="images/n-gon.jpg" width="128" height="128" alt="N-Gon"></a>
+        <a href="games/btd5/"><img src="images/btd5.png" width="128" height="128" alt="Bloon's Tower Defense 5"></a>
+        <a href="games/deal/"><img src="images/deal.jpg" width="128" height="128" alt="Deal Or No Deal"></a>
+        <a href="games/surf/"><img src="images/surf.jpg" width="128" height="128" alt="Edge Surf"></a>
+        <a href="games/Run 2/"><img src="images/run2.jpg" width="128" height="128" alt="Run 2"></a>
+    </div>
+
+    <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
+
+    <div class="rating-section">
+        <h2>Rate this website:</h2>
+        <input type="number" id="ratingInput" placeholder="Enter a rating (1-5)">
+        <button id="submitRating">Submit Rating</button>
+        <div id="ratingResult" class="rating-result"></div>
+    </div>
+
+    <div id="codeInputBar">
+        <span class="closeBtn">&times;</span>
+        <input type="text" id="codeInput" placeholder="Enter your code...">
+        <button id="submitCode">Enter</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // Additional JavaScript functions go here
+
+        // Sort games alphabetically by alt text
+        function sortGames() {
+            const gamesContainer = document.getElementById('games');
+            const games = Array.from(gamesContainer.getElementsByTagName('a'));
+
+            games.sort((a, b) => {
+                const altA = a.querySelector('img').alt.toUpperCase();
+                const altB = b.querySelector('img').alt.toUpperCase();
+                return altA.localeCompare(altB);
+            });
+
+            games.forEach(game => {
+                gamesContainer.appendChild(game);
+            });
+        }
+
+        // Show the black bar when curiousGeorge image is clicked
+        document.getElementById('curiousGeorge').onclick = function() {
+            document.getElementById('codeInputBar').style.display = 'block';
+        };
+
+        // Close the black bar
+        document.querySelector('.closeBtn').onclick = function() {
+            document.getElementById('codeInputBar').style.display = 'none';
+            document.getElementById('codeInput').value = ''; // Clear input
+            document.getElementById('message').textContent = ''; // Clear message
+        };
+
+        // Function to check code
+        document.getElementById('submitCode').onclick = function() {
+            const input = document.getElementById('codeInput').value.trim();
+            const messageBox = document.getElementById('message');
+
+                // Special case for "light mode"
+            if (input === "light mode") {
+            document.body.style.background = '#ffffff'; // Change background to white
+            document.body.style.color = '#ffffff';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#ffffff';             // Change other elements to black
+                el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+            if (input === "very dark mode") {
+            document.body.style.background = '#000000'; // Change background to white
+            document.body.style.color = '#000000';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#000000';             // Change other elements to black
+                el.style.backgroundColor = '#000000';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+
+        if (input === "spinball") {
+            window.location.href = 'games/spinball/';
+            return;
+        }
+
+        if (input === "3d") {
+            window.location.href = '3d/';
+            return;
+        }
+
+        if (input === "chaotix") {
+            window.location.href = 'games/knuckles/';
+            return;
+        }
+
+            fetch('codes.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const codes = data.split('\n').map(line => line.split(':'));
+                    const match = codes.find(code => code[0].trim() === input);
+
+                    if (match) {
+                        messageBox.textContent = match[1].trim();
+                        messageBox.className = 'message';
+                    } else {
+                        messageBox.textContent = 'X';
+                        messageBox.className = 'message error';
+                    }
+                })
+                .catch(error => {
+                    messageBox.textContent = 'Error fetching codes';
+                    messageBox.className = 'message error';
+                });
+        };
+
+        // Submit rating
+        document.getElementById('submitRating').onclick = function() {
+            const ratingInput = document.getElementById('ratingInput').value.trim();
+            const ratingResult = document.getElementById('ratingResult');
+
+            ratingResult.textContent = "Thank you for rating! You gave us 5 stars! ★★★★★";
+        };
+    </script>
+</body>
+</html>
