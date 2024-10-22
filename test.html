@@ -360,11 +360,31 @@
             let message = document.querySelector('#codeInputBar .message');
             if (code === 'spinball') {
                 window.location.href = 'games/spinball';
-            } else {
-                message.textContent = 'Invalid code!';
-                message.classList.add('error');
-            }
-        }
+
+            fetch('codes.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const codes = data.split('\n').map(line => line.split(':'));
+                    const match = codes.find(code => code[0].trim() === input);
+
+                    if (match) {
+                        messageBox.textContent = match[1].trim();
+                        messageBox.className = 'message';
+                    } else {
+                        messageBox.textContent = 'X';
+                        messageBox.className = 'message error';
+                    }
+                })
+                .catch(error => {
+                    messageBox.textContent = 'Error fetching codes';
+                    messageBox.className = 'message error';
+                });
+        };
 
         // Open rating menu
         document.getElementById('starIcon').addEventListener('click', function () {
