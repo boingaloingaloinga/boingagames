@@ -112,6 +112,42 @@
             width: 300px;
         }
 
+        #settingsSidebar {
+            position: fixed;
+            right: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            transition: right 0.3s ease;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        #settingsSidebar .closeBtn {
+            color: red;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        /* Open sidebar */
+        .settings-sidebar-open {
+            right: 0;
+        }
+
+        /* Gear icon */
+        .settings-icon {
+            position: fixed;
+            top: 10px;
+            right: 50px;
+            font-size: 24px;
+            color: #ffcc00;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
         #codeInputBar button {
             padding: 10px;
             font-size: 18px;
@@ -140,6 +176,34 @@
             color: red;
         }
 
+        .rating-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .rating-section input {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .rating-section button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .rating-result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+        }
+
         /* Styles for the moving characters */
         .moving-character {
             position: fixed;
@@ -156,52 +220,6 @@
                 left: 100%;
             }
         }
-
-        /* Top bar sticky */
-        .top-bar {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            background-color: #333;
-            padding: 10px;
-            display: flex;
-            justify-content: flex-end;
-            z-index: 1000;
-        }
-
-        .top-bar img {
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-
-        .rating-menu {
-            display: none;
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            background-color: #000;
-            border: 1px solid #ffcc00;
-            padding: 10px;
-            border-radius: 5px;
-            width: 200px;
-            text-align: center;
-        }
-
-        .rating-menu .close-rating {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            font-size: 16px;
-            color: #ffcc00;
-            cursor: pointer;
-        }
-
-        .rating-menu p {
-            margin: 10px 0;
-            color: #ffcc00;
-        }
     </style>
 </head>
 <body>
@@ -210,30 +228,26 @@
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
         <p class="changelog">Added Run 2 and Microsoft Edge Surf</p>
-        <p class="changelog">NEXT UPDATE WILL BE THE BIG BOINGA UPDATE, it will take a while</p>
+        <p class="changelog">Big Boinga Update might be too ambitious, there's a chance I might have to add more games and add each feature of it separately.</p>
         <p class="left">1 GAME LEFT.</p>
     </nav>
 
-    <!-- Top bar with sticky effect and icons -->
-    <div class="top-bar">
-        <img src="images/curious-george.png" id="curiousGeorgeIcon" alt="Curious George Icon" title="Type a secret code!">
-        <img src="images/star.png" id="starIcon" alt="Star Rating" title="Rate this site!">
+    <div class="settings-icon" onclick="toggleSettingsSidebar()">
+        <i class="fas fa-gear"></i>
     </div>
 
-    <!-- Code input bar -->
-    <div id="codeInputBar">
-        <span class="closeBtn" onclick="closeCodeInputBar()">X</span>
-        <input type="text" placeholder="Enter code...">
-        <button onclick="submitCode()">Submit</button>
-        <p class="message"></p>
+    <!-- Sidebar -->
+    <div id="settingsSidebar">
+        <div class="closeBtn" onclick="toggleSettingsSidebar()">X</div>
+        <!-- Future settings content goes here -->
     </div>
 
-    <!-- Rating menu -->
-    <div id="ratingMenu" class="rating-menu">
-        <span class="close-rating" onclick="closeRatingMenu()">X</span>
-        <p>Rate this site:</p>
-        <p>⭐⭐⭐⭐⭐</p>
-    </div>
+    <script>
+        function toggleSettingsSidebar() {
+            const sidebar = document.getElementById("settingsSidebar");
+            sidebar.classList.toggle("settings-sidebar-open");
+        }
+    </script>
 
     <div class="search">
         <input type="text" placeholder="Search...">
@@ -241,7 +255,6 @@
     </div>
 
     <div id="games">
-        <!-- Games links -->
         <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
         <a href="games/vex7/"><img src="images/vex7.jpeg" width="128" height="128" alt="vex 7"></a>
         <a href="games/vex6/"><img src="images/vex6.jpeg" width="128" height="128" alt="vex 6"></a>
@@ -343,23 +356,96 @@
         <a href="games/Run 2/"><img src="images/run2.jpg" width="128" height="128" alt="Run 2"></a>
     </div>
 
-    <script>
-        // Open code input bar
-        document.getElementById('curiousGeorgeIcon').addEventListener('click', function () {
-            document.getElementById('codeInputBar').style.display = 'block';
-        });
+    <img id="curiousGeorge" src="curious-george.png" width="1024" height="1024" alt="Curious George">
 
-        // Close code input bar
-        function closeCodeInputBar() {
-            document.getElementById('codeInputBar').style.display = 'none';
+    <div class="rating-section">
+        <h2>Rate this website:</h2>
+        <input type="number" id="ratingInput" placeholder="Enter a rating (1-5)">
+        <button id="submitRating">Submit Rating</button>
+        <div id="ratingResult" class="rating-result"></div>
+    </div>
+
+    <div id="codeInputBar">
+        <span class="closeBtn">&times;</span>
+        <input type="text" id="codeInput" placeholder="Enter your code...">
+        <button id="submitCode">Enter</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // Additional JavaScript functions go here
+
+        // Sort games alphabetically by alt text
+        function sortGames() {
+            const gamesContainer = document.getElementById('games');
+            const games = Array.from(gamesContainer.getElementsByTagName('a'));
+
+            games.sort((a, b) => {
+                const altA = a.querySelector('img').alt.toUpperCase();
+                const altB = b.querySelector('img').alt.toUpperCase();
+                return altA.localeCompare(altB);
+            });
+
+            games.forEach(game => {
+                gamesContainer.appendChild(game);
+            });
         }
 
-        // Submit code functionality
-        function submitCode() {
-            let code = document.querySelector('#codeInputBar input').value;
-            let message = document.querySelector('#codeInputBar .message');
-            if (code === 'spinball') {
-                window.location.href = 'games/spinball';
+        // Show the black bar when curiousGeorge image is clicked
+        document.getElementById('curiousGeorge').onclick = function() {
+            document.getElementById('codeInputBar').style.display = 'block';
+        };
+
+        // Close the black bar
+        document.querySelector('.closeBtn').onclick = function() {
+            document.getElementById('codeInputBar').style.display = 'none';
+            document.getElementById('codeInput').value = ''; // Clear input
+            document.getElementById('message').textContent = ''; // Clear message
+        };
+
+        // Function to check code
+        document.getElementById('submitCode').onclick = function() {
+            const input = document.getElementById('codeInput').value.trim();
+            const messageBox = document.getElementById('message');
+
+                // Special case for "light mode"
+            if (input === "light mode") {
+            document.body.style.background = '#ffffff'; // Change background to white
+            document.body.style.color = '#ffffff';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#ffffff';             // Change other elements to black
+                el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+            if (input === "very dark mode") {
+            document.body.style.background = '#000000'; // Change background to white
+            document.body.style.color = '#000000';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#000000';             // Change other elements to black
+                el.style.backgroundColor = '#000000';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+
+        if (input === "spinball") {
+            window.location.href = 'games/spinball/';
+            return;
+        }
+
+        if (input === "3d") {
+            window.location.href = '3d/';
+            return;
+        }
+
+        if (input === "chaotix") {
+            window.location.href = 'games/knuckles/';
+            return;
+        }
 
             fetch('codes.txt')
                 .then(response => {
@@ -386,15 +472,13 @@
                 });
         };
 
-        // Open rating menu
-        document.getElementById('starIcon').addEventListener('click', function () {
-            document.getElementById('ratingMenu').style.display = 'block';
-        });
+        // Submit rating
+        document.getElementById('submitRating').onclick = function() {
+            const ratingInput = document.getElementById('ratingInput').value.trim();
+            const ratingResult = document.getElementById('ratingResult');
 
-        // Close rating menu
-        function closeRatingMenu() {
-            document.getElementById('ratingMenu').style.display = 'none';
-        }
+            ratingResult.textContent = "Thank you for rating! You gave us 5 stars! ★★★★★";
+        };
     </script>
 </body>
 </html>
