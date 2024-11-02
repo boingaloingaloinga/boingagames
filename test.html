@@ -112,40 +112,40 @@
             width: 300px;
         }
 
-        #settingsSidebar {
+        #settingsButton {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
             position: fixed;
-            right: -250px;
             top: 0;
-            width: 250px;
+            right: -300px; /* Hidden by default, slides in from the right */
+            width: 300px;
             height: 100%;
             background-color: #333;
-            transition: right 0.3s ease;
+            color: white;
             padding: 20px;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease;
         }
 
-        #settingsSidebar .closeBtn {
-            color: red;
-            font-size: 24px;
-            cursor: pointer;
-            text-align: right;
-        }
-
-        /* Open sidebar */
-        .settings-sidebar-open {
+        .sidebar.active {
             right: 0;
         }
 
-        /* Gear icon */
-        .settings-icon {
-            position: fixed;
+        .close-button {
+            position: absolute;
             top: 10px;
-            right: 50px;
+            right: 10px;
             font-size: 24px;
-            color: #ffcc00;
+            background: none;
+            border: none;
+            color: white;
             cursor: pointer;
-            z-index: 1001;
         }
 
         #codeInputBar button {
@@ -232,21 +232,31 @@
         <p class="left">1 GAME LEFT.</p>
     </nav>
 
-    <div class="settings-icon" onclick="toggleSettingsSidebar()">
-        <i class="fas fa-gear"></i>
-    </div>
+    <!-- Settings Button -->
+    <button id="settingsButton">Settings</button>
 
     <!-- Sidebar -->
-    <div id="settingsSidebar">
-        <div class="closeBtn" onclick="toggleSettingsSidebar()">X</div>
-        <!-- Future settings content goes here -->
+    <div id="sidebar" class="sidebar">
+        <button id="closeButton" class="close-button">&times;</button>
+        <h2>Settings</h2>
+        <p>Your settings content here...</p>
     </div>
 
     <script>
-        function toggleSettingsSidebar() {
-            const sidebar = document.getElementById("settingsSidebar");
-            sidebar.classList.toggle("settings-sidebar-open");
-        }
+        // Select elements
+        const settingsButton = document.getElementById('settingsButton');
+        const sidebar = document.getElementById('sidebar');
+        const closeButton = document.getElementById('closeButton');
+
+        // Open sidebar when settings button is clicked
+        settingsButton.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+
+        // Close sidebar when close button is clicked
+        closeButton.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
     </script>
 
     <div class="search">
