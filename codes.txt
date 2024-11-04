@@ -39,7 +39,6 @@ super:mario
 secret:super secret
 stupid:no im not
 christ:jesus
-deadpool:wolverine
 boom:with that attitude
 snap my fingers in a z formation:hip rotation
 rhombus:😉
@@ -47,3 +46,8 @@ fnf:no
 sonic:peak
 boingaloingaloinga:yeah
 big boinga update:working on it
+low taper fade:MASSIVE
+hi:hi
+make an unblocker:no
+parappa:the rapper
+
