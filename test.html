@@ -15,8 +15,8 @@
       		padding: 0;
       		overflow-x: hidden;
       		transition: background 0.5s, color 0.5s;
-      		background: linear-gradient(to right, #fff, #f0f0f0);
-      		color: #000;
+            background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
+      		color: #ffcc00;
     	}
 
         nav h1, nav p.quote, nav p.changelog, nav p.left {
@@ -100,37 +100,33 @@
             width: 300px;
         }
 
+        #codeInputBar button {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-            /* Settings button */
-    #settings-btn {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      z-index: 1000;
-    }
+        #codeInputBar .closeBtn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            color: #ffcc00;
+            cursor: pointer;
+        }
 
-    /* Sidebar styling */
-    #settings-sidebar {
-      position: fixed;
-      top: 0;
-      right: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: #f9f9f9;
-      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      transition: right 0.4s ease;
-      z-index: 999;
-    }
+        #codeInputBar .message {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
 
-    #settings-sidebar.open {
-      right: 0;
-    }
+        #codeInputBar .error {
+            color: red;
+        }
 
     /* Close button for sidebar */
     #close-btn {
@@ -262,14 +258,6 @@
         const settingsSidebar = document.getElementById('settings-sidebar');
         const closeBtn = document.getElementById('close-btn');
 
-        settingsBtn.addEventListener('click', () => {
-            settingsSidebar.classList.add('open');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            settingsSidebar.classList.remove('open');
-        });
-
         // Theme selection
         const themeButtons = document.querySelectorAll('.theme-btn');
         themeButtons.forEach(button => {
@@ -277,7 +265,7 @@
                 const theme = button.getAttribute('data-theme');
                 switch (theme) {
                     case 'default':
-                        document.body.style.background = 'linear-gradient(to right, #00bfff, #007bff)';
+                        document.body.style.background = 'linear-gradient(to right, #1e1e2f, #3a3b5b)';
                         document.body.style.color = '#ffcc00';
                         break;
                     case 'blossom':
