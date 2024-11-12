@@ -439,24 +439,20 @@
             });
         }
 
-        // Show the black bar when curiousGeorge image is clicked
         document.getElementById('curiousGeorge').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'block';
         };
 
-        // Close the black bar
         document.querySelector('.closeBtn').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'none';
             document.getElementById('codeInput').value = ''; // Clear input
             document.getElementById('message').textContent = ''; // Clear message
         };
 
-        // Function to check code
         document.getElementById('submitCode').onclick = function() {
             const input = document.getElementById('codeInput').value.trim();
             const messageBox = document.getElementById('message');
 
-                // Special case for "light mode"
             if (input === "light mode") {
             document.body.style.background = '#ffffff'; // Change background to white
             document.body.style.color = '#ffffff';      // Change text to black
@@ -482,6 +478,16 @@
 
         if (input === "spinball") {
             window.location.href = 'games/spinball/';
+            return;
+        }
+
+        if (input === "step on the gas") {
+            window.location.href = 'games/parappa/';
+            return;
+        }
+
+        if (input === "doom") {
+            window.location.href = 'games/doom/doom.html';
             return;
         }
 
