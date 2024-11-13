@@ -15,27 +15,41 @@
       		padding: 0;
       		overflow-x: hidden;
       		transition: background 0.5s, color 0.5s;
-            background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
+            	background: linear-gradient(135deg, #1e1e2f, #3a3b5b);
       		color: #ffcc00;
     	}
 
-        nav h1, nav p.quote, nav p.changelog, nav p.left {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            text-align: center;
-        }
-
         nav h1 {
             font-size: 72px;
-            color: #ffcc00; /* Default Yellow */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 20px 0 10px 0;
         }
 
-        nav p.quote, nav p.changelog, nav p.left {
-            color: #ffcc00; /* Default Yellow */
+        nav p.quote {
+            font-size: 24px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 0 0 30px 0;
         }
 
-        nav p.quote { font-size: 24px; }
-        nav p.changelog { font-size: 12px; }
-        nav p.left { font-size: 36px; color: #FF0000; 
+        nav p.changelog {
+            font-size: 12px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ffcc00;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        nav p.left {
+            font-size: 36px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #FF0000;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
 
         .search {
             text-align: center;
@@ -128,62 +142,6 @@
             color: red;
         }
 
-    /* Close button for sidebar */
-    #close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    /* Theme buttons */
-    .theme-btn {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      cursor: pointer;
-      text-align: center;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    .theme-btn:hover {
-      background-color: #e0e0e0;
-    }
-
-        #codeInputBar button {
-            padding: 10px;
-            font-size: 18px;
-            background-color: #ffcc00;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #codeInputBar .closeBtn {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 24px;
-            color: #ffcc00;
-            cursor: pointer;
-        }
-
-        #codeInputBar .message {
-            font-size: 18px;
-            margin-top: 10px;
-            color: #ffcc00;
-        }
-
-        #codeInputBar .error {
-            color: red;
-        }
-
         .rating-section {
             text-align: center;
             margin: 40px 0;
@@ -211,23 +169,23 @@
             font-size: 24px;
             color: #ffcc00;
         }
+    /* Theme buttons */
+    .theme-btn {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
 
-        /* Styles for the moving characters */
-        .moving-character {
-            position: fixed;
-            width: 50px;
-            height: 50px;
-            animation: moveCharacter 10s linear infinite;
-        }
+    .theme-btn:hover {
+      background-color: #e0e0e0;
+    }
 
-        @keyframes moveCharacter {
-            from {
-                left: -50px;
-            }
-            to {
-                left: 100%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -235,16 +193,12 @@
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">Added Run 2 and Microsoft Edge Surf</p>
-        <p class="changelog">Big Boinga Update might be too ambitious, there's a chance I might have to add more games and add each feature of it separately.</p>
+        <p class="changelog">Okay so the big boinga update isn't out yet.. put in the code "doom" at the curious george code menu.</p>
         <p class="left">1 GAME LEFT.</p>
     </nav>
 
-    <!-- Settings Button -->
-  <button id="settings-btn">Settings</button>
-
-  <!-- Settings Sidebar -->
-  <div id="settings-sidebar">
+  <!--Themes -->
+  <div id="themes">
     <button id="close-btn">&times;</button>
     <h2>Themes</h2>
     <button class="theme-btn" data-theme="default">Default</button>
@@ -427,20 +381,45 @@
             });
         }
 
+        // Show the black bar when curiousGeorge image is clicked
         document.getElementById('curiousGeorge').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'block';
         };
 
+        // Close the black bar
         document.querySelector('.closeBtn').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'none';
             document.getElementById('codeInput').value = ''; // Clear input
             document.getElementById('message').textContent = ''; // Clear message
         };
 
+        // Function to check code
         document.getElementById('submitCode').onclick = function() {
             const input = document.getElementById('codeInput').value.trim();
             const messageBox = document.getElementById('message');
 
+                // Special case for "light mode"
+            if (input === "light mode") {
+            document.body.style.background = '#ffffff'; // Change background to white
+            document.body.style.color = '#ffffff';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#ffffff';             // Change other elements to black
+                el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
+            });
+            return;
+        }
+
+            if (input === "very dark mode") {
+            document.body.style.background = '#000000'; // Change background to white
+            document.body.style.color = '#000000';      // Change text to black
+            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
+            elements.forEach(el => {
+                el.style.color = '#000000';             // Change other elements to black
+                el.style.backgroundColor = '#000000';   // Ensure buttons remain visible
+            });
+            return;
+        }
 
 
         if (input === "spinball") {
