@@ -212,6 +212,7 @@
     <button class="theme-btn" data-theme="iridium">Iridium</button>
     <button class="theme-btn" data-theme="sunset">Sunset</button>
     <button class="theme-btn" data-theme="forest">Forest</button>
+    <button class="theme-btn" data-theme="space">Space</button>
   </div>
 </div>
 
@@ -253,6 +254,14 @@
       case 'forest':
         document.body.style.background = 'linear-gradient(to right, #228B22, #014421)';
         document.body.style.color = '#90EE90';
+        break;
+      case 'space':
+        document.body.style.background = 'url("space.gif") repeat'; // Set background to the looping gif
+        document.body.style.backgroundSize = 'cover'; // Ensure it covers the screen
+        document.body.style.color = 'transparent'; // Use gradient for text
+        document.body.style.backgroundClip = 'text';
+        document.body.style.webkitBackgroundClip = 'text';
+        document.body.style.color = 'linear-gradient(to bottom, #8a2be2, #4b0082)'; // Purple gradient
         break;
     }
   }
