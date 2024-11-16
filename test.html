@@ -203,54 +203,78 @@
         <p class="changelog">THE BIG BOINGA UPDATE IS HERE!!! Watch the entirety of curious george, activate themes, and enjoy the new games! Boingaloingaloinga!!!</p>
     </nav>
 
-  <!--Themes -->
-  <div id="themes">
-    <button id="close-btn">&times;</button>
-    <h2>Themes</h2>
+<!-- Themes -->
+<div id="themes-container">
+  <h2>Themes <button id="toggle-themes-btn">+</button></h2>
+  <div id="themes" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease;">
     <button class="theme-btn" data-theme="default">Default</button>
     <button class="theme-btn" data-theme="blossom">Blossom</button>
     <button class="theme-btn" data-theme="iridium">Iridium</button>
     <button class="theme-btn" data-theme="sunset">Sunset</button>
     <button class="theme-btn" data-theme="forest">Forest</button>
   </div>
+</div>
 
-    <script>
-        const settingsBtn = document.getElementById('settings-btn');
-        const settingsSidebar = document.getElementById('settings-sidebar');
-        const closeBtn = document.getElementById('close-btn');
+<script>
+  const themesContainer = document.getElementById('themes-container');
+  const themesSection = document.getElementById('themes');
+  const toggleThemesBtn = document.getElementById('toggle-themes-btn');
 
-        // Theme selection
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        themeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const theme = button.getAttribute('data-theme');
-                switch (theme) {
-                    case 'default':
-                        document.body.style.background = 'linear-gradient(to right, #1e1e2f, #3a3b5b)';
-                        document.body.style.color = '#ffcc00';
-                        break;
-                    case 'blossom':
-                        document.body.style.background = 'linear-gradient(to right, #ffafcc, #ffcad4)';
-                        document.body.style.color = '#880e4f';
-                        break;
-                    case 'iridium':
-                        document.body.style.background = 'linear-gradient(to right, #333, #666)';
-                        document.body.style.color = '#ddd';
-                        break;
-                    case 'sunset':
-                        document.body.style.background = 'linear-gradient(to right, #ff7e5f, #feb47b)';
-                        document.body.style.color = '#4b2e05';
-                        break;
-                    case 'forest':
-                        document.body.style.background = 'linear-gradient(to right, #228B22, #014421)';
-                        document.body.style.color = '#90EE90';
-                        break;
-                }
-            });
-        });
-    </script>
+  // Toggle themes visibility
+  toggleThemesBtn.addEventListener('click', () => {
+    if (themesSection.style.maxHeight === '0px' || themesSection.style.maxHeight === '') {
+      themesSection.style.maxHeight = themesSection.scrollHeight + 'px'; // Expand
+      toggleThemesBtn.textContent = '-'; // Change to minimize button
+    } else {
+      themesSection.style.maxHeight = '0'; // Collapse
+      toggleThemesBtn.textContent = '+'; // Change to maximize button
+    }
+  });
 
-<!-- Centered Movies button -->
+  // Apply theme
+  function applyTheme(theme) {
+    switch (theme) {
+      case 'default':
+        document.body.style.background = 'linear-gradient(to right, #1e1e2f, #3a3b5b)';
+        document.body.style.color = '#ffcc00';
+        break;
+      case 'blossom':
+        document.body.style.background = 'linear-gradient(to right, #ffafcc, #ffcad4)';
+        document.body.style.color = '#880e4f';
+        break;
+      case 'iridium':
+        document.body.style.background = 'linear-gradient(to right, #333, #666)';
+        document.body.style.color = '#ddd';
+        break;
+      case 'sunset':
+        document.body.style.background = 'linear-gradient(to right, #ff7e5f, #feb47b)';
+        document.body.style.color = '#4b2e05';
+        break;
+      case 'forest':
+        document.body.style.background = 'linear-gradient(to right, #228B22, #014421)';
+        document.body.style.color = '#90EE90';
+        break;
+    }
+  }
+
+  // Theme selection
+  const themeButtons = document.querySelectorAll('.theme-btn');
+  themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const theme = button.getAttribute('data-theme');
+      localStorage.setItem('selectedTheme', theme); // Save theme to localStorage
+      applyTheme(theme);
+    });
+  });
+
+  // Load saved theme on page load
+  const savedTheme = localStorage.getItem('selectedTheme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  }
+</script>
+
+
 <div style="text-align: center; margin-top: 20px;">
     <button onclick="location.href='https://boingaloingaloinga.github.io/boingagames/curious'" 
             style="
