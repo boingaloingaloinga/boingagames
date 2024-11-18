@@ -125,6 +125,14 @@
             cursor: pointer;
         }
 
+        #upload-theme-container {
+          margin-top: 10px;
+        }
+
+        #background-upload {
+          margin-left: 10px;
+        }
+
         .center {
           margin-left: auto;
           margin-right: auto;
@@ -216,6 +224,11 @@
     <button class="theme-btn" data-theme="ocean">Ocean</button>
     <button class="theme-btn" data-theme="space">Space</button>
     <button class="theme-btn" data-theme="george">Curious George</button>
+    <div id="upload-theme-container">
+      <label for="background-upload">Custom Background</label>
+      <input type="file" id="background-upload" accept="image/*">
+    </div>
+
   </div>
 </div>
 
@@ -297,6 +310,22 @@
   if (savedTheme) {
     applyTheme(savedTheme);
   }
+</script>
+
+  const backgroundUpload = document.getElementById('background-upload');
+
+  // Handle file upload
+  backgroundUpload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.body.style.background = `url('${e.target.result}') no-repeat center center fixed`;
+        document.body.style.backgroundSize = '100% 120%'; // Stretch vertically to fit
+      };
+      reader.readAsDataURL(file); // Convert file to data URL
+    }
+  });
 </script>
 
 
