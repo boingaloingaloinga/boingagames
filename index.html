@@ -305,12 +305,12 @@
     });
   });
 
-  // Load saved theme on page load
-  const savedTheme = localStorage.getItem('selectedTheme');
-  if (savedTheme) {
-    applyTheme(savedTheme);
-  }
-</script>
+// Load saved theme on page load
+const savedTheme = localStorage.getItem('selectedTheme');
+const savedCustomBackground = localStorage.getItem('customBackground');
+if (savedTheme === 'custom' && savedCustomBackground) {
+  applyCustomBackground(savedCustomBackground);
+}
 
 <script>
   const backgroundUpload = document.getElementById('background-upload');
