@@ -236,6 +236,7 @@
   const themesContainer = document.getElementById('themes-container');
   const themesSection = document.getElementById('themes');
   const toggleThemesBtn = document.getElementById('toggle-themes-btn');
+  const backgroundUpload = document.getElementById('background-upload');
 
   // Toggle themes visibility
   toggleThemesBtn.addEventListener('click', () => {
@@ -277,20 +278,23 @@
         break;
       case 'space':
         document.body.style.background = 'url("space.gif") repeat';
-        document.body.style.backgroundSize = '100% 120%'; // Stretch horizontally to fit and vertically to slightly exceed
-        document.body.style.backgroundAttachment = 'fixed'; 
-        document.body.style.color = 'transparent'; // Use gradient for text
+        document.body.style.backgroundSize = '100% 120%';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.color = 'transparent';
         document.body.style.backgroundClip = 'text';
         document.body.style.webkitBackgroundClip = 'text';
-        document.body.style.color = 'linear-gradient(to bottom, #8a2be2, #4b0082)'; // Purple gradient
         break;
       case 'george':
         document.body.style.background = 'url("georgebg.jpg")';
-        document.body.style.backgroundSize = '100% 120%'; // Stretch horizontally to fit and vertically to slightly exceed
-        document.body.style.backgroundAttachment = 'fixed'; 
-        document.body.style.backgroundClip = 'text';
-        document.body.style.webkitBackgroundClip = 'text';
-        document.body.style.color = 'linear-gradient(to bottom, #8a2be2, #4b0082)'; // Purple gradient
+        document.body.style.backgroundSize = '100% 120%';
+        document.body.style.backgroundAttachment = 'fixed';
+        break;
+      case 'custom':
+        const savedCustomBackground = localStorage.getItem('customBackground');
+        if (savedCustomBackground) {
+          document.body.style.background = `url('${savedCustomBackground}') no-repeat center center fixed`;
+          document.body.style.backgroundSize = '100% 120%';
+        }
         break;
     }
   }
@@ -305,28 +309,29 @@
     });
   });
 
-// Load saved theme on page load
-const savedTheme = localStorage.getItem('selectedTheme');
-const savedCustomBackground = localStorage.getItem('customBackground');
-if (savedTheme === 'custom' && savedCustomBackground) {
-  applyCustomBackground(savedCustomBackground);
-}
-
-<script>
-  const backgroundUpload = document.getElementById('background-upload');
-
   // Handle file upload
   backgroundUpload.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-        document.body.style.background = `url('${e.target.result}') no-repeat center center fixed`;
-        document.body.style.backgroundSize = '100% 120%'; // Stretch vertically to fit
+        const dataUrl = e.target.result;
+
+        // Apply and save the custom background
+        document.body.style.background = `url('${dataUrl}') no-repeat center center fixed`;
+        document.body.style.backgroundSize = '100% 120%';
+        localStorage.setItem('customBackground', dataUrl);
+        localStorage.setItem('selectedTheme', 'custom'); // Save 'custom' as the selected theme
       };
       reader.readAsDataURL(file); // Convert file to data URL
     }
   });
+
+  // Load saved theme on page load
+  const savedTheme = localStorage.getItem('selectedTheme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  }
 </script>
 
 
