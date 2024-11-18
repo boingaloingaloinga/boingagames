@@ -215,6 +215,7 @@
     <button class="theme-btn" data-theme="forest">Forest</button>
     <button class="theme-btn" data-theme="ocean">Ocean</button>
     <button class="theme-btn" data-theme="space">Space</button>
+    <button class="theme-btn" data-theme="george">Curious George</button>
   </div>
 </div>
 
@@ -262,10 +263,18 @@
         document.body.style.color = '#1da2d8';
         break;
       case 'space':
-        document.body.style.background = 'url("space.gif") repeat'; // Set background to the looping gif
+        document.body.style.background = 'url("space.gif") repeat';
         document.body.style.backgroundSize = '100% 120%'; // Stretch horizontally to fit and vertically to slightly exceed
         document.body.style.backgroundAttachment = 'fixed'; 
         document.body.style.color = 'transparent'; // Use gradient for text
+        document.body.style.backgroundClip = 'text';
+        document.body.style.webkitBackgroundClip = 'text';
+        document.body.style.color = 'linear-gradient(to bottom, #8a2be2, #4b0082)'; // Purple gradient
+        break;
+      case 'george':
+        document.body.style.background = 'url("georgebg.jpg")';
+        document.body.style.backgroundSize = '100% 120%'; // Stretch horizontally to fit and vertically to slightly exceed
+        document.body.style.backgroundAttachment = 'fixed'; 
         document.body.style.backgroundClip = 'text';
         document.body.style.webkitBackgroundClip = 'text';
         document.body.style.color = 'linear-gradient(to bottom, #8a2be2, #4b0082)'; // Purple gradient
