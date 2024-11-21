@@ -545,6 +545,11 @@
             return;
         }
 
+        if (input === "OG") {
+            window.location.href = '/original.html';
+            return;
+        }
+
             fetch('codes.txt')
                 .then(response => {
                     if (!response.ok) {
