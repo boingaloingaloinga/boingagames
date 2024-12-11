@@ -567,6 +567,12 @@
             return;
         }
 
+
+        if (input === "DEER") {
+            window.location.href = 'games/deer/';
+            return;
+        }
+
             fetch('codes.txt')
                 .then(response => {
                     if (!response.ok) {
