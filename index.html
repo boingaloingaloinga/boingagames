@@ -242,6 +242,8 @@
   </div>
 </div>
 
+<audio id="background-music" loop></audio>
+
 <script>
   const themesContainer = document.getElementById('themes-container');
   const themesSection = document.getElementById('themes');
@@ -259,7 +261,33 @@
     }
   });
 
-  // Apply theme
+  const backgroundMusic = document.getElementById('background-music');
+
+  // Define theme-specific music files
+  const themeMusic = {
+    default: 'music/default.mp3',
+    blossom: 'music/blossom.mp3',
+    iridium: 'music/iridium.mp3',
+    sunset: 'music/sunset.mp3',
+    forest: 'music/forest.mp3',
+    ocean: 'music/ocean.mp3',
+    space: 'music/space.mp3',
+    george: 'music/george.mp3',
+  };
+
+  // Play theme-specific background music
+  function playThemeMusic(theme) {
+    const musicFile = themeMusic[theme];
+    if (musicFile) {
+      backgroundMusic.src = musicFile; // Set the source for the audio element
+      backgroundMusic.play(); // Play the music
+    } else {
+      backgroundMusic.pause(); // Stop music if no file is found
+      backgroundMusic.src = ''; // Clear the source
+    }
+  }
+
+  // Apply theme and play music
   function applyTheme(theme) {
     switch (theme) {
       case 'default':
@@ -307,6 +335,7 @@
         }
         break;
     }
+    playThemeMusic(theme); // Play the corresponding music
   }
 
   // Theme selection
@@ -332,6 +361,7 @@
         document.body.style.backgroundSize = '100% 120%';
         localStorage.setItem('customBackground', dataUrl);
         localStorage.setItem('selectedTheme', 'custom'); // Save 'custom' as the selected theme
+        playThemeMusic('custom'); // No specific music for custom
       };
       reader.readAsDataURL(file); // Convert file to data URL
     }
