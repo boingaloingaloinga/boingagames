@@ -218,8 +218,7 @@
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">12/19 Cluster Rush has been added! 🚚</p>
-        <p class="changelog">12/19 Cat Trap has been added! 😿</p>
+        <p class="changelog">12/20 Added Background Music For Each Theme! (And Custom Music Upload!)🎶</p>
     </nav>
 
 <!-- Themes -->
@@ -237,6 +236,8 @@
     <div id="upload-theme-container">
       <label for="background-upload">Custom Background</label>
       <input type="file" id="background-upload" accept="image/*">
+      <label for="background-upload">Custom Audio</label>
+      <input type="file" id="music-upload" accept="audio/*">
     </div>
 
   </div>
@@ -249,6 +250,7 @@
   const themesSection = document.getElementById('themes');
   const toggleThemesBtn = document.getElementById('toggle-themes-btn');
   const backgroundUpload = document.getElementById('background-upload');
+  const musicUpload = document.getElementById('music-upload');
 
   // Toggle themes visibility
   toggleThemesBtn.addEventListener('click', () => {
@@ -273,6 +275,7 @@
     ocean: 'ocean.mp3',
     space: 'space.mp3',
     george: 'george.mp3',
+    custom: localStorage.getItem('customMusic') || '' // Load custom music if saved
   };
 
   // Play theme-specific background music
@@ -348,7 +351,7 @@
     });
   });
 
-  // Handle file upload
+  // Handle background upload
   backgroundUpload.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -361,7 +364,25 @@
         document.body.style.backgroundSize = '100% 120%';
         localStorage.setItem('customBackground', dataUrl);
         localStorage.setItem('selectedTheme', 'custom'); // Save 'custom' as the selected theme
-        playThemeMusic('custom'); // No specific music for custom
+      };
+      reader.readAsDataURL(file); // Convert file to data URL
+    }
+  });
+
+  // Handle music upload
+  musicUpload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const musicUrl = e.target.result;
+
+        // Save and apply the custom music
+        localStorage.setItem('customMusic', musicUrl);
+        themeMusic.custom = musicUrl; // Update the theme music map
+        if (localStorage.getItem('selectedTheme') === 'custom') {
+          playThemeMusic('custom'); // Play the custom music if the custom theme is selected
+        }
       };
       reader.readAsDataURL(file); // Convert file to data URL
     }
