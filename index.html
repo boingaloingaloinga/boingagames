@@ -252,6 +252,17 @@
   const backgroundUpload = document.getElementById('background-upload');
   const musicUpload = document.getElementById('music-upload');
 
+  // Toggle themes visibility
+  toggleThemesBtn.addEventListener('click', () => {
+    if (themesSection.style.maxHeight === '0px' || themesSection.style.maxHeight === '') {
+      themesSection.style.maxHeight = themesSection.scrollHeight + 'px'; // Expand
+      toggleThemesBtn.textContent = '-'; // Change to minimize button
+    } else {
+      themesSection.style.maxHeight = '0'; // Collapse
+      toggleThemesBtn.textContent = '+'; // Change to maximize button
+    }
+  });
+
   const backgroundMusic = document.getElementById('background-music');
 
   // Define theme-specific music files
