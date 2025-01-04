@@ -218,7 +218,7 @@
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Changelog: </p>
-        <p class="changelog">1/7 Welcome Back! The First 2 Sonic Movies Have Been Added!🦔🎥</p>
+        <p class="changelog">1/7 Welcome Back! The First 2 Sonic Movies Have Been Added + Volcano Theme!🦔🌋</p>
     </nav>
 
 <!-- Themes -->
@@ -231,6 +231,7 @@
     <button class="theme-btn" data-theme="sunset">Sunset</button>
     <button class="theme-btn" data-theme="forest">Forest</button>
     <button class="theme-btn" data-theme="ocean">Ocean</button>
+    <button class="theme-btn" data-theme="ocean">Volcano</button>
     <button class="theme-btn" data-theme="space">Space</button>
     <button class="theme-btn" data-theme="george">Curious George</button>
     <div id="upload-theme-container">
@@ -273,6 +274,7 @@
     ocean: 'ocean.mp3',
     space: 'space.mp3',
     george: 'george.mp3',
+    volcano: 'volcano.mp3',
     custom: localStorage.getItem('customMusic') || '' // Load custom music if saved
   };
 
@@ -314,6 +316,10 @@
       case 'ocean':
         document.body.style.background = 'linear-gradient(to right, #064273, #76b6c4)';
         document.body.style.color = '#1da2d8';
+        break;
+      case 'volcano':
+        document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
+        document.body.style.color = '#4f0500';
         break;
       case 'space':
         document.body.style.background = 'url("space.gif") repeat';
