@@ -673,6 +673,11 @@
             return;
         }
 
+        if (input === "parappa") {
+            window.location.href = 'games/parappa/';
+            return;
+        }
+
             fetch('codes.txt')
                 .then(response => {
                     if (!response.ok) {
