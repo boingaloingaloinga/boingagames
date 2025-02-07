@@ -63,26 +63,21 @@
             margin: 0 0 30px 0;
         }
 
-        .search {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .search input[type="text"] {
+        #searchBar {
+            width: 100%;
             padding: 10px;
-            font-size: 18px;
+            font-size: 16px;
             border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
             border-radius: 5px;
+            outline: none;
+            margin-bottom: 10px;
         }
-
-        .search button {
-            padding: 10px;
-            font-size: 18px;
-            background-color: #ffcc00;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        
+        #searchBar::placeholder {
+            color: rgba(255, 255, 255, 0.7);
 
         #games {
             display: flex;
@@ -221,7 +216,7 @@
         <p class="changelog">Changelog: </p>
         <p class="changelog">2/5 Movies - Sonic The Hedgehog 3 Movie Added! 🦔</p>
         <p class="changelog">2/10 Games - Added Crash Bandicoot 1 + 2! 🤪</p>
-        <p class="changelog">2/6 Adjustment - Minor Game Resorting. 🤔</p>
+        <p class="changelog">2/10 Adjustment - The Search Bar Is Back! 🔍</p>
         <p class="blake">Random Boinga Hater Of The Day: Lincoln 2/10/2025</p>
     </nav>
 
@@ -449,6 +444,8 @@
     }
 </style>
 
+    <input type="text" id="searchBar" placeholder="Search for a game...">
+
     <div id="games">
         <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
         <a href="games/vex7/"><img src="images/vex7.jpeg" width="128" height="128" alt="vex 7"></a>
@@ -611,6 +608,22 @@
         <a href="games/crash/"><img src="images/crash.png" width="128" height="128" alt="Crash Bandicoot"></a>
         <a href="games/crash2/"><img src="images/crash2.jpg" width="128" height="128" alt="Crash Bandicoot 2: Warped"></a>
     </div>
+
+    <script>
+        document.getElementById('searchBar').addEventListener('input', function() {
+            let filter = this.value.toLowerCase();
+            let games = document.querySelectorAll('#games a');
+            
+            games.forEach(game => {
+                let altText = game.querySelector('img').alt.toLowerCase();
+                if (altText.includes(filter)) {
+                    game.style.display = 'inline-block';
+                } else {
+                    game.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
     <img id="curiousGeorge" src="curious-george.png" width="768" height="768" alt="Curious George" class="center">
 
