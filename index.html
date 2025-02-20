@@ -221,7 +221,7 @@
         <p class="changelog">Changelog (I Will Ideally Be Adding More Movies Sometime This Week): </p>
         <p class="changelog">2/5 Movies - Sonic The Hedgehog 3 Movie Added! 🦔</p>
         <p class="changelog">2/19 Games - Added NES Ducktales! 🦆</p>
-        <p class="changelog">2/20 IMPORTANT Adjustment - Put In "Super Secret" In The Code Selection Screen..</p>
+        <p class="changelog">2/20 IMPORTANT Adjustment - Put In "Super Secret" In The Code Selection Screen.. Also Themes Are Saved Again</p>
         <p class="blake">Random Boinga Hater Of The Day: StarWonderYT 2/20/2025</p>
     </nav>
 
@@ -253,7 +253,6 @@
   const themesSection = document.getElementById('themes');
   const toggleThemesBtn = document.getElementById('toggle-themes-btn');
   const backgroundUpload = document.getElementById('background-upload');
-  const musicUpload = document.getElementById('music-upload');
 
   // Toggle themes visibility
   toggleThemesBtn.addEventListener('click', () => {
@@ -266,35 +265,7 @@
     }
   });
 
-  const backgroundMusic = document.getElementById('background-music');
-
-  // Define theme-specific music files
-  const themeMusic = {
-    default: 'default.mp3',
-    blossom: 'blossom.mp3',
-    iridium: 'iridium.mp3',
-    sunset: 'sunset.mp3',
-    forest: 'forest.mp3',
-    ocean: 'ocean.mp3',
-    space: 'space.mp3',
-    george: 'george.mp3',
-    volcano: 'volcano.mp3',
-    custom: localStorage.getItem('customMusic') || '' // Load custom music if saved
-  };
-
-  // Play theme-specific background music
-  function playThemeMusic(theme) {
-    const musicFile = themeMusic[theme];
-    if (musicFile) {
-      backgroundMusic.src = musicFile; // Set the source for the audio element
-      backgroundMusic.play(); // Play the music
-    } else {
-      backgroundMusic.pause(); // Stop music if no file is found
-      backgroundMusic.src = ''; // Clear the source
-    }
-  }
-
-  // Apply theme and play music
+  // Apply theme
   function applyTheme(theme) {
     switch (theme) {
       case 'default':
@@ -319,11 +290,9 @@
         break;
       case 'ocean':
         document.body.style.background = 'linear-gradient(to right, #064273, #76b6c4)';
-        document.body.style.color = '#1da2d8';
-        break;
       case 'volcano':
         document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
-        document.body.style.color = '#4f0500';
+        document.body.style.color = '#1da2d8';
         break;
       case 'space':
         document.body.style.background = 'url("space.gif") repeat';
@@ -346,7 +315,6 @@
         }
         break;
     }
-    playThemeMusic(theme); // Play the corresponding music
   }
 
   // Theme selection
@@ -359,7 +327,7 @@
     });
   });
 
-  // Handle background upload
+  // Handle file upload
   backgroundUpload.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -377,28 +345,7 @@
     }
   });
 
-  // Handle music upload
-  musicUpload.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const musicUrl = e.target.result;
-
-        // Save and apply the custom music
-        localStorage.setItem('customMusic', musicUrl);
-        themeMusic.custom = musicUrl; // Update the theme music map
-
-        // Play custom music if the custom theme is selected
-        if (localStorage.getItem('selectedTheme') === 'custom') {
-          playThemeMusic('custom');
-        }
-      };
-      reader.readAsDataURL(file); // Convert file to data URL
-    }
-  });
-
-  // Apply the last selected theme on page load
+  // Load saved theme on page load
   const savedTheme = localStorage.getItem('selectedTheme');
   if (savedTheme) {
     applyTheme(savedTheme);
