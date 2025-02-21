@@ -566,6 +566,20 @@
         <a href="games/ducktales/"><img src="images/ducktales.jpg" width="128" height="128" alt="Ducktales"></a>
     </div>
 
+    <script>
+    // Wait until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+        // Select all <img> elements
+            const images = document.querySelectorAll('img');
+
+        // Loop through each image and set the loading attribute to "lazy"
+            images.forEach(function(img) {
+                img.setAttribute('loading', 'lazy');
+            });
+        });
+    </script>
+
+
     <img id="curiousGeorge" src="curious-george.png" width="768" height="768" alt="Curious George" class="center">
 
     <div class="rating-section">
