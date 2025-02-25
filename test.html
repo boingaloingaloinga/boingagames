@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.0/css/all.css">
     <link rel="icon" href="bg.png" type="image/png">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1706522083410497"
+        crossorigin="anonymous"></script>
     <style>
          body {
       		font-family: Arial, sans-serif;
@@ -33,6 +35,14 @@
             font-size: 24px;
             font-family: 'Comic Sans MS', cursive, sans-serif;
             color: #ffcc00;
+            text-align: center;
+            margin: 0 0 30px 0;
+        }
+
+        nav p.blake {
+            font-size: 24px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #FF0000;
             text-align: center;
             margin: 0 0 30px 0;
         }
@@ -125,6 +135,14 @@
             cursor: pointer;
         }
 
+        #upload-theme-container {
+          margin-top: 10px;
+        }
+
+        #background-upload {
+          margin-left: 10px;
+        }
+
         .center {
           margin-left: auto;
           margin-right: auto;
@@ -199,8 +217,12 @@
     <nav>
         <h1>BOINGA</h1>
         <p class="quote">"Boingaloingaloinga!"</p>
-        <p class="changelog">Changelog: </p>
-        <p class="changelog">THE BIG BOINGA UPDATE IS HERE!!!</p>
+        <p class="changelog">Give me ideas on what game/movies to add by responding to this google form: https://forms.gle/gU3bP4VYG3JZJ4JJ9</p>
+        <p class="changelog">Changelog, THE BIGGER BOINGA UPDATE'S HERE: </p>
+        <p class="changelog">3/7 Movies - Plenty Of New Movies Added! 🎬</p>
+        <p class="changelog">3/7 Games - Plenty Of New Games Added! 🎮</p>
+        <p class="changelog">3/7 Adjustment - Lots Of Site Adjustments Made, And More..</p>
+        <p class="blake">Random Boinga Hater Of The Day: Joshua 2/25/2025</p>
     </nav>
 
 <!-- Themes -->
@@ -212,14 +234,25 @@
     <button class="theme-btn" data-theme="iridium">Iridium</button>
     <button class="theme-btn" data-theme="sunset">Sunset</button>
     <button class="theme-btn" data-theme="forest">Forest</button>
+    <button class="theme-btn" data-theme="ocean">Ocean</button>
+    <button class="theme-btn" data-theme="volcano">Volcano</button>
     <button class="theme-btn" data-theme="space">Space</button>
+    <button class="theme-btn" data-theme="george">Curious George</button>
+    <div id="upload-theme-container">
+      <label for="background-upload">Custom Background</label>
+      <input type="file" id="background-upload" accept="image/*">
+    </div>
+
   </div>
 </div>
+
+<audio id="background-music" loop></audio>
 
 <script>
   const themesContainer = document.getElementById('themes-container');
   const themesSection = document.getElementById('themes');
   const toggleThemesBtn = document.getElementById('toggle-themes-btn');
+  const backgroundUpload = document.getElementById('background-upload');
 
   // Toggle themes visibility
   toggleThemesBtn.addEventListener('click', () => {
@@ -255,14 +288,31 @@
         document.body.style.background = 'linear-gradient(to right, #228B22, #014421)';
         document.body.style.color = '#90EE90';
         break;
+      case 'ocean':
+        document.body.style.background = 'linear-gradient(to right, #064273, #76b6c4)';
+      case 'volcano':
+        document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
+        document.body.style.color = '#1da2d8';
+        break;
       case 'space':
-        document.body.style.background = 'url("space.gif") repeat'; // Set background to the looping gif
-        document.body.style.backgroundSize = '100% 120%'; // Stretch horizontally to fit and vertically to slightly exceed
-        document.body.style.backgroundAttachment = 'fixed'; 
-        document.body.style.color = 'transparent'; // Use gradient for text
+        document.body.style.background = 'url("space.gif") repeat';
+        document.body.style.backgroundSize = '100% 120%';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.color = 'transparent';
         document.body.style.backgroundClip = 'text';
         document.body.style.webkitBackgroundClip = 'text';
-        document.body.style.color = 'linear-gradient(to bottom, #8a2be2, #4b0082)'; // Purple gradient
+        break;
+      case 'george':
+        document.body.style.background = 'url("georgebg.jpg")';
+        document.body.style.backgroundSize = '100% 120%';
+        document.body.style.backgroundAttachment = 'fixed';
+        break;
+      case 'custom':
+        const savedCustomBackground = localStorage.getItem('customBackground');
+        if (savedCustomBackground) {
+          document.body.style.background = `url('${savedCustomBackground}') no-repeat center center fixed`;
+          document.body.style.backgroundSize = '100% 120%';
+        }
         break;
     }
   }
@@ -277,12 +327,31 @@
     });
   });
 
+  // Handle file upload
+  backgroundUpload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const dataUrl = e.target.result;
+
+        // Apply and save the custom background
+        document.body.style.background = `url('${dataUrl}') no-repeat center center fixed`;
+        document.body.style.backgroundSize = '100% 120%';
+        localStorage.setItem('customBackground', dataUrl);
+        localStorage.setItem('selectedTheme', 'custom'); // Save 'custom' as the selected theme
+      };
+      reader.readAsDataURL(file); // Convert file to data URL
+    }
+  });
+
   // Load saved theme on page load
   const savedTheme = localStorage.getItem('selectedTheme');
   if (savedTheme) {
     applyTheme(savedTheme);
   }
 </script>
+
 
 
 <div style="text-align: center; margin-top: 20px;">
@@ -341,6 +410,7 @@
         <a href="games/dino/"><img src="images/dino.png" width="128" height="128" alt="Dinosaur Game"></a>
         <a href="games/basketrandom/"><img src="images/basketrandom.png" width="128" height="128" alt="Basket Random"></a>
         <a href="games/soccerrandom/"><img src="images/soccerrandom.png" width="128" height="128" alt="Soccer Random"></a>
+        <a href="games/volley-random/"><img src="images/volley.png" width="128" height="128" alt="Volley Random"></a>
         <a href="games/fireboy/"><img src="images/fireboy.webp" width="128" height="128" alt="Fireboy and Watergirl"></a>
         <a href="games/drawthehill/"><img src="images/drawthehill.png" width="128" height="128" alt="Draw The Hill"></a>
         <a href="games/bottleflip/"><img src="images/bottleflip.png" width="128" height="128" alt="Bottle Flip"></a>
@@ -364,17 +434,66 @@
         <a href="games/sml2/"><img src="images/sml2.webp" width="128" height="128" alt="Super Mario Land 2"></a>
         <a href="games/sm64/"><img src="images/sm64.jpg" width="128" height="128" alt="Super Mario 64"></a>
         <a href="games/sm63/"><img src="images/sm63.webp" width="128" height="128" alt="Super Mario 63"></a>
+        <a href="games/newmario/"><img src="images/newmario.jpeg" width="128" height="128" alt="New Super Mario Bros."></a>
         <a href="games/drmario/"><img src="images/drmario.png" width="128" height="128" alt="Dr.Mario"></a>
+        <a href="games/smk/"><img src="images/smk.webp" width="128" height="128" alt="Super Mario Kart"></a>
+        <a href="games/unfair/"><img src="images/unfair.jpg" width="128" height="128" alt="Unfair Mario"></a>
+        <a href="games/wario1/"><img src="images/wario1.png" width="128" height="128" alt="Wario Land"></a>
+        <a href="games/wario2/"><img src="images/wario2.jpg" width="128" height="128" alt="Wario Land 2"></a>
+        <a href="games/wario3/"><img src="images/wario3.jpg" width="128" height="128" alt="Wario Land 3"></a>
+        <a href="games/wario4/"><img src="images/wario4.png" width="128" height="128" alt="Wario Land 4"></a>
+        <a href="games/wariods/"><img src="images/wariods.png" width="128" height="128" alt="Wario Ware - Touched!"></a>
+        <a href="games/dkc/"><img src="images/dkc.jpg" width="128" height="128" alt="Donkey Kong Country"></a>
+        <a href="games/dkc2/"><img src="images/dkc2.png" width="128" height="128" alt="Donkey Kong Country 2"></a>
+        <a href="games/dkc3/"><img src="images/dkc3.png" width="128" height="128" alt="Donkey Kong Country 3"></a>
+        <a href="games/zelda/"><img src="images/zelda.png" width="128" height="128" alt="The Legend Of Zelda"></a>
+        <a href="games/past/"><img src="images/past.jpg" width="128" height="128" alt="The Legend Of Zelda: A Link To The Past"></a>
+        <a href="games/dkong/"><img src="images/dkong.jpg" width="128" height="128" alt="Donkey Kong"></a>
+        <a href="games/punch/"><img src="images/punch.png" width="128" height="128" alt="Punch Out!!!"></a>
+        <a href="games/banjo/"><img src="images/banjo.jpg" width="128" height="128" alt="Banjo Kazooie"></a>
+        <a href="games/smash/"><img src="images/smash.jpg" width="128" height="128" alt="Super Smash Bros."></a>
+        <a href="games/metroid/"><img src="images/metroid.jpg" width="128" height="128" alt="Metroid"></a>
+        <a href="games/megaman2/"><img src="images/megaman2.jpg" width="128" height="128" alt="Mega Man 2"></a>
+        <a href="games/megaman3/"><img src="images/megaman3.jpg" width="128" height="128" alt="Mega Man 3"></a>
+        <a href="games/megax/"><img src="images/megax.webp" width="128" height="128" alt="Mega Man X"></a>
+        <a href="games/megax4/"><img src="images/megax4.jpg" width="128" height="128" alt="Mega Man X4"></a>
+        <a href="games/kirby/"><img src="images/kirby.jpg" width="128" height="128" alt="Kirby Super Star"></a>
+        <a href="games/street/"><img src="images/street.png" width="128" height="128" alt="Street Fighter II"></a>
+        <a href="games/fzero/"><img src="images/fzero.png" width="128" height="128" alt="F-Zero"></a>
+        <a href="games/doom/"><img src="images/doom.ico" width="128" height="128" alt="Doom"></a>
+        <a href="games/pacman/"><img src="images/pacman.png" width="128" height="128" alt="Pac-Man"></a>
+        <a href="games/digdug/"><img src="images/digdug.jpg" width="128" height="128" alt="Dig-Dug"></a>
+        <a href="games/galaga/"><img src="images/galaga.png" width="128" height="128" alt="Galaga"></a>
+        <a href="games/spaceinvaders/"><img src="images/spaceinvaders.png" width="128" height="128" alt="Space Invaders"></a>
         <a href="games/sonic1/"><img src="images/sonic1.jfif" width="128" height="128" alt="Sonic 1"></a>
+        <a href="games/soniccd/"><img src="images/soniccd.png" width="128" height="128" alt="Sonic CD"></a>
         <a href="games/sonic2/"><img src="images/sonic2.png" width="128" height="128" alt="Sonic 2"></a>
         <a href="games/sonic3/"><img src="images/sonic3.jfif" width="128" height="128" alt="Sonic 3"></a>
+        <a href="games/sonicmania/"><img src="images/sonicmania.jpg" width="128" height="128" alt="Sonic Mania"></a>
+        <a href="games/spinball/"><img src="images/spinball.png" width="128" height="128" alt="Sonic Spinball"></a>
+        <a href="games/chaos/"><img src="images/chaos.jpg" width="128" height="128" alt="Sonic Chaos"></a>
+        <a href="games/triple/"><img src="images/triple.jpg" width="128" height="128" alt="Sonic Triple Trouble"></a>
+        <a href="games/pocket/"><img src="images/pocket.webp" width="128" height="128" alt="Sonic Pocket"></a>
         <a href="games/sonicadvance/"><img src="images/sonicadvance.webp" width="128" height="128" alt="Sonic Advance"></a>
         <a href="games/sonicadvance2/"><img src="images/sonicadvance2.webp" width="128" height="128" alt="Sonic Advance 2"></a>
-        <a href="games/sonicadvance3/"><img src="images/sonicadvance3.webp" width="128" height="128" alt="Sonic Advance 3"></a>
+        <a href="games/sonicadvance3/"><img src="images/advance3.jpg" width="128" height="128" alt="Sonic Advance 3"></a>
+        <a href="games/sonicrush/"><img src="images/rush.jpeg" width="128" height="128" alt="Sonic Rush"></a>
+        <a href="games/battle/"><img src="images/battle.webp" width="128" height="128" alt="Sonic Battle"></a>
+        <a href="games/srb2/"><img src="images/srb2.jpg" width="128" height="128" alt="Sonic Robo Blast 2"></a>
         <a href="games/firered/"><img src="images/firered.jfif" width="128" height="128" alt="Pokemon: Fire Red"></a>
         <a href="games/gold/"><img src="images/gold.jpg" width="128" height="128" alt="Pokemon: Gold"></a>
         <a href="games/sapphire/"><img src="images/sapphire.png" width="128" height="128" alt="Pokemon: Sapphire"></a>
-        <a href="games/unfair/"><img src="images/unfair.jpg" width="128" height="128" alt="Unfair Mario"></a>
+        <a href="games/diamond/"><img src="images/diamond.jpg" width="128" height="128" alt="Pokemon: Diamond"></a>
+        <a href="games/white/"><img src="images/white.jpg" width="128" height="128" alt="Pokemon: White"></a>
+        <a href="games/crash/"><img src="images/crash.png" width="128" height="128" alt="Crash Bandicoot"></a>
+        <a href="games/crash2/"><img src="images/crash2.jpg" width="128" height="128" alt="Crash Bandicoot 2: Warped"></a>
+        <a href="games/spider/"><img src="images/spider.jpg" width="128" height="128" alt="Spider-Man"></a>
+        <a href="games/pepsi/"><img src="images/pepsiman.jpeg" width="128" height="128" alt="Pepsi Man"></a>
+        <a href="games/hockey/"><img src="images/hockey.jpg" width="128" height="128" alt="Backyard Hockey"></a>
+        <a href="games/bbaseball/"><img src="images/bbaseball.jpg" width="128" height="128" alt="Backyard Baseball"></a>
+        <a href="games/bfootball/"><img src="images/bfootball.jpg" width="128" height="128" alt="Backyard Football"></a>
+        <a href="games/bbasketball/"><img src="images/bbasketball.jpg" width="128" height="128" alt="Backyard Basketball"></a>
+        <a href="games/bskate/"><img src="images/bskate.jpg" width="128" height="128" alt="Backyard Skateboarding"></a>
         <a href="games/tinyfishing/"><img src="images/tinyfishing.jpg" width="128" height="128" alt="Tiny Fishing"></a>
         <a href="games/breakingthebank/"><img src="images/breakingthebank.jpg" width="128" height="128" alt="Henry Stickmin: Breaking the Bank"></a>
         <a href="games/escapingtheprison/"><img src="images/escapingtheprison.ico" width="128" height="128" alt="Henry Stickmin: Escaping The Prison"></a>
@@ -392,16 +511,8 @@
         <a href="games/alienhominid/"><img src="images/alien.png" width="128" height="128" alt="Alien Hominid"></a>
         <a href="games/fancypantsadventures/"><img src="images/fancy.png" width="128" height="128" alt="Mr.Fancy Pants Adventures"></a>
         <a href="games/there-is-no-game/"><img src="images/nogame.jpeg" width="128" height="128" alt="There Is No Game"></a>
-        <a href="games/zelda/"><img src="images/zelda.png" width="128" height="128" alt="The Legend Of Zelda"></a>
-        <a href="games/dkong/"><img src="images/dkong.jpg" width="128" height="128" alt="Donkey Kong"></a>
-        <a href="games/punch/"><img src="images/punch.png" width="128" height="128" alt="Punch Out!!!"></a>
-        <a href="games/metroid/"><img src="images/metroid.jpg" width="128" height="128" alt="Metroid"></a>
-        <a href="games/megaman2/"><img src="images/megaman2.jpg" width="128" height="128" alt="Mega Man 2"></a>
-        <a href="games/megaman3/"><img src="images/megaman3.jpg" width="128" height="128" alt="Mega Man 3"></a>
-        <a href="games/pacman/"><img src="images/pacman.png" width="128" height="128" alt="Pac-Man"></a>
         <a href="games/idle-breakout/"><img src="images/idle.webp" width="128" height="128" alt="Idle Breakout"></a>
         <a href="games/fruitninja/"><img src="images/fruit-ninja.avif" width="128" height="128" alt="Fruit Ninja"></a>
-        <a href="games/dkc/"><img src="images/dkc.jpg" width="128" height="128" alt="Donkey Kong Country"></a>
         <a href="games/holeio/"><img src="images/holeio.jpg" width="128" height="128" alt="Hole.io"></a>
         <a href="games/fued/"><img src="images/fued.png" width="128" height="128" alt="Google Fued"></a>
         <a href="games/achivement/"><img src="images/achivement.jpg" width="128" height="128" alt="Achivement Unlocked"></a>
@@ -414,7 +525,44 @@
         <a href="games/block/"><img src="images/block.jpg" width="128" height="128" alt="Block Blast"></a>
         <a href="games/drift-hunters/"><img src="images/hunt.webp" width="128" height="128" alt="Drift Hunters"></a>
         <a href="games/house/"><img src="images/house.webp" width="128" height="128" alt="House Of Hazards"></a>
+        <a href="games/superhot/"><img src="images/superhot.jpg" width="128" height="128" alt="Superhot"></a>
+        <a href="games/gettingoverit/"><img src="images/getting.jpg" width="128" height="128" alt="Getting Over It"></a>
+        <a href="games/fox/"><img src="images/fox.jpg" width="128" height="128" alt="Star Fox"></a>
+        <a href="games/nightmare/"><img src="images/nightmare.jpg" width="128" height="128" alt="Kirby Nightmare In Dreamland"></a>
+        <a href="games/minutes/"><img src="images/minutes.png" width="128" height="128" alt="10 Minutes Till Dawn"></a>
+        <a href="games/smashkarts/"><img src="images/smashkarts.jpg" width="128" height="128" alt="Smash Karts"></a>
+        <a href="games/bomberman/"><img src="images/bomberman.png" width="128" height="128" alt="Super Bomberman 2"></a>
+        <a href="games/tomb/"><img src="images/tomb.png" width="128" height="128" alt="Tomb Of The Mask"></a>
+        <a href="games/color/"><img src="images/color.png" width="128" height="128" alt="Color Switch"></a>
+        <a href="games/tag/"><img src="images/tag.webp" width="128" height="128" alt="Tag"></a>
+        <a href="games/cut/"><img src="images/cut.png" width="128" height="128" alt="Cut The Rope"></a>
+        <a href="games/elasticman/"><img src="images/elasticman.webp" width="128" height="128" alt="Elastic Man"></a>
+        <a href="games/ball/"><img src="images/stack.png" width="128" height="128" alt="Stack Ball"></a>
+        <a href="games/fireice/"><img src="images/fireice.png" width="128" height="128" alt="A Dance of Fire and Ice"></a>
+        <a href="games/"><img src="images/cluster.png" width="128" height="128" alt="Cluster Rush"></a>
+        <a href="games/cat/"><img src="images/cat.png" width="128" height="128" alt="Cat Trap"></a>
+        <a href="games/bezos/"><img src="images/bezos.png" width="128" height="128" alt="You Are Jeff Bezos"></a>
+        <a href="games/burger/"><img src="images/burger.jpg" width="128" height="128" alt="60 Second Burger Rush"></a>
+        <a href="games/portal/"><img src="images/portal.jpg" width="128" height="128" alt="Portal: Flash Version"></a>
+        <a href="games/core-ball/"><img src="images/core-ball.webp" width="128" height="128" alt="Core Ball"></a>
+        <a href="games/basketstars/"><img src="images/basketstars.jpg" width="128" height="128" alt="Basketball Stars"></a>
+        <a href="games/ducktales/"><img src="images/ducktales.jpg" width="128" height="128" alt="Ducktales"></a>
+        <a href="games/line/"><img src="images/line.jpg" width="128" height="128" alt="Line Rider"></a>
     </div>
+
+    <script>
+    // Wait until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+        // Select all <img> elements
+            const images = document.querySelectorAll('img');
+
+        // Loop through each image and set the loading attribute to "lazy"
+            images.forEach(function(img) {
+                img.setAttribute('loading', 'lazy');
+            });
+        });
+    </script>
+
 
     <img id="curiousGeorge" src="curious-george.png" width="768" height="768" alt="Curious George" class="center">
 
@@ -468,52 +616,29 @@
             const input = document.getElementById('codeInput').value.trim();
             const messageBox = document.getElementById('message');
 
-                // Special case for "light mode"
-            if (input === "light mode") {
-            document.body.style.background = '#ffffff'; // Change background to white
-            document.body.style.color = '#ffffff';      // Change text to black
-            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
-            elements.forEach(el => {
-                el.style.color = '#ffffff';             // Change other elements to black
-                el.style.backgroundColor = '#ffffff';   // Ensure buttons remain visible
-            });
-            return;
-        }
-
-            if (input === "very dark mode") {
-            document.body.style.background = '#000000'; // Change background to white
-            document.body.style.color = '#000000';      // Change text to black
-            const elements = document.querySelectorAll('nav h1, nav p.quote, #games a img, .search button, #codeInputBar');
-            elements.forEach(el => {
-                el.style.color = '#000000';             // Change other elements to black
-                el.style.backgroundColor = '#000000';   // Ensure buttons remain visible
-            });
-            return;
-        }
-
-
-        if (input === "spinball") {
-            window.location.href = 'games/spinball/';
-            return;
-        }
-
-        if (input === "step on the gas") {
-            window.location.href = 'games/parappa/';
-            return;
-        }
-
-        if (input === "doom") {
-            window.location.href = 'games/doom/doom.html';
-            return;
-        }
-
-        if (input === "3d") {
-            window.location.href = '3d/';
-            return;
-        }
-
         if (input === "chaotix") {
             window.location.href = 'games/knuckles/';
+            return;
+        }
+
+        if (input === "OG") {
+            window.location.href = '/boingagames/original.html';
+            return;
+        }
+
+        if (input === "Super Secret") {
+            window.location.href = '/boingagames/time.html';
+            return;
+        }
+
+
+        if (input === "DEER") {
+            window.location.href = 'games/deer/';
+            return;
+        }
+
+        if (input === "parappa") {
+            window.location.href = 'games/parappa/';
             return;
         }
 
