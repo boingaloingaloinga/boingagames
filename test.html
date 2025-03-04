@@ -238,6 +238,7 @@
     <button class="theme-btn" data-theme="volcano">Volcano</button>
     <button class="theme-btn" data-theme="space">Space</button>
     <button class="theme-btn" data-theme="george">Curious George</button>
+    <button class="theme-btn" data-theme="xp">Windows XP</button>
     <div id="upload-theme-container">
       <label for="background-upload">Custom Background</label>
       <input type="file" id="background-upload" accept="image/*">
@@ -271,28 +272,34 @@
       case 'default':
         document.body.style.background = 'linear-gradient(to right, #1e1e2f, #3a3b5b)';
         document.body.style.color = '#ffcc00';
+        document.body.style.cursor = 'auto';
         break;
       case 'blossom':
         document.body.style.background = 'linear-gradient(to right, #ffafcc, #ffcad4)';
         document.body.style.color = '#880e4f';
+        document.body.style.cursor = 'auto';
         break;
       case 'iridium':
         document.body.style.background = 'linear-gradient(to right, #333, #666)';
         document.body.style.color = '#ddd';
+        document.body.style.cursor = 'auto';
         break;
       case 'sunset':
         document.body.style.background = 'linear-gradient(to right, #ff7e5f, #feb47b)';
         document.body.style.color = '#4b2e05';
+        document.body.style.cursor = 'auto';
         break;
       case 'forest':
         document.body.style.background = 'linear-gradient(to right, #228B22, #014421)';
         document.body.style.color = '#90EE90';
+        document.body.style.cursor = 'auto';
         break;
       case 'ocean':
         document.body.style.background = 'linear-gradient(to right, #064273, #76b6c4)';
       case 'volcano':
         document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
         document.body.style.color = '#1da2d8';
+        document.body.style.cursor = 'auto';
         break;
       case 'space':
         document.body.style.background = 'url("space.gif") repeat';
@@ -301,17 +308,26 @@
         document.body.style.color = 'transparent';
         document.body.style.backgroundClip = 'text';
         document.body.style.webkitBackgroundClip = 'text';
+        document.body.style.cursor = 'auto';
         break;
       case 'george':
         document.body.style.background = 'url("georgebg.jpg")';
         document.body.style.backgroundSize = '100% 120%';
         document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.cursor = 'auto';
+        break;
+      case 'xp':
+        document.body.style.background = 'url("xp.png")';
+        document.body.style.backgroundSize = '100% 120%';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.cursor = 'url("mouse.png"), auto';
         break;
       case 'custom':
         const savedCustomBackground = localStorage.getItem('customBackground');
         if (savedCustomBackground) {
           document.body.style.background = `url('${savedCustomBackground}') no-repeat center center fixed`;
           document.body.style.backgroundSize = '100% 120%';
+          document.body.style.cursor = 'auto';
         }
         break;
     }
