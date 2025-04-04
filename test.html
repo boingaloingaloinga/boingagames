@@ -253,7 +253,9 @@
     <button class="theme-btn" data-theme="forest">Forest</button>
     <button class="theme-btn" data-theme="ocean">Ocean</button>
     <button class="theme-btn" data-theme="volcano">Volcano</button>
+    <button class="theme-btn" data-theme="lavender">Lavender</button>
     <button class="theme-btn" data-theme="space">Space</button>
+    <button class="theme-btn" data-theme="minecraft">Minecraft</button>
     <button class="theme-btn" data-theme="george">Curious George</button>
     <button class="theme-btn" data-theme="xp">Windows XP</button>
     <div id="upload-theme-container">
@@ -318,11 +320,24 @@
         break;
       case 'ocean':
         document.body.style.background = 'linear-gradient(to right, #064273, #76b6c4)';
+        document.body.style.color = '#1da2d8';
         xpWindow.style.display = 'none';
         break;
       case 'volcano':
         document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
-        document.body.style.color = '#1da2d8';
+        document.body.style.color = '#9c5208';
+        document.body.style.cursor = 'auto';
+        xpWindow.style.display = 'none';
+        break;
+      case 'volcano':
+        document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
+        document.body.style.color = '#9c5208';
+        document.body.style.cursor = 'auto';
+        xpWindow.style.display = 'none';
+        break;
+      case 'lavender':
+        document.body.style.background = 'linear-gradient(to right, #e6e6fa, #ffc0f7)';
+        document.body.style.color = '#cb98c4';
         document.body.style.cursor = 'auto';
         xpWindow.style.display = 'none';
         break;
@@ -338,6 +353,13 @@
         break;
       case 'george':
         document.body.style.background = 'url("georgebg.jpg")';
+        document.body.style.backgroundSize = '100% 120%';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.cursor = 'auto';
+        xpWindow.style.display = 'none';
+        break;
+      case 'minecraft':
+        document.body.style.background = 'url("minecraft.webp")';
         document.body.style.backgroundSize = '100% 120%';
         document.body.style.backgroundAttachment = 'fixed';
         document.body.style.cursor = 'auto';
@@ -604,6 +626,7 @@
         <a href="games/penguin/"><img src="images/penguin.jpg" width="128" height="128" alt="Club Penguin Fishing"></a>
         <a href="https://play.cplegacy.com/"><img src="images/clubpenguin.jpg" width="128" height="128" alt="Club Penguin"></a>
         <a href="games/pingpong/"><img src="images/pingpong.png" width="128" height="128" alt="Ping Pong"></a>
+        <a href="games/tomodachi/"><img src="images/tomodachi.webp" width="128" height="128" alt="Tomodachi Collection"></a>
     </div>
 
     <script>
