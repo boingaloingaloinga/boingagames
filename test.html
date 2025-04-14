@@ -206,6 +206,11 @@
             cursor: pointer;
         }
 
+        #games-list a {
+            display: inline-block;
+            margin: 10px;
+        }
+
         .rating-result {
             margin-top: 20px;
             font-size: 24px;
@@ -446,6 +451,12 @@
     }
 </style>
 
+    <select id="sort-select">
+        <option value="default">Default</option>
+        <option value="az">A-Z</option>
+    </select>
+
+
     <div id="games">
         <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="128" height="128" alt="Bob The Robber 2"></a>
         <a href="games/vex7/"><img src="images/vex7.jpeg" width="128" height="128" alt="vex 7"></a>
@@ -641,6 +652,28 @@
             images.forEach(function(img) {
                 img.setAttribute('loading', 'lazy');
             });
+        });
+    </script>
+
+    <script>
+        const gamesList = document.getElementById("games");
+        const originalItems = Array.from(gamesList.children);
+        const select = document.getElementById("sort-select");
+        select.addEventListener("change", function () {
+            if (this.value === "default") {
+                // Restore original order
+                gamesList.innerHTML = "";
+                originalItems.forEach(item => gamesList.appendChild(item));
+            } else if (this.value === "az") {
+                // Sort A-Z by alt text
+                const sorted = [...originalItems].sort((a, b) => {
+                    const altA = a.querySelector("img").alt.toLowerCase();
+                    const altB = b.querySelector("img").alt.toLowerCase();
+                    return altA.localeCompare(altB);
+                });
+                gamesList.innerHTML = "";
+                sorted.forEach(item => gamesList.appendChild(item));
+            }
         });
     </script>
 
