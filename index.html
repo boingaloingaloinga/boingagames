@@ -223,6 +223,24 @@
             color: #ffcc00;
         }
     /* Theme buttons */
+
+        #themes-container {
+      text-align: center;
+    }
+
+    .themes-header {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #toggle-themes-btn {
+      font-size: 1em;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    
     .theme-btn {
       display: block;
       width: 100%;
@@ -258,26 +276,29 @@
     </nav>
 
 <!-- Themes -->
-<div id="themes-container">
-  <h2>Themes <button id="toggle-themes-btn">+</button></h2>
-  <div id="themes" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease;">
-    <button class="theme-btn" data-theme="default">Default</button>
-    <button class="theme-btn" data-theme="blossom">Blossom</button>
-    <button class="theme-btn" data-theme="iridium">Iridium</button>
-    <button class="theme-btn" data-theme="sunset">Sunset</button>
-    <button class="theme-btn" data-theme="forest">Forest</button>
-    <button class="theme-btn" data-theme="ocean">Ocean</button>
-    <button class="theme-btn" data-theme="volcano">Volcano</button>
-    <button class="theme-btn" data-theme="space">Space</button>
-    <button class="theme-btn" data-theme="george">Curious George</button>
-    <button class="theme-btn" data-theme="xp">Windows XP</button>
-    <div id="upload-theme-container">
-      <label for="background-upload">Custom Background</label>
-      <input type="file" id="background-upload" accept="image/*">
+  <div id="themes-container">
+    <div class="themes-header">
+      <h2>Themes</h2>
+      <button id="toggle-themes-btn">+</button>
     </div>
 
+    <div id="themes" style="max-height: 0; overflow: hidden; transition: max-height 0.5s ease;">
+      <button class="theme-btn" data-theme="default">Default</button>
+      <button class="theme-btn" data-theme="blossom">Blossom</button>
+      <button class="theme-btn" data-theme="iridium">Iridium</button>
+      <button class="theme-btn" data-theme="sunset">Sunset</button>
+      <button class="theme-btn" data-theme="forest">Forest</button>
+      <button class="theme-btn" data-theme="ocean">Ocean</button>
+      <button class="theme-btn" data-theme="volcano">Volcano</button>
+      <button class="theme-btn" data-theme="space">Space</button>
+      <button class="theme-btn" data-theme="george">Curious George</button>
+      <button class="theme-btn" data-theme="xp">Windows XP</button>
+      <div id="upload-theme-container">
+        <label for="background-upload">Custom Background</label>
+        <input type="file" id="background-upload" accept="image/*">
+      </div>
+    </div>
   </div>
-</div>
 
 <audio id="background-music" loop></audio>
 
