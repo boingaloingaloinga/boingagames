@@ -755,6 +755,11 @@
             return;
         }
 
+        if (input === "place") {
+            window.location.href = '/boingagames/boingaplace.html';
+            return;
+        }
+
             fetch('codes.txt')
                 .then(response => {
                     if (!response.ok) {
@@ -795,3 +800,4 @@
 
 </body>
 </html>
+
