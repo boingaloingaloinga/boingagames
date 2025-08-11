@@ -240,6 +240,7 @@
       padding: 4px 8px;
       cursor: pointer;
     }
+
     
     .theme-btn {
       display: block;
@@ -565,7 +566,7 @@
         <a href="games/sonicrush/"><img src="images/rush.jpeg" width="96" height="96" alt="Sonic Rush"></a>
         <a href="games/battle/"><img src="images/battle.webp" width="96" height="96" alt="Sonic Battle"></a>
         <a href="games/srb2/"><img src="images/srb2.jpg" width="96" height="96" alt="Sonic Robo Blast 2"></a>
-        <a href="games/firered/"><img src="images/firered.jfif" width="96" height="96" alt="Pokemon: Fire Red"></a>
+        <a id="firered-link"><img src="images/firered.jfif" width="96" height="96" alt="Pokemon: Fire Red"></a>
         <a href="games/gold/"><img src="images/gold.jpg" width="96" height="96" alt="Pokemon: Gold"></a>
         <a href="games/sapphire/"><img src="images/sapphire.png" width="96" height="96" alt="Pokemon: Sapphire"></a>
         <a href="games/diamond/"><img src="images/diamond.jpg" width="96" height="96" alt="Pokemon: Diamond"></a>
@@ -642,6 +643,19 @@
         <a href="games/pingpong/"><img src="images/pingpong.png" width="96" height="96" alt="Ping Pong"></a>
         <a href="https://crazycattle3d.github.io/"><img src="images/cattle.jpg" width="96" height="96" alt="Crazy Cattle 3D"></a>
     </div>
+
+<script>
+    document.getElementById('firered-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        let choice = confirm("Press OK for Normal, Cancel for Randomized.");
+        let baseURL = "games/firered/";
+        if (choice) {
+            window.location.href = baseURL; // Normal
+        } else {
+            window.location.href = baseURL + "random/"; // Randomized
+        }
+    });
+</script>
 
     <script>
     // Wait until the DOM is fully loaded
@@ -800,4 +814,5 @@
 
 </body>
 </html>
+
 
