@@ -568,7 +568,7 @@
         <a href="games/srb2/"><img src="images/srb2.jpg" width="96" height="96" alt="Sonic Robo Blast 2"></a>
         <a id="firered-link"><img src="images/firered.jfif" width="96" height="96" alt="Pokemon: Fire Red"></a>
         <a id="gold-link"><img src="images/gold.jpg" width="96" height="96" alt="Pokemon: Gold"></a>
-        <a href="games/sapphire/"><img src="images/sapphire.png" width="96" height="96" alt="Pokemon: Sapphire"></a>
+        <a id="sapphire-link"><img src="images/sapphire.png" width="96" height="96" alt="Pokemon: Sapphire"></a>
         <a href="games/diamond/"><img src="images/diamond.jpg" width="96" height="96" alt="Pokemon: Diamond"></a>
         <a href="games/white/"><img src="images/white.jpg" width="96" height="96" alt="Pokemon: White"></a>
         <a href="games/crash/"><img src="images/crash.png" width="96" height="96" alt="Crash Bandicoot"></a>
@@ -662,6 +662,19 @@
         event.preventDefault();
         let choice = confirm("Press OK for Normal, Cancel for Randomized.");
         let baseURL = "games/gold/";
+        if (choice) {
+            window.location.href = baseURL; // Normal
+        } else {
+            window.location.href = baseURL + "random/"; // Randomized
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('sapphire-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        let choice = confirm("Press OK for Normal, Cancel for Randomized.");
+        let baseURL = "games/sapphire/";
         if (choice) {
             window.location.href = baseURL; // Normal
         } else {
@@ -828,6 +841,7 @@
 
 </body>
 </html>
+
 
 
 
