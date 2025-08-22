@@ -269,9 +269,9 @@
         </div>
         <p class="quote">"Boingaloingaloinga!"</p>
         <p class="changelog">Give me ideas on what game/movies to add by responding to this google form: https://forms.gle/gU3bP4VYG3JZJ4JJ9</p>
-        <p class="changelog">BIG BUT NOT QUITE AS BIG AS THE BIG BOINGA UPDATE UPDATE ITS REALLY JUST GOT A LOT OF GAMES AND SOME THEMES CHANGELOG: </p>
-        <p class="changelog">SUMMER Movies - LOTS of new movies added!!🎬</p>
-        <p class="changelog">8/22/2025 Games - Peggle: Dual Shot and Hotline Miami have been added! 🦄🚘</p>
+        <p class="changelog">CHANGELOG: </p>
+        <p class="changelog">8/22/2025 Movies - No New Movies Yet, But Expect Some Soon! The Movies Menu Has Been Redone. 🎬</p>
+        <p class="changelog">8/22/2025 Games - Peggle: Dual Shot, Hotline Miami and BOwmasters have been added! 🦄🚘🏹</p>
         <p class="changelog">8/22/2025 Adjustment - Redid Some Parts Of The Movie Page. 🎥</p>
         <p class="blake">Random Boinga Hater Of The Day: Gerald 8/22/2025</p>
     </nav>
@@ -316,49 +316,37 @@
   const toggleThemesBtn = document.getElementById('toggle-themes-btn');
   const backgroundUpload = document.getElementById('background-upload');
 
-  // Toggle themes visibility
   toggleThemesBtn.addEventListener('click', () => {
     if (themesSection.style.maxHeight === '0px' || themesSection.style.maxHeight === '') {
-      themesSection.style.maxHeight = themesSection.scrollHeight + 'px'; // Expand
-      toggleThemesBtn.textContent = '-'; // Change to minimize button
+      themesSection.style.maxHeight = themesSection.scrollHeight + 'px'; 
+      toggleThemesBtn.textContent = '-'; 
     } else {
-      themesSection.style.maxHeight = '0'; // Collapse
-      toggleThemesBtn.textContent = '+'; // Change to maximize button
+      themesSection.style.maxHeight = '0';
+      toggleThemesBtn.textContent = '+';
     }
   });
 
-  // Apply theme
   function applyTheme(theme) {
     switch (theme) {
       case 'default':
         document.body.style.background = 'linear-gradient(to right, #1e1e2f, #3a3b5b)';
         document.body.style.color = '#ffcc00';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'blossom':
         document.body.style.background = 'linear-gradient(to right, #ffafcc, #ffcad4)';
         document.body.style.color = '#880e4f';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'iridium':
         document.body.style.background = 'linear-gradient(to right, #333, #666)';
         document.body.style.color = '#ddd';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'sunset':
         document.body.style.background = 'linear-gradient(to right, #ff7e5f, #feb47b)';
         document.body.style.color = '#4b2e05';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'forest':
         document.body.style.background = 'linear-gradient(to right, #228B22, #014421)';
         document.body.style.color = '#90EE90';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'ocean':
         document.body.style.background = 'linear-gradient(to right, #064273, #76b6c4)';
@@ -367,50 +355,34 @@
       case 'volcano':
         document.body.style.background = 'linear-gradient(to right, #823661, #4E2728)';
         document.body.style.color = '#1da2d8';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'cotton':
         document.body.style.background = 'linear-gradient(to right, #E9B7CE, #D3F3F1)';
         document.body.style.color = '#DCD9E2';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'flame':
         document.body.style.background = 'linear-gradient(to right, #e9d022, #e60b09)';
         document.body.style.color = '#e60b09';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'meadow':
         document.body.style.background = 'linear-gradient(to right, #56AB2F, #A8E063)';
         document.body.style.color = '#56AB2F';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'aurora':
         document.body.style.background = 'linear-gradient(to right, #2E1A47, #16A085)';
         document.body.style.color = '#2E1A47';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'yinyang':
         document.body.style.background = 'linear-gradient(to right, #E6DADA, #274046)';
         document.body.style.color = '#E6DADA';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'desert':
         document.body.style.background = 'linear-gradient(to right, #FCEABB, #E1B850)';
         document.body.style.color = '#E1B850';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'mist':
         document.body.style.background = 'linear-gradient(to right, #757F9A, #D7DDE8)';
         document.body.style.color = '#757F9A';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'space':
         document.body.style.background = 'url("space.gif") repeat';
@@ -419,46 +391,37 @@
         document.body.style.color = 'transparent';
         document.body.style.backgroundClip = 'text';
         document.body.style.webkitBackgroundClip = 'text';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
       case 'george':
         document.body.style.background = 'url("georgebg.jpg")';
         document.body.style.backgroundSize = '100% 120%';
         document.body.style.backgroundAttachment = 'fixed';
-        document.body.style.cursor = 'auto';
-        xpWindow.style.display = 'none';
         break;
      case 'xp':
         document.body.style.background = 'url("xp.png")';
         document.body.style.backgroundSize = '100% 120%';
         document.body.style.backgroundAttachment = 'fixed';
-        document.body.style.cursor = 'url("mouse.png"), auto';
-        xpWindow.style.display = 'block'; // Show XP window
         break;
       case 'custom':
         const savedCustomBackground = localStorage.getItem('customBackground');
         if (savedCustomBackground) {
           document.body.style.background = `url('${savedCustomBackground}') no-repeat center center fixed`;
           document.body.style.backgroundSize = '100% 120%';
-          document.body.style.cursor = 'auto';
           xpWindow.style.display = 'none';
         }
         break;
     }
   }
 
-  // Theme selection
   const themeButtons = document.querySelectorAll('.theme-btn');
   themeButtons.forEach(button => {
     button.addEventListener('click', () => {
       const theme = button.getAttribute('data-theme');
-      localStorage.setItem('selectedTheme', theme); // Save theme to localStorage
+      localStorage.setItem('selectedTheme', theme);
       applyTheme(theme);
     });
   });
 
-  // Handle file upload
   backgroundUpload.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -466,17 +429,15 @@
       reader.onload = function (e) {
         const dataUrl = e.target.result;
 
-        // Apply and save the custom background
         document.body.style.background = `url('${dataUrl}') no-repeat center center fixed`;
         document.body.style.backgroundSize = '100% 120%';
         localStorage.setItem('customBackground', dataUrl);
-        localStorage.setItem('selectedTheme', 'custom'); // Save 'custom' as the selected theme
+        localStorage.setItem('selectedTheme', 'custom');
       };
-      reader.readAsDataURL(file); // Convert file to data URL
+      reader.readAsDataURL(file);
     }
   });
 
-  // Load saved theme on page load
   const savedTheme = localStorage.getItem('selectedTheme');
   if (savedTheme) {
     applyTheme(savedTheme);
@@ -491,9 +452,9 @@
                 padding: 10px 20px;
                 font-size: 16px;
                 font-family: 'Comic Sans MS', cursive, sans-serif;
-                color: yellow; /* Yellow text color */
-                background-color: #1e1e2f; /* No background color */
-                border: 2px solid yellow; /* Yellow border */
+                color: yellow;
+                background-color: #1e1e2f;
+                border: 2px solid yellow;
                 border-radius: 8px;
                 cursor: pointer;
                 transition: color 0.3s ease, border-color 0.3s ease;
@@ -505,8 +466,8 @@
 <!-- Optional CSS to change color on hover -->
 <style>
     button:hover {
-        color: #ffd700; /* Golden yellow text on hover */
-        border-color: #ffd700; /* Golden yellow border on hover */
+        color: #ffd700;
+        border-color: #ffd700;
     }
 </style>
 
@@ -714,6 +675,7 @@
         <a href="games/bendy/"><img src="images/bendy.png" width="96" height="96" alt="Bendy And The Ink Machine"></a>
         <a href="games/peggle/"><img src="images/peggle.jpg" width="96" height="96" alt="Peggle: Double Shot"></a>
         <a href="games/hotlinemiami/"><img src="images/hotlinemiami.png" width="96" height="96" alt="Hotline Miami"></a>
+        <a href="games/bowmasters/"><img src="images/bowmasters.png" width="96" height="96" alt="Hotline Miami"></a>
     </div>
 
 <script>
@@ -722,9 +684,9 @@
         let choice = confirm("Press OK for Normal, Cancel for Randomized.");
         let baseURL = "games/firered/";
         if (choice) {
-            window.location.href = baseURL; // Normal
+            window.location.href = baseURL;
         } else {
-            window.location.href = baseURL + "random/"; // Randomized
+            window.location.href = baseURL + "random/";
         }
     });
 </script>
@@ -735,9 +697,9 @@
         let choice = confirm("Press OK for Normal, Cancel for Randomized.");
         let baseURL = "games/gold/";
         if (choice) {
-            window.location.href = baseURL; // Normal
+            window.location.href = baseURL;
         } else {
-            window.location.href = baseURL + "random/"; // Randomized
+            window.location.href = baseURL + "random/";
         }
     });
 </script>
@@ -748,21 +710,18 @@
         let choice = confirm("Press OK for Normal, Cancel for Randomized.");
         let baseURL = "games/sapphire/";
         if (choice) {
-            window.location.href = baseURL; // Normal
+            window.location.href = baseURL;
         } else {
-            window.location.href = baseURL + "random/"; // Randomized
+            window.location.href = baseURL + "random/";
         }
     });
 </script>
 
 
     <script>
-    // Wait until the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function () {
-        // Select all <img> elements
             const images = document.querySelectorAll('img');
 
-        // Loop through each image and set the loading attribute to "lazy"
             images.forEach(function(img) {
                 img.setAttribute('loading', 'lazy');
             });
@@ -787,9 +746,6 @@
     </div>
 
     <script>
-        // Additional JavaScript functions go here
-
-        // Sort games alphabetically by alt text
         function sortGames() {
             const gamesContainer = document.getElementById('games');
             const games = Array.from(gamesContainer.getElementsByTagName('a'));
@@ -805,19 +761,16 @@
             });
         }
 
-        // Show the black bar when curiousGeorge image is clicked
         document.getElementById('curiousGeorge').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'block';
         };
 
-        // Close the black bar
         document.querySelector('.closeBtn').onclick = function() {
             document.getElementById('codeInputBar').style.display = 'none';
-            document.getElementById('codeInput').value = ''; // Clear input
-            document.getElementById('message').textContent = ''; // Clear message
+            document.getElementById('codeInput').value = ''
+            document.getElementById('message').textContent = '';
         };
 
-        // Function to check code
         document.getElementById('submitCode').onclick = function() {
             const input = document.getElementById('codeInput').value.trim();
             const messageBox = document.getElementById('message');
@@ -893,17 +846,16 @@
                     }
                 })
                 .catch(error => {
-                    messageBox.textContent = 'Error fetching codes';
+                    messageBox.textContent = 'X';
                     messageBox.className = 'message error';
                 });
         };
 
-        // Submit rating
         document.getElementById('submitRating').onclick = function() {
             const ratingInput = document.getElementById('ratingInput').value.trim();
             const ratingResult = document.getElementById('ratingResult');
 
-            ratingResult.textContent = "Thank you for rating! You gave us a.. fire truck??? 🚒"
+            ratingResult.textContent = "Thank you for rating.. You gave us.. Uh.. Hold On.. I need to find the ratings.. Give me a second.. almost got them wait no that's not it.. Hold on.. I think this is wait no.. Maybe is it this one? Nope nope, not ratings.. Give me time to think about this."
         };
     </script>
 
@@ -913,35 +865,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
