@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Curious Player</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BoingaTunes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
       --blue-dark: #0b1b2b;
@@ -12,144 +12,307 @@
       --text: #f2f6ff;
       --text-dim: #b9c9e0;
     }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto;
       background: var(--blue-dark);
       color: var(--text);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: 100vh;
-      overflow: hidden;
     }
-    .player {
+
+    header {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       background: var(--blue-medium);
-      border-radius: 20px;
-      padding: 30px 40px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      text-align: center;
-      width: min(90%, 420px);
+      padding: 0 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
     }
-    img.cover {
-      width: 260px;
-      height: 260px;
-      border-radius: 14px;
-      object-fit: cover;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
     }
-    .album { font-weight: 600; color: var(--text-dim); margin-bottom: 6px; }
-    .title { font-size: 1.4rem; margin-bottom: 4px; }
-    .artist { font-size: 1rem; color: var(--text-dim); margin-bottom: 20px; }
-    .controls { display: flex; justify-content: center; gap: 20px; align-items: center; }
-    button {
+
+    #homeBtn {
       background: none;
       border: none;
       color: var(--text);
       cursor: pointer;
-      font-size: 1.2rem;
-      transition: transform 0.2s, color 0.2s;
+      font-size: 1.4rem;
     }
-    button:hover { color: var(--blue-light); transform: scale(1.1); }
-    .play-btn {
-      background: var(--blue-light);
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      font-size: 1.8rem;
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .album-card {
+      background: var(--blue-medium);
+      border-radius: 10px;
+      padding: 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: background 0.3s;
+      gap: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    .play-btn:hover { background: #2e7de0; }
-    audio { display: none; }
-    .progress { width: 100%; height: 6px; background:#092033; border-radius:3px; overflow:hidden; margin:20px 0 10px; }
-    .bar { height:100%; background: var(--blue-light); width:0%; transition: width 0.1s; }
-    .time { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-dim); }
+
+    .album-card:hover { background: var(--blue-light); }
+
+    .album-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .album-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .album-info .name {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .album-info .artist {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    /* Album view */
+    #albumView img {
+      width: 240px;
+      height: 240px;
+      border-radius: 14px;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    .track {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .track:hover { background: rgba(255,255,255,0.05); }
+
+    /* Player bar */
+    #playerBar {
+      background: var(--blue-medium);
+      height: 100px;
+      border-top: 2px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 6px;
+      background:#092033;
+      border-radius:3px;
+      overflow:hidden;
+      margin-bottom:8px;
+      cursor:pointer;
+    }
+
+    .bar {
+      height:100%;
+      background: var(--blue-light);
+      width:0%;
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .player-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .player-left img {
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .meta .title { font-size: 1rem; font-weight: 600; }
+    .meta .artist { font-size: 0.8rem; color: var(--text-dim); }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      font-size: 1.3rem;
+    }
+
+    button.control {
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    button.control:hover {
+      color: var(--blue-light);
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
-  <div class="player">
-    <img id="cover" class="cover" src="" alt="album cover">
-    <div class="album" id="album">Album Name</div>
-    <div class="title" id="title">Song Title</div>
-    <div class="artist" id="artist">Artist</div>
+  <header>
+    <button id="homeBtn" title="Home">🏠</button>
+    <h1>BoingaTunes</h1>
+    <div></div>
+  </header>
 
-    <div class="progress"><div class="bar" id="bar"></div></div>
-    <div class="time"><span id="current">0:00</span><span id="duration">0:00</span></div>
+  <main id="mainContent">
+    <!-- Home / Album list will appear here -->
+  </main>
 
-    <div class="controls">
-      <button id="back10" title="Back 10 s">⏪</button>
-      <button class="play-btn" id="playPause">▶</button>
-      <button id="fwd10" title="Forward 10 s">⏩</button>
+  <div id="playerBar">
+    <div class="progress" id="progress">
+      <div class="bar" id="bar"></div>
     </div>
 
+    <div class="player-controls">
+      <div class="player-left">
+        <img id="cover" src="" alt="">
+        <div class="meta">
+          <div class="title" id="title">No song playing</div>
+          <div class="artist" id="artist"></div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button class="control" id="back10">⏪</button>
+        <button class="control" id="playPause">▶</button>
+        <button class="control" id="fwd10">⏩</button>
+      </div>
+    </div>
     <audio id="audio"></audio>
   </div>
 
   <script>
-    // Load curious.json from same folder
-    fetch('curious.json')
-      .then(r => r.json())
-      .then(initPlayer)
+    const main = document.getElementById('mainContent');
+    const homeBtn = document.getElementById('homeBtn');
+
+    let albums = [];
+    let currentAlbum = null;
+    let currentTrack = null;
+
+    // Player elements
+    const audio = document.getElementById('audio');
+    const cover = document.getElementById('cover');
+    const titleEl = document.getElementById('title');
+    const artistEl = document.getElementById('artist');
+    const bar = document.getElementById('bar');
+    const playPause = document.getElementById('playPause');
+    const back10 = document.getElementById('back10');
+    const fwd10 = document.getElementById('fwd10');
+    const progress = document.getElementById('progress');
+
+    // Load all albums (you can expand later)
+    Promise.all([
+      fetch('curious.json').then(r => r.json())
+    ])
+      .then(results => {
+        albums = results.sort((a,b)=>a.album.localeCompare(b.album));
+        showHome();
+      })
       .catch(err => {
-        console.error('Could not load curious.json', err);
-        document.body.innerHTML = '<p style="color:white;text-align:center">Error loading curious.json</p>';
+        main.innerHTML = `<p style="text-align:center;color:white">Error loading albums.<br>${err}</p>`;
       });
 
-    function initPlayer(data) {
-      const song = data.tracks[0]; // for this demo just one track
-      const audio = document.getElementById('audio');
-      const cover = document.getElementById('cover');
-      const album = document.getElementById('album');
-      const title = document.getElementById('title');
-      const artist = document.getElementById('artist');
-      const playPause = document.getElementById('playPause');
-      const back10 = document.getElementById('back10');
-      const fwd10 = document.getElementById('fwd10');
-      const bar = document.getElementById('bar');
-      const currentT = document.getElementById('current');
-      const durationT = document.getElementById('duration');
-
-      // Set metadata
-      album.textContent = data.album;
-      title.textContent = song.title;
-      artist.textContent = song.artist;
-      cover.src = song.cover;
-      audio.src = song.audio;
-
-      // --- controls ---
-      playPause.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play();
-          playPause.textContent = '⏸';
-        } else {
-          audio.pause();
-          playPause.textContent = '▶';
-        }
+    function showHome() {
+      currentAlbum = null;
+      main.innerHTML = '';
+      albums.forEach((a,i) => {
+        const card = document.createElement('div');
+        card.className = 'album-card';
+        card.innerHTML = `
+          <img src="${a.tracks[0].cover}" alt="${a.album}">
+          <div class="album-info">
+            <div class="name">${a.album}</div>
+            <div class="artist">${a.artist}</div>
+          </div>
+        `;
+        card.onclick = ()=>showAlbum(i);
+        main.appendChild(card);
       });
-      back10.onclick = () => audio.currentTime = Math.max(0, audio.currentTime - 10);
-      fwd10.onclick = () => audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
-
-      // --- progress bar + times ---
-      audio.addEventListener('timeupdate', () => {
-        const p = (audio.currentTime / audio.duration) * 100;
-        bar.style.width = (p || 0) + '%';
-        currentT.textContent = formatTime(audio.currentTime);
-        durationT.textContent = formatTime(audio.duration);
-      });
-      audio.addEventListener('ended', () => playPause.textContent = '▶');
     }
 
-    function formatTime(s) {
-      if (!s || isNaN(s)) return '0:00';
-      const m = Math.floor(s / 60);
-      const sec = Math.floor(s % 60).toString().padStart(2,'0');
-      return `${m}:${sec}`;
+    function showAlbum(index) {
+      const a = albums[index];
+      currentAlbum = a;
+      main.innerHTML = `
+        <div id="albumView">
+          <img src="${a.tracks[0].cover}" alt="${a.album}">
+          <h2 style="text-align:center;margin-bottom:10px">${a.album}</h2>
+          <p style="text-align:center;color:var(--text-dim);margin-bottom:20px">${a.artist}</p>
+        </div>
+      `;
+      a.tracks.forEach((t,i)=>{
+        const tr = document.createElement('div');
+        tr.className = 'track';
+        tr.textContent = t.title;
+        tr.onclick = ()=>playTrack(a, i);
+        main.appendChild(tr);
+      });
     }
+
+    function playTrack(album, index) {
+      const t = album.tracks[index];
+      currentTrack = t;
+      titleEl.textContent = t.title;
+      artistEl.textContent = t.artist;
+      cover.src = t.cover;
+      audio.src = t.audio;
+      audio.play();
+      playPause.textContent = '⏸';
+    }
+
+    // Player controls
+    playPause.onclick = () => {
+      if (!audio.src) return;
+      if (audio.paused) { audio.play(); playPause.textContent = '⏸'; }
+      else { audio.pause(); playPause.textContent = '▶'; }
+    };
+    back10.onclick = () => audio.currentTime = Math.max(0, audio.currentTime - 10);
+    fwd10.onclick = () => audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+
+    // Progress updates + click-to-seek
+    audio.addEventListener('timeupdate', ()=>{
+      const p = (audio.currentTime / audio.duration) * 100;
+      bar.style.width = (p || 0) + '%';
+    });
+
+    progress.addEventListener('click', (e)=>{
+      if (!audio.duration) return;
+      const rect = progress.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percent = x / rect.width;
+      audio.currentTime = percent * audio.duration;
+    });
+
+    audio.addEventListener('ended', ()=> playPause.textContent = '▶');
+    homeBtn.onclick = showHome;
   </script>
 </body>
 </html>
