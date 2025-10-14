@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Audio Metadata Player</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 20px; max-width: 900px; margin: 0 auto; color: #111; }
+    .meta-card { border:1px solid #ddd; padding:12px; border-radius:8px; margin-top:15px; }
+    .cover { width:160px; height:160px; object-fit:cover; border-radius:6px; background:#f7f7f7; }
+    table { border-collapse:collapse; width:100%; }
+    td { padding:4px 6px; vertical-align:top; }
+    .label { color:#666; width:90px; }
+    .hint { color:#666; font-size:0.9rem; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <h2>Audio Metadata + Player</h2>
+  <input id="fileInput" type="file" accept="audio/*" />
+  <div id="status" class="hint">No file chosen.</div>
+
+  <div id="output" style="display:none;">
+    <div class="meta-card">
+      <strong>File info</strong>
+      <table>
+        <tr><td class="label">Filename</td><td id="fileName">—</td></tr>
+        <tr><td class="label">Size</td><td id="fileSize">—</td></tr>
+        <tr><td class="label">Type</td><td id="fileType">—</td></tr>
+      </table>
+      <audio id="audioPlayer" controls style="width:100%; margin-top:10px;"></audio>
+    </div>
+
+    <div class="meta-card">
+      <strong>Metadata</strong>
+      <table>
+        <tr><td class="label">Title</td><td id="metaTitle">—</td></tr>
+        <tr><td class="label">Artist</td><td id="metaArtist">—</td></tr>
+        <tr><td class="label">Album</td><td id="metaAlbum">—</td></tr>
+        <tr><td class="label">Year</td><td id="metaYear">—</td></tr>
+      </table>
+      <img id="coverImg" class="cover" alt="Album cover" style="display:none; margin-top:10px;" />
+      <div id="coverFallback" class="hint" style="display:none;">No embedded cover art.</div>
+    </div>
+  </div>
+
+  <!-- Load jsmediatags BEFORE your custom script -->
+  <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.5/dist/jsmediatags.min.js"></script>
+
+  <script>
+    const input = document.getElementById('fileInput');
+    const output = document.getElementById('output');
+    const status = document.getElementById('status');
+    const fileNameEl = document.getElementById('fileName');
+    const fileSizeEl = document.getElementById('fileSize');
+    const fileTypeEl = document.getElementById('fileType');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const metaTitle = document.getElementById('metaTitle');
+    const metaArtist = document.getElementById('metaArtist');
+    const metaAlbum = document.getElementById('metaAlbum');
+    const metaYear = document.getElementById('metaYear');
+    const coverImg = document.getElementById('coverImg');
+    const coverFallback = document.getElementById('coverFallback');
+
+    input.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      output.style.display = 'block';
+      status.textContent = 'Reading metadata…';
+
+      // show file info
+      fileNameEl.textContent = file.name;
+      fileSizeEl.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+      fileTypeEl.textContent = file.type || 'unknown';
+
+      // play audio
+      const url = URL.createObjectURL(file);
+      audioPlayer.src = url;
+
+      // ✅ jsmediatags works directly
+      jsmediatags.read(file, {
+        onSuccess: function(tag) {
+          status.textContent = 'Metadata loaded.';
+          const t = tag.tags;
+          metaTitle.textContent = t.title || file.name;
+          metaArtist.textContent = t.artist || '—';
+          metaAlbum.textContent = t.album || '—';
+          metaYear.textContent = t.year || '—';
+
+          if (t.picture) {
+            const pic = t.picture;
+            const byteArray = new Uint8Array(pic.data);
+            const blob = new Blob([byteArray], { type: pic.format });
+            const imageUrl = URL.createObjectURL(blob);
+            coverImg.src = imageUrl;
+            coverImg.style.display = 'block';
+            coverFallback.style.display = 'none';
+          } else {
+            coverImg.style.display = 'none';
+            coverFallback.style.display = 'block';
+          }
+        },
+        onError: function(err) {
+          status.textContent = 'Could not read metadata.';
+          console.error(err);
+          coverImg.style.display = 'none';
+          coverFallback.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
