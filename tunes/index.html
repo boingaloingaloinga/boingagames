@@ -1,112 +1,155 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Audio Metadata Player</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <title>Curious Player</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 20px; max-width: 900px; margin: 0 auto; color: #111; }
-    .meta-card { border:1px solid #ddd; padding:12px; border-radius:8px; margin-top:15px; }
-    .cover { width:160px; height:160px; object-fit:cover; border-radius:6px; background:#f7f7f7; }
-    table { border-collapse:collapse; width:100%; }
-    td { padding:4px 6px; vertical-align:top; }
-    .label { color:#666; width:90px; }
-    .hint { color:#666; font-size:0.9rem; margin-top:8px; }
+    :root {
+      --blue-dark: #0b1b2b;
+      --blue-medium: #13385a;
+      --blue-light: #1f5fa3;
+      --text: #f2f6ff;
+      --text-dim: #b9c9e0;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+      background: var(--blue-dark);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .player {
+      background: var(--blue-medium);
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      text-align: center;
+      width: min(90%, 420px);
+    }
+    img.cover {
+      width: 260px;
+      height: 260px;
+      border-radius: 14px;
+      object-fit: cover;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .album { font-weight: 600; color: var(--text-dim); margin-bottom: 6px; }
+    .title { font-size: 1.4rem; margin-bottom: 4px; }
+    .artist { font-size: 1rem; color: var(--text-dim); margin-bottom: 20px; }
+    .controls { display: flex; justify-content: center; gap: 20px; align-items: center; }
+    button {
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: transform 0.2s, color 0.2s;
+    }
+    button:hover { color: var(--blue-light); transform: scale(1.1); }
+    .play-btn {
+      background: var(--blue-light);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .play-btn:hover { background: #2e7de0; }
+    audio { display: none; }
+    .progress { width: 100%; height: 6px; background:#092033; border-radius:3px; overflow:hidden; margin:20px 0 10px; }
+    .bar { height:100%; background: var(--blue-light); width:0%; transition: width 0.1s; }
+    .time { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-dim); }
   </style>
 </head>
 <body>
-  <h2>Audio Metadata + Player</h2>
-  <input id="fileInput" type="file" accept="audio/*" />
-  <div id="status" class="hint">No file chosen.</div>
+  <div class="player">
+    <img id="cover" class="cover" src="" alt="album cover">
+    <div class="album" id="album">Album Name</div>
+    <div class="title" id="title">Song Title</div>
+    <div class="artist" id="artist">Artist</div>
 
-  <div id="output" style="display:none;">
-    <div class="meta-card">
-      <strong>File info</strong>
-      <table>
-        <tr><td class="label">Filename</td><td id="fileName">—</td></tr>
-        <tr><td class="label">Size</td><td id="fileSize">—</td></tr>
-        <tr><td class="label">Type</td><td id="fileType">—</td></tr>
-      </table>
-      <audio id="audioPlayer" controls style="width:100%; margin-top:10px;"></audio>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="time"><span id="current">0:00</span><span id="duration">0:00</span></div>
+
+    <div class="controls">
+      <button id="back10" title="Back 10 s">⏪</button>
+      <button class="play-btn" id="playPause">▶</button>
+      <button id="fwd10" title="Forward 10 s">⏩</button>
     </div>
 
-    <div class="meta-card">
-      <strong>Metadata</strong>
-      <table>
-        <tr><td class="label">Title</td><td id="metaTitle">—</td></tr>
-        <tr><td class="label">Artist</td><td id="metaArtist">—</td></tr>
-        <tr><td class="label">Album</td><td id="metaAlbum">—</td></tr>
-        <tr><td class="label">Year</td><td id="metaYear">—</td></tr>
-      </table>
-      <img id="coverImg" class="cover" alt="Album cover" style="display:none; margin-top:10px;" />
-      <div id="coverFallback" class="hint" style="display:none;">No embedded cover art.</div>
-    </div>
+    <audio id="audio"></audio>
   </div>
 
-  <!-- Load jsmediatags BEFORE your custom script -->
-  <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.5/dist/jsmediatags.min.js"></script>
-
   <script>
-    const input = document.getElementById('fileInput');
-    const output = document.getElementById('output');
-    const status = document.getElementById('status');
-    const fileNameEl = document.getElementById('fileName');
-    const fileSizeEl = document.getElementById('fileSize');
-    const fileTypeEl = document.getElementById('fileType');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const metaTitle = document.getElementById('metaTitle');
-    const metaArtist = document.getElementById('metaArtist');
-    const metaAlbum = document.getElementById('metaAlbum');
-    const metaYear = document.getElementById('metaYear');
-    const coverImg = document.getElementById('coverImg');
-    const coverFallback = document.getElementById('coverFallback');
+    // Load curious.json from same folder
+    fetch('curious.json')
+      .then(r => r.json())
+      .then(initPlayer)
+      .catch(err => {
+        console.error('Could not load curious.json', err);
+        document.body.innerHTML = '<p style="color:white;text-align:center">Error loading curious.json</p>';
+      });
 
-    input.addEventListener('change', e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      output.style.display = 'block';
-      status.textContent = 'Reading metadata…';
+    function initPlayer(data) {
+      const song = data.tracks[0]; // for this demo just one track
+      const audio = document.getElementById('audio');
+      const cover = document.getElementById('cover');
+      const album = document.getElementById('album');
+      const title = document.getElementById('title');
+      const artist = document.getElementById('artist');
+      const playPause = document.getElementById('playPause');
+      const back10 = document.getElementById('back10');
+      const fwd10 = document.getElementById('fwd10');
+      const bar = document.getElementById('bar');
+      const currentT = document.getElementById('current');
+      const durationT = document.getElementById('duration');
 
-      // show file info
-      fileNameEl.textContent = file.name;
-      fileSizeEl.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-      fileTypeEl.textContent = file.type || 'unknown';
+      // Set metadata
+      album.textContent = data.album;
+      title.textContent = song.title;
+      artist.textContent = song.artist;
+      cover.src = song.cover;
+      audio.src = song.audio;
 
-      // play audio
-      const url = URL.createObjectURL(file);
-      audioPlayer.src = url;
-
-      // ✅ jsmediatags works directly
-      jsmediatags.read(file, {
-        onSuccess: function(tag) {
-          status.textContent = 'Metadata loaded.';
-          const t = tag.tags;
-          metaTitle.textContent = t.title || file.name;
-          metaArtist.textContent = t.artist || '—';
-          metaAlbum.textContent = t.album || '—';
-          metaYear.textContent = t.year || '—';
-
-          if (t.picture) {
-            const pic = t.picture;
-            const byteArray = new Uint8Array(pic.data);
-            const blob = new Blob([byteArray], { type: pic.format });
-            const imageUrl = URL.createObjectURL(blob);
-            coverImg.src = imageUrl;
-            coverImg.style.display = 'block';
-            coverFallback.style.display = 'none';
-          } else {
-            coverImg.style.display = 'none';
-            coverFallback.style.display = 'block';
-          }
-        },
-        onError: function(err) {
-          status.textContent = 'Could not read metadata.';
-          console.error(err);
-          coverImg.style.display = 'none';
-          coverFallback.style.display = 'block';
+      // --- controls ---
+      playPause.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          playPause.textContent = '⏸';
+        } else {
+          audio.pause();
+          playPause.textContent = '▶';
         }
       });
-    });
+      back10.onclick = () => audio.currentTime = Math.max(0, audio.currentTime - 10);
+      fwd10.onclick = () => audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+
+      // --- progress bar + times ---
+      audio.addEventListener('timeupdate', () => {
+        const p = (audio.currentTime / audio.duration) * 100;
+        bar.style.width = (p || 0) + '%';
+        currentT.textContent = formatTime(audio.currentTime);
+        durationT.textContent = formatTime(audio.duration);
+      });
+      audio.addEventListener('ended', () => playPause.textContent = '▶');
+    }
+
+    function formatTime(s) {
+      if (!s || isNaN(s)) return '0:00';
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60).toString().padStart(2,'0');
+      return `${m}:${sec}`;
+    }
   </script>
 </body>
 </html>
