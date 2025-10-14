@@ -1,318 +1,319 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>BoingaTunes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    :root {
-      --blue-dark: #0b1b2b;
-      --blue-medium: #13385a;
-      --blue-light: #1f5fa3;
-      --text: #f2f6ff;
-      --text-dim: #b9c9e0;
-    }
+<meta charset="utf-8">
+<title>BoingaTunes</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    --blue-dark: #0b1b2b;
+    --blue-medium: #13385a;
+    --blue-light: #1f5fa3;
+    --text: #f2f6ff;
+    --text-dim: #b9c9e0;
+  }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto;
-      background: var(--blue-dark);
-      color: var(--text);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto;
+    background: var(--blue-dark);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-    header {
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--blue-medium);
-      padding: 0 16px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-    }
+  header {
+    display: flex;
+    align-items: center;
+    background: var(--blue-medium);
+    padding: 14px 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+  header button {
+    margin-right: 10px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
 
-    header h1 {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
+  #content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
 
-    #homeBtn {
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: pointer;
-      font-size: 1.4rem;
-    }
+  .album-card {
+    background: var(--blue-medium);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .album-card:hover {
+    background: var(--blue-light);
+  }
+  .album-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+  .album-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  .album-info p {
+    margin: 3px 0 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
 
-    main {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
+  .album-view img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    margin: 20px auto;
+  }
+  .track {
+    background: var(--blue-medium);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .track:hover {
+    background: var(--blue-light);
+  }
 
-    .album-card {
-      background: var(--blue-medium);
-      border-radius: 10px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+  /* bottom player */
+  #player-bar {
+    background: var(--blue-medium);
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 1px solid #0a1420;
+  }
+  #player-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+  }
+  #player-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    margin-right: 12px;
+    object-fit: cover;
+  }
+  #player-text {
+    flex: 1;
+  }
+  #player-text h4 {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  #player-text p {
+    margin: 2px 0 0;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
 
-    .album-card:hover { background: var(--blue-light); }
+  #controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  #controls button {
+    background: var(--blue-light);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
 
-    .album-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 6px;
-      object-fit: cover;
-    }
-
-    .album-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .album-info .name {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-
-    .album-info .artist {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-    }
-
-    /* Album view */
-    #albumView img {
-      width: 240px;
-      height: 240px;
-      border-radius: 14px;
-      object-fit: cover;
-      margin: 0 auto 20px;
-      display: block;
-    }
-
-    .track {
-      padding: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .track:hover { background: rgba(255,255,255,0.05); }
-
-    /* Player bar */
-    #playerBar {
-      background: var(--blue-medium);
-      height: 100px;
-      border-top: 2px solid rgba(255,255,255,0.1);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0 20px;
-    }
-
-    .progress {
-      width: 100%;
-      height: 6px;
-      background:#092033;
-      border-radius:3px;
-      overflow:hidden;
-      margin-bottom:8px;
-      cursor:pointer;
-    }
-
-    .bar {
-      height:100%;
-      background: var(--blue-light);
-      width:0%;
-    }
-
-    .player-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .player-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .player-left img {
-      width: 50px;
-      height: 50px;
-      border-radius: 6px;
-      object-fit: cover;
-    }
-
-    .meta .title { font-size: 1rem; font-weight: 600; }
-    .meta .artist { font-size: 0.8rem; color: var(--text-dim); }
-
-    .buttons {
-      display: flex;
-      gap: 16px;
-      font-size: 1.3rem;
-    }
-
-    button.control {
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: pointer;
-      transition: color 0.2s, transform 0.2s;
-    }
-
-    button.control:hover {
-      color: var(--blue-light);
-      transform: scale(1.1);
-    }
-  </style>
+  #progress-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 6px;
+    background: #0a2036;
+    border-radius: 3px;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+  #progress {
+    position: absolute;
+    height: 6px;
+    background: var(--blue-light);
+    border-radius: 3px;
+    width: 0%;
+  }
+</style>
 </head>
 <body>
   <header>
-    <button id="homeBtn" title="Home">🏠</button>
-    <h1>BoingaTunes</h1>
-    <div></div>
+    <button id="home-btn" style="display:none;">🏠</button>
+    <span id="header-title">BoingaTunes</span>
   </header>
 
-  <main id="mainContent">
-    <!-- Home / Album list will appear here -->
-  </main>
+  <div id="content"></div>
 
-  <div id="playerBar">
-    <div class="progress" id="progress">
-      <div class="bar" id="bar"></div>
-    </div>
-
-    <div class="player-controls">
-      <div class="player-left">
-        <img id="cover" src="" alt="">
-        <div class="meta">
-          <div class="title" id="title">No song playing</div>
-          <div class="artist" id="artist"></div>
-        </div>
-      </div>
-
-      <div class="buttons">
-        <button class="control" id="back10">⏪</button>
-        <button class="control" id="playPause">▶</button>
-        <button class="control" id="fwd10">⏩</button>
+  <div id="player-bar">
+    <div id="player-info">
+      <img id="cover" src="" alt="">
+      <div id="player-text">
+        <h4 id="song-title">No song playing</h4>
+        <p id="song-artist"></p>
       </div>
     </div>
+
+    <div id="controls">
+      <button id="back10">⏪ 10s</button>
+      <button id="playpause">▶️</button>
+      <button id="forward10">⏩ 10s</button>
+    </div>
+
+    <div id="progress-container">
+      <div id="progress"></div>
+    </div>
+
     <audio id="audio"></audio>
   </div>
 
-  <script>
-    const main = document.getElementById('mainContent');
-    const homeBtn = document.getElementById('homeBtn');
+<script>
+const albums = ["curious.json"]; // later you can add more album JSONs here
+const content = document.getElementById('content');
+const headerTitle = document.getElementById('header-title');
+const homeBtn = document.getElementById('home-btn');
 
-    let albums = [];
-    let currentAlbum = null;
-    let currentTrack = null;
+const audio = document.getElementById('audio');
+const playPauseBtn = document.getElementById('playpause');
+const back10Btn = document.getElementById('back10');
+const forward10Btn = document.getElementById('forward10');
+const progressContainer = document.getElementById('progress-container');
+const progress = document.getElementById('progress');
+const coverEl = document.getElementById('cover');
+const titleEl = document.getElementById('song-title');
+const artistEl = document.getElementById('song-artist');
 
-    // Player elements
-    const audio = document.getElementById('audio');
-    const cover = document.getElementById('cover');
-    const titleEl = document.getElementById('title');
-    const artistEl = document.getElementById('artist');
-    const bar = document.getElementById('bar');
-    const playPause = document.getElementById('playPause');
-    const back10 = document.getElementById('back10');
-    const fwd10 = document.getElementById('fwd10');
-    const progress = document.getElementById('progress');
+let currentAlbumData = null;
 
-    // Load all albums (you can expand later)
-    Promise.all([
-      fetch('curious.json').then(r => r.json())
-    ])
-      .then(results => {
-        albums = results.sort((a,b)=>a.album.localeCompare(b.album));
-        showHome();
-      })
-      .catch(err => {
-        main.innerHTML = `<p style="text-align:center;color:white">Error loading albums.<br>${err}</p>`;
-      });
+async function loadHome() {
+  headerTitle.textContent = "BlueSound";
+  homeBtn.style.display = "none";
+  content.innerHTML = "<h2>Albums</h2>";
 
-    function showHome() {
-      currentAlbum = null;
-      main.innerHTML = '';
-      albums.forEach((a,i) => {
-        const card = document.createElement('div');
-        card.className = 'album-card';
-        card.innerHTML = `
-          <img src="${a.tracks[0].cover}" alt="${a.album}">
-          <div class="album-info">
-            <div class="name">${a.album}</div>
-            <div class="artist">${a.artist}</div>
-          </div>
-        `;
-        card.onclick = ()=>showAlbum(i);
-        main.appendChild(card);
-      });
+  const albumList = [];
+  for (const file of albums) {
+    try {
+      const res = await fetch(file);
+      const data = await res.json();
+      albumList.push(data);
+    } catch (err) {
+      console.error("Error loading", file, err);
     }
+  }
 
-    function showAlbum(index) {
-      const a = albums[index];
-      currentAlbum = a;
-      main.innerHTML = `
-        <div id="albumView">
-          <img src="${a.tracks[0].cover}" alt="${a.album}">
-          <h2 style="text-align:center;margin-bottom:10px">${a.album}</h2>
-          <p style="text-align:center;color:var(--text-dim);margin-bottom:20px">${a.artist}</p>
-        </div>
-      `;
-      a.tracks.forEach((t,i)=>{
-        const tr = document.createElement('div');
-        tr.className = 'track';
-        tr.textContent = t.title;
-        tr.onclick = ()=>playTrack(a, i);
-        main.appendChild(tr);
-      });
-    }
+  albumList.sort((a,b)=>a.album.localeCompare(b.album));
 
-    function playTrack(album, index) {
-      const t = album.tracks[index];
-      currentTrack = t;
-      titleEl.textContent = t.title;
-      artistEl.textContent = t.artist;
-      cover.src = t.cover;
-      audio.src = t.audio;
-      audio.play();
-      playPause.textContent = '⏸';
-    }
+  albumList.forEach(a=>{
+    const card = document.createElement('div');
+    card.className = "album-card";
+    card.innerHTML = `
+      <img src="${a.cover}" alt="">
+      <div class="album-info">
+        <h3>${a.album}</h3>
+        <p>${a.artist}</p>
+      </div>`;
+    card.addEventListener('click', ()=>showAlbum(a));
+    content.appendChild(card);
+  });
+}
 
-    // Player controls
-    playPause.onclick = () => {
-      if (!audio.src) return;
-      if (audio.paused) { audio.play(); playPause.textContent = '⏸'; }
-      else { audio.pause(); playPause.textContent = '▶'; }
-    };
-    back10.onclick = () => audio.currentTime = Math.max(0, audio.currentTime - 10);
-    fwd10.onclick = () => audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+function showAlbum(album) {
+  currentAlbumData = album;
+  headerTitle.textContent = album.album;
+  homeBtn.style.display = "inline";
+  content.innerHTML = `
+    <div class="album-view">
+      <img src="${album.cover}" alt="${album.album}">
+      <h2 style="text-align:center;">${album.album}</h2>
+      <p style="text-align:center; color:var(--text-dim);">${album.artist}</p>
+      <div id="trackList"></div>
+    </div>
+  `;
 
-    // Progress updates + click-to-seek
-    audio.addEventListener('timeupdate', ()=>{
-      const p = (audio.currentTime / audio.duration) * 100;
-      bar.style.width = (p || 0) + '%';
+  const trackList = document.getElementById('trackList');
+  album.tracks.forEach(t=>{
+    const div = document.createElement('div');
+    div.className = 'track';
+    div.textContent = t.title;
+    div.dataset.audio = t.audio;
+    div.dataset.cover = album.cover;
+    div.dataset.artist = t.artist || album.artist;
+    div.addEventListener('click', ()=>{
+      loadTrack(div.dataset.audio, t.title, div.dataset.artist, div.dataset.cover);
     });
+    trackList.appendChild(div);
+  });
+}
 
-    progress.addEventListener('click', (e)=>{
-      if (!audio.duration) return;
-      const rect = progress.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percent = x / rect.width;
-      audio.currentTime = percent * audio.duration;
-    });
+function loadTrack(audioUrl, title, artist, cover) {
+  audio.src = audioUrl;
+  titleEl.textContent = title;
+  artistEl.textContent = artist;
+  coverEl.src = cover;
+  audio.play();
+  playPauseBtn.textContent = "⏸️";
+}
 
-    audio.addEventListener('ended', ()=> playPause.textContent = '▶');
-    homeBtn.onclick = showHome;
-  </script>
+// bottom controls
+playPauseBtn.addEventListener('click', ()=>{
+  if (audio.paused) {
+    audio.play();
+    playPauseBtn.textContent = "⏸️";
+  } else {
+    audio.pause();
+    playPauseBtn.textContent = "▶️";
+  }
+});
+
+back10Btn.addEventListener('click', ()=> audio.currentTime = Math.max(0, audio.currentTime - 10));
+forward10Btn.addEventListener('click', ()=> audio.currentTime = Math.min(audio.duration, audio.currentTime + 10));
+
+audio.addEventListener('timeupdate', ()=>{
+  if (audio.duration) {
+    progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+  }
+});
+
+progressContainer.addEventListener('click', e=>{
+  const rect = progressContainer.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = percent * audio.duration;
+});
+
+homeBtn.addEventListener('click', loadHome);
+
+// initial
+loadHome();
+</script>
 </body>
 </html>
