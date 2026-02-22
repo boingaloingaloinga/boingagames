@@ -57,4 +57,8 @@ Dani:Birthday twin!
 liam:Math peasant..
 Liam:Math peasant..
 james:Turn in your math homework..
-James:Turn in your math homework
+James:Turn in your math homework..
+Jonah:Jonka Jonka Junks!
+jonah:Jonka Jonka Junks!
+Rush:Wasn't that the band kid?
+rush:Wasn't that the band kid?
