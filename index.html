@@ -252,6 +252,19 @@
     outline: none;
 }
 
+    #searchContainer {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+    #sortBtn {
+    padding: 8px 12px;
+    background: transparent;
+    border: 3px solid yellow;
+    color: white;
+    cursor: pointer;
+}
+
     #gameSearch::placeholder {
     color: rgba(255, 255, 255, 0.7);
 }
@@ -287,7 +300,7 @@
         <p class="changelog">CHANGELOG: </p>
         <p class="changelog">1/6/2026 Movies - Ok I just forgot </p>
         <p class="changelog">2/19/2026 Games - Added 99 Balls! 🔴</p>
-        <p class="changelog">2/13/2026 Adjustment - Minor Game Resorting. 🤔</p>
+        <p class="changelog">2/13/2026 Adjustment - Game Search Readded! 🔎</p>
         <p class="blake">Random Boinga Hater Of The Day: Nathan J. 2/19/2026</p>
     </nav>
 
@@ -326,32 +339,53 @@
 <script>
 (function () {
 
-    function initSearch() {
+    function init() {
         const input = document.getElementById("gameSearch");
-        const gamesContainer = document.getElementById("games");
+        const sortBtn = document.getElementById("sortBtn");
+        const container = document.getElementById("games");
 
-        if (!input || !gamesContainer) return;
+        if (!input || !sortBtn || !container) return;
 
-        const games = gamesContainer.querySelectorAll("a");
+        const items = Array.from(container.querySelectorAll("a"));
+        const originalOrder = [...items];
+        let sorted = false;
 
+        // SEARCH
         input.addEventListener("input", function () {
             const value = this.value.toLowerCase().trim();
 
-            games.forEach(function (game) {
-                const img = game.querySelector("img");
-                if (!img) return;
-
-                const alt = img.alt.toLowerCase();
-
-                game.style.display = alt.includes(value) ? "" : "none";
+            items.forEach(item => {
+                const alt = item.querySelector("img").alt.toLowerCase();
+                item.style.display = alt.includes(value) ? "" : "none";
             });
+        });
+
+        // SORT
+        sortBtn.addEventListener("click", function () {
+            sorted = !sorted;
+
+            let newOrder;
+
+            if (sorted) {
+                newOrder = [...items].sort((a, b) => {
+                    const altA = a.querySelector("img").alt.toLowerCase();
+                    const altB = b.querySelector("img").alt.toLowerCase();
+                    return altA.localeCompare(altB);
+                });
+                sortBtn.textContent = "Sort: A-Z";
+            } else {
+                newOrder = originalOrder;
+                sortBtn.textContent = "Sort: Default";
+            }
+
+            newOrder.forEach(item => container.appendChild(item));
         });
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initSearch);
+        document.addEventListener("DOMContentLoaded", init);
     } else {
-        initSearch();
+        init();
     }
 
 })();
@@ -520,7 +554,10 @@
     }
 </style>
 
-    <input type="text" id="gameSearch" placeholder="Search games..." />
+    <div id="searchContainer">
+        <input type="text" id="gameSearch" placeholder="Search games...">
+        <button id="sortBtn">Sort: Default</button>
+    </div>
     
     <div id="games">
         <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="96" height="96" alt="Bob The Robber 2"></a>
@@ -1062,6 +1099,7 @@
 
 </body>
 </html>
+
 
 
 
