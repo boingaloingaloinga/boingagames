@@ -39,7 +39,7 @@
         }
 
         .boinga-container img {
-            height: 50px; /* Adjust size as needed */
+            height: 50px;
         }
 
         nav p.quote {
@@ -147,14 +147,14 @@
         }
 
 #xp-window {
-  display: none; /* Hidden by default */
+  display: none; 
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9999; /* Always on top */
-  pointer-events: none; /* Allows clicking through it */
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .xp-window-image {
@@ -241,6 +241,20 @@
       cursor: pointer;
     }
 
+    #gameSearch {
+    width: 300px;
+    padding: 8px;
+    margin: 0 auto 15px auto;
+    display: block;
+    background: transparent;
+    border: 3px solid yellow;
+    color: white;
+    outline: none;
+}
+
+    #gameSearch::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
     
     .theme-btn {
       display: block;
@@ -259,6 +273,7 @@
     }
 
     </style>
+
 </head>
 <body>
     <nav>
@@ -307,6 +322,40 @@
       </div>
     </div>
   </div>
+
+<script>
+(function () {
+
+    function initSearch() {
+        const input = document.getElementById("gameSearch");
+        const gamesContainer = document.getElementById("games");
+
+        if (!input || !gamesContainer) return;
+
+        const games = gamesContainer.querySelectorAll("a");
+
+        input.addEventListener("input", function () {
+            const value = this.value.toLowerCase().trim();
+
+            games.forEach(function (game) {
+                const img = game.querySelector("img");
+                if (!img) return;
+
+                const alt = img.alt.toLowerCase();
+
+                game.style.display = alt.includes(value) ? "" : "none";
+            });
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initSearch);
+    } else {
+        initSearch();
+    }
+
+})();
+</script>
 
 <audio id="background-music" loop></audio>
 
@@ -471,6 +520,8 @@
     }
 </style>
 
+    <input type="text" id="gameSearch" placeholder="Search games..." />
+    
     <div id="games">
         <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="96" height="96" alt="Bob The Robber 2"></a>
         <a href="games/vex7/"><img src="images/vex7.jpeg" width="96" height="96" alt="vex 7"></a>
@@ -1011,6 +1062,7 @@
 
 </body>
 </html>
+
 
 
 
