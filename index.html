@@ -269,42 +269,16 @@ text-align: center;
 margin-bottom: 15px;
 }
 
-#trending h2 {
-  color: #ffcc00;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-#trending-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.trending-tile {
-  position: relative;
-  width: 96px;
-  height: 96px;
-}
-
-.trending-tile img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
+#trending h2 { color: #ffcc00; font-weight: bold; margin-bottom: 8px; }
+#trending-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.trending-tile { position: relative; width: 96px; height: 96px; }
+.trending-tile img { width: 100%; height: 100%; display: block; }
 .trending-tile .play-count {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
-  font-size: 12px;
-  padding: 1px 4px;
-  border-radius: 4px;
-  font-weight: bold;
+  position: absolute; top: 2px; right: 4px;
+  background: rgba(0,0,0,0.7); color: #fff;
+  font-size: 12px; padding: 1px 4px; border-radius: 4px; font-weight: bold;
 }
+#games a:hover, .trending-tile:hover img { transform: scale(1.1); transition: transform 0.2s ease-in-out; }
 
 #games a:hover, .trending-tile:hover img {
   transform: scale(1.1);
@@ -396,6 +370,17 @@ background-color: #e0e0e0;
   </div>
 </div>
 
+
+<script>
+document.querySelectorAll('#games a img').forEach(img => {
+  if(!img.dataset.game){
+    const href = img.closest('a').getAttribute('href'); 
+    const gameKey = href.replace(/^games\/|\/$/g,'');   
+    img.dataset.game = gameKey;                        
+  }
+});
+<script>
+
 <script>
 const WORKSPACE_URL = "https://api.counterapi.dev/v2/boingaloingaloingas-team-3594/game-counter";
 const API_KEY = "ut_44oQScpJ3zYAP0grO1UIOlArtZBg4eao0HrXwJjo"; 
@@ -404,19 +389,9 @@ const MAX_TRENDING = 5;
 const TRENDING_COOLDOWN_KEY = 'trendingCooldowns';
 const LAST_RESET_KEY = 'trendingLastReset';
 
-function formatCount(num){
-  if(num >= 1000) return (num/1000).toFixed(1) + 'K';
-  return num;
-}
-
-function getCooldownData(){
-  const data = localStorage.getItem(TRENDING_COOLDOWN_KEY);
-  return data ? JSON.parse(data) : {};
-}
-
-function saveCooldownData(data){
-  localStorage.setItem(TRENDING_COOLDOWN_KEY, JSON.stringify(data));
-}
+function formatCount(num){ return num>=1000 ? (num/1000).toFixed(1)+'K' : num; }
+function getCooldownData(){ const data = localStorage.getItem(TRENDING_COOLDOWN_KEY); return data ? JSON.parse(data) : {}; }
+function saveCooldownData(data){ localStorage.setItem(TRENDING_COOLDOWN_KEY, JSON.stringify(data)); }
 
 async function incrementGame(game){
   const cooldowns = getCooldownData();
@@ -425,27 +400,18 @@ async function incrementGame(game){
     cooldowns[game] = now;
     saveCooldownData(cooldowns);
     try{
-      await fetch(`${WORKSPACE_URL}/up`, {
+      await fetch(`${WORKSPACE_URL}/${encodeURIComponent(game)}/up`, {
         method:"POST",
-        headers:{
-          "Authorization": `Bearer ${API_KEY}`,
-          "Content-Type":"application/json"
-        },
-        body: JSON.stringify({ key: game })
+        headers:{ "Authorization": `Bearer ${API_KEY}` }
       });
-    } catch(e){ console.error('Error incrementing', game, e); }
+    } catch(e){ console.error('Increment error', game, e); }
   }
 }
 
 async function getGameCount(game){
   try{
-    const res = await fetch(WORKSPACE_URL, {
-      method:"POST",
-      headers:{
-        "Authorization": `Bearer ${API_KEY}`,
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({ key: game })
+    const res = await fetch(`${WORKSPACE_URL}/${encodeURIComponent(game)}`, {
+      headers:{ "Authorization": `Bearer ${API_KEY}` }
     });
     const data = await res.json();
     return data.value || 0;
@@ -464,30 +430,16 @@ function attachClickHandler(img){
       if(overlay.textContent.includes('K')) current *= 1000;
       current += 1;
       overlay.textContent = current >= 1000 ? (current/1000).toFixed(1)+'K' : current;
-      overlay.style.transition = 'transform 0.2s';
-      overlay.style.transform = 'scale(1.3)';
-      setTimeout(()=> overlay.style.transform = 'scale(1)', 200);
+      overlay.style.transition='transform 0.2s';
+      overlay.style.transform='scale(1.3)';
+      setTimeout(()=> overlay.style.transform='scale(1)',200);
     }
 
-    
     await incrementGame(gameKey);
     updateTrending();
   });
   img._handlerAttached = true;
 }
-
-const gamesContainer = document.getElementById('games');
-const observer = new MutationObserver(mutations=>{
-  mutations.forEach(m=>{
-    m.addedNodes.forEach(node=>{
-      if(node.tagName==='A' && node.querySelector('img[data-game]')){
-        const img = node.querySelector('img[data-game]');
-        attachClickHandler(img);
-      }
-    });
-  });
-});
-observer.observe(gamesContainer, { childList:true, subtree:true });
 
 function resetMonthly(){
   const now = new Date();
@@ -495,13 +447,10 @@ function resetMonthly(){
   if(!lastReset || now.getMonth() !== new Date(lastReset).getMonth()){
     const games = Array.from(document.querySelectorAll('#games img[data-game]')).map(img=>img.dataset.game);
     games.forEach(game=>{
-      fetch(`${WORKSPACE_URL}/set`, {
+      fetch(`${WORKSPACE_URL}/${encodeURIComponent(game)}/set`, {
         method:"POST",
-        headers:{
-          "Authorization": `Bearer ${API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ key: game, value: 0 })
+        headers:{ "Authorization": `Bearer ${API_KEY}` },
+        body: JSON.stringify({ value:0 })
       });
     });
     localStorage.setItem(LAST_RESET_KEY, now.toISOString());
@@ -511,44 +460,45 @@ function resetMonthly(){
 async function updateTrending(){
   const games = Array.from(document.querySelectorAll('#games img[data-game]'));
   let counts = [];
-
   for(let img of games){
     const game = img.dataset.game;
     const value = await getGameCount(game);
-    counts.push({game, count: value, name: img.alt, imgElement: img});
+    counts.push({game, count:value, name:img.alt, imgElement:img});
   }
-
-  counts.sort((a,b) => b.count - a.count);
+  counts.sort((a,b)=>b.count-a.count);
   const top = counts.slice(0, MAX_TRENDING);
 
   const trendingList = document.getElementById('trending-list');
   trendingList.innerHTML = '';
-
   if(top.length===0 || top.every(g=>g.count===0)){
     trendingList.innerHTML = '<p>No trending games yet.</p>';
     return;
   }
 
   top.forEach(g=>{
-    const tile = document.createElement('div');
-    tile.className = 'trending-tile';
-
+    const tile = document.createElement('div'); tile.className='trending-tile';
     const link = g.imgElement.closest('a').cloneNode(true);
     tile.appendChild(link);
-
-    const countOverlay = document.createElement('span');
-    countOverlay.className = 'play-count';
+    const countOverlay = document.createElement('span'); countOverlay.className='play-count';
     countOverlay.textContent = formatCount(g.count);
     tile.appendChild(countOverlay);
-
     trendingList.appendChild(tile);
-
-    const clonedImg = link.querySelector('img');
-    attachClickHandler(clonedImg);
+    attachClickHandler(link.querySelector('img'));
   });
 }
 
-// --- Initialize ---
+const gamesContainer = document.getElementById('games');
+const observer = new MutationObserver(mutations=>{
+  mutations.forEach(m=>{
+    m.addedNodes.forEach(node=>{
+      if(node.tagName==='A' && node.querySelector('img[data-game]')){
+        attachClickHandler(node.querySelector('img[data-game]'));
+      }
+    });
+  });
+});
+observer.observe(gamesContainer, {childList:true, subtree:true});
+
 document.querySelectorAll('#games img[data-game]').forEach(attachClickHandler);
 resetMonthly();
 updateTrending();
@@ -975,7 +925,6 @@ border-color: #ffd700;
 <a href="games/elasticman/"><img src="images/elasticman.webp" width="96" height="96" alt="Elastic Man"></a>
 <a href="games/ball/"><img src="images/stack.png" width="96" height="96" alt="Stack Ball"></a>
 <a href="games/fireice/"><img src="images/fireice.png" width="96" height="96" alt="A Dance of Fire and Ice"></a>
-<a href="games/"><img src="images/cluster.png" width="96" height="96" alt="Cluster Rush"></a>
 <a href="games/cat/"><img src="images/cat.png" width="96" height="96" alt="Cat Trap"></a>
 <a href="games/bezos/"><img src="images/bezos.png" width="96" height="96" alt="You Are Jeff Bezos"></a>
 <a href="games/burger/"><img src="images/burger.jpg" width="96" height="96" alt="60 Second Burger Rush"></a>
