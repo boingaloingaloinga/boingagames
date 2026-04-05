@@ -269,6 +269,48 @@ text-align: center;
 margin-bottom: 15px;
 }
 
+#trending h2 {
+  color: #ffcc00;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#trending-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.trending-tile {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.trending-tile img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.trending-tile .play-count {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+#games a:hover, .trending-tile:hover img {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
 #sortBtn {
 padding: 8px 12px;
 background: transparent;
@@ -345,6 +387,157 @@ background-color: #e0e0e0;
 </div>
 </div>
 </div>
+
+<!-- i am so trending rn -->
+<div id="trending">
+  <h2>Trending Games</h2>
+  <div id="trending-list">
+    <!-- tiles -->
+  </div>
+</div>
+
+<script>
+const WORKSPACE_URL = "https://api.counterapi.dev/v2/boingaloingaloingas-team-3594/game-counter";
+const API_KEY = "ut_44oQScpJ3zYAP0grO1UIOlArtZBg4eao0HrXwJjo"; 
+const COOLDOWN_HOURS = 12;
+const MAX_TRENDING = 5;
+const TRENDING_COOLDOWN_KEY = 'trendingCooldowns';
+const LAST_RESET_KEY = 'trendingLastReset';
+
+function formatCount(num){
+  if(num >= 1000) return (num/1000).toFixed(1) + 'K';
+  return num;
+}
+
+function getCooldownData(){
+  const data = localStorage.getItem(TRENDING_COOLDOWN_KEY);
+  return data ? JSON.parse(data) : {};
+}
+
+function saveCooldownData(data){
+  localStorage.setItem(TRENDING_COOLDOWN_KEY, JSON.stringify(data));
+}
+
+async function incrementGame(game){
+  const cooldowns = getCooldownData();
+  const now = Date.now();
+  if(!cooldowns[game] || now - cooldowns[game] > COOLDOWN_HOURS*3600*1000){
+    cooldowns[game] = now;
+    saveCooldownData(cooldowns);
+    try{
+      await fetch(`${WORKSPACE_URL}/up`, {
+        method:"POST",
+        headers:{
+          "Authorization": `Bearer ${API_KEY}`,
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({ key: game })
+      });
+    } catch(e){ console.error('Error incrementing', game, e); }
+  }
+}
+
+async function getGameCount(game){
+  try{
+    const res = await fetch(WORKSPACE_URL, {
+      method:"POST",
+      headers:{
+        "Authorization": `Bearer ${API_KEY}`,
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({ key: game })
+    });
+    const data = await res.json();
+    return data.value || 0;
+  } catch(e){ return 0; }
+}
+
+function attachClickHandler(img){
+  if(img._handlerAttached) return;
+  img.addEventListener('click', ()=>{
+    incrementGame(img.dataset.game);
+    updateTrending();
+  });
+  img._handlerAttached = true;
+}
+
+const gamesContainer = document.getElementById('games');
+const observer = new MutationObserver(mutations=>{
+  mutations.forEach(m=>{
+    m.addedNodes.forEach(node=>{
+      if(node.tagName==='A' && node.querySelector('img[data-game]')){
+        const img = node.querySelector('img[data-game]');
+        attachClickHandler(img);
+      }
+    });
+  });
+});
+observer.observe(gamesContainer, { childList:true, subtree:true });
+
+function resetMonthly(){
+  const now = new Date();
+  const lastReset = localStorage.getItem(LAST_RESET_KEY);
+  if(!lastReset || now.getMonth() !== new Date(lastReset).getMonth()){
+    const games = Array.from(document.querySelectorAll('#games img[data-game]')).map(img=>img.dataset.game);
+    games.forEach(game=>{
+      fetch(`${WORKSPACE_URL}/set`, {
+        method:"POST",
+        headers:{
+          "Authorization": `Bearer ${API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ key: game, value: 0 })
+      });
+    });
+    localStorage.setItem(LAST_RESET_KEY, now.toISOString());
+  }
+}
+
+async function updateTrending(){
+  const games = Array.from(document.querySelectorAll('#games img[data-game]'));
+  let counts = [];
+
+  for(let img of games){
+    const game = img.dataset.game;
+    const value = await getGameCount(game);
+    counts.push({game, count: value, name: img.alt, imgElement: img});
+  }
+
+  counts.sort((a,b) => b.count - a.count);
+  const top = counts.slice(0, MAX_TRENDING);
+
+  const trendingList = document.getElementById('trending-list');
+  trendingList.innerHTML = '';
+
+  if(top.length===0 || top.every(g=>g.count===0)){
+    trendingList.innerHTML = '<p>No trending games yet.</p>';
+    return;
+  }
+
+  top.forEach(g=>{
+    const tile = document.createElement('div');
+    tile.className = 'trending-tile';
+
+    const link = g.imgElement.closest('a').cloneNode(true);
+    tile.appendChild(link);
+
+    const countOverlay = document.createElement('span');
+    countOverlay.className = 'play-count';
+    countOverlay.textContent = formatCount(g.count);
+    tile.appendChild(countOverlay);
+
+    trendingList.appendChild(tile);
+
+    const clonedImg = link.querySelector('img');
+    attachClickHandler(clonedImg);
+  });
+}
+
+// --- Initialize ---
+document.querySelectorAll('#games img[data-game]').forEach(attachClickHandler);
+resetMonthly();
+updateTrending();
+</script>
 
 <script>
 (function () {
