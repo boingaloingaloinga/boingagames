@@ -1158,8 +1158,29 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+const COOLDOWN = 12 * 60 * 60 * 1000;
+
 function normalizeKey(name) {
   return name.toLowerCase().replace(/\s+/g, '-');
+}
+
+function canIncrement(game) {
+  const key = 'lastPlayed-' + normalizeKey(game);
+  const last = localStorage.getItem(key);
+  if (!last) return true;
+  return (Date.now() - parseInt(last)) > COOLDOWN;
+}
+
+function markPlayed(game) {
+  const key = 'lastPlayed-' + normalizeKey(game);
+  localStorage.setItem(key, Date.now());
+}
+
+function tryIncrement(game) {
+  if (canIncrement(game)) {
+    incrementGame(game);
+    markPlayed(game);
+  }
 }
 
 async function incrementGame(game) {
@@ -1173,7 +1194,21 @@ async function getAllCounts() {
   return snapshot.val() || {};
 }
 
+async function checkMonthlyReset() {
+  const metaRef = ref(db, 'meta');
+  const snapshot = await get(metaRef);
+  const now = new Date();
+  const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  if(!snapshot.exists() || snapshot.val().lastReset !== thisMonth) {
+    // reset all game counts
+    await runTransaction(ref(db, 'games'), () => ({}));
+    await runTransaction(metaRef, () => ({ lastReset: thisMonth }));
+  }
+}
+
 async function renderTrending() {
+  await checkMonthlyReset(); // ensure monthly reset happens first
   const counts = await getAllCounts();
   const sorted = Object.entries(counts)
     .sort((a,b) => b[1] - a[1])
@@ -1203,7 +1238,7 @@ async function renderTrending() {
     clone.addEventListener('click', e => {
       e.preventDefault();
       window.location.href = clone.href;
-      incrementGame(img.alt);
+      tryIncrement(img.alt);
       setTimeout(renderTrending, 100);
     });
 
@@ -1213,7 +1248,7 @@ async function renderTrending() {
 
 document.querySelectorAll('#games a img').forEach(img => {
   img.closest('a').addEventListener('click', () => {
-    incrementGame(img.alt);
+    tryIncrement(img.alt);
     setTimeout(renderTrending, 100);
   });
 });
