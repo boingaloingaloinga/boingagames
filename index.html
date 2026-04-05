@@ -1142,80 +1142,83 @@ ratingResult.textContent = "Thank you for rating.. You gave us.. Uh.. Hold On.. 
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getDatabase, ref, get, runTransaction } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getDatabase, ref, get, runTransaction } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDE2ZBFOsq9_IJ-d7-1QN7DYGHLOHYg3Ko",
-    authDomain: "trending-count.firebaseapp.com",
-    databaseURL: "https://trending-count-default-rtdb.firebaseio.com",
-    projectId: "trending-count",
-    storageBucket: "trending-count.appspot.com",
-    messagingSenderId: "978858776490",
-    appId: "1:978858776490:web:8dd344382e32f69d783dd3"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDE2ZBFOsq9_IJ-d7-1QN7DYGHLOHYg3Ko",
+  authDomain: "trending-count.firebaseapp.com",
+  databaseURL: "https://trending-count-default-rtdb.firebaseio.com",
+  projectId: "trending-count",
+  storageBucket: "trending-count.appspot.com",
+  messagingSenderId: "978858776490",
+  appId: "1:978858776490:web:8dd344382e32f69d783dd3"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-  async function incrementGame(game) {
-    const gameRef = ref(db, 'games/' + game);
-    await runTransaction(gameRef, current => (current || 0) + 1);
+function normalizeKey(name) {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
+
+async function incrementGame(game) {
+  const key = normalizeKey(game);
+  const gameRef = ref(db, 'games/' + key);
+  await runTransaction(gameRef, current => (current || 0) + 1);
+}
+
+async function getAllCounts() {
+  const snapshot = await get(ref(db, 'games'));
+  return snapshot.val() || {};
+}
+
+async function renderTrending() {
+  const counts = await getAllCounts();
+  const sorted = Object.entries(counts)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,5);
+
+  const container = document.getElementById('trending');
+  container.innerHTML = '';
+
+  if(sorted.length === 0){
+    container.textContent = 'No trending games yet!';
+    return;
   }
 
-  async function getAllCounts() {
-    const snapshot = await get(ref(db, 'games'));
-    return snapshot.val() || {};
-  }
+  sorted.forEach(([key,count]) => {
+    const img = Array.from(document.querySelectorAll('#games a img'))
+      .find(i => normalizeKey(i.alt) === key);
+    if(!img) return;
 
-  async function renderTrending() {
-    const counts = await getAllCounts();
-    const sorted = Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5); // top 5
+    const clone = img.closest('a').cloneNode(true);
+    clone.style.position = 'relative';
 
-    const container = document.getElementById('trending');
-    container.innerHTML = '';
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.textContent = count >= 1000 ? Math.floor(count/1000)+'K' : count;
+    clone.appendChild(overlay);
 
-    if(sorted.length === 0){
-      container.textContent = 'No trending games yet!';
-      return;
-    }
-
-    sorted.forEach(([game, count]) => {
-      // Find the original game tile
-      const img = document.querySelector(`#games a img[alt="${game}"]`);
-      if(!img) return; // skip if not found
-
-      const clone = img.closest('a').cloneNode(true);
-      clone.style.position = 'relative';
-
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      overlay.textContent = count >= 1000 ? Math.floor(count/1000)+'K' : count;
-      clone.appendChild(overlay);
-
-      clone.addEventListener('click', e => {
-        e.preventDefault();
-        window.location.href = clone.href;
-        incrementGame(game);
-        renderTrending(); // update trending live
-      });
-
-      container.appendChild(clone);
+    clone.addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = clone.href;
+      incrementGame(img.alt);
+      setTimeout(renderTrending, 100);
     });
-  }
 
-  document.querySelectorAll('#games a img').forEach(img => {
-    img.dataset.game = img.alt;
-    img.closest('a').addEventListener('click', () => {
-      incrementGame(img.dataset.game);
-      setTimeout(renderTrending, 100); // slight delay to refresh trending
-    });
+    container.appendChild(clone);
   });
+}
 
-  renderTrending();
+document.querySelectorAll('#games a img').forEach(img => {
+  img.closest('a').addEventListener('click', () => {
+    incrementGame(img.alt);
+    setTimeout(renderTrending, 100);
+  });
+});
+
+renderTrending();
 </script>
-
 </body>
 </html>
