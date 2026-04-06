@@ -326,7 +326,7 @@ background-color: #e0e0e0;
 <p class="quote">"Boingaloingaloinga!"</p>
 <p class="changelog">Give me ideas on what game/movies to add by responding to this google form: https://forms.gle/gU3bP4VYG3JZJ4JJ9</p>
 <p class="changelog">CHANGELOG: </p>
-<p class="changelog">3/13/2026 Movies - Added Back To The Future Part II! ⌚</p>
+<p class="changelog">4/5/2026 Movies - Added Captain Underpants: The First Epic Movie! 🩲</p>
 <p class="changelog">4/4/2026 Games - Added Super Monkey Ball 1&2</p>
 <p class="changelog">4/4/2026 Adjustment - Removed BTTF Pt 2.. isn't working for some reason.</p>
 <p class="blake">Random Boinga Hater Of The Day: Blake, John P., Kent H., Evan, Micah K, and everyone else that hated the april fools update 4/2/26 </p>
@@ -1176,17 +1176,15 @@ function markPlayed(game) {
   localStorage.setItem(key, Date.now());
 }
 
-async function incrementGame(game) {
-  const key = normalizeKey(game);
-  const gameRef = ref(db, 'games/' + key);
-  await runTransaction(gameRef, current => (current || 0) + 1);
-}
+function incrementGameSafe(game) {
+  if (!canIncrement(game)) return;
+  markPlayed(game);
 
-function playAndIncrement(game) {
-  if (canIncrement(game)) {
-    incrementGame(game);
-    markPlayed(game);
-  }
+  const key = normalizeKey(game);
+  const url = `https://trending-count-default-rtdb.firebaseio.com/games/${key}.json`;
+  
+  const countData = JSON.stringify((parseInt(localStorage.getItem('tempCount')||0)+1));
+  navigator.sendBeacon(url, countData);
 }
 
 async function getAllCounts() {
@@ -1207,11 +1205,9 @@ async function checkMonthlyReset() {
 }
 
 async function renderTrending() {
-  await checkMonthlyReset(); // ensure monthly reset happens first
+  await checkMonthlyReset();
   const counts = await getAllCounts();
-  const sorted = Object.entries(counts)
-    .sort((a,b) => b[1] - a[1])
-    .slice(0,5);
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
 
   const container = document.getElementById('trending');
   container.innerHTML = '';
@@ -1223,7 +1219,7 @@ async function renderTrending() {
 
   sorted.forEach(([key,count]) => {
     const img = Array.from(document.querySelectorAll('#games a img'))
-      .find(i => normalizeKey(i.alt) === key);
+      .find(i=>normalizeKey(i.alt)===key);
     if(!img) return;
 
     const clone = img.closest('a').cloneNode(true);
@@ -1234,21 +1230,19 @@ async function renderTrending() {
     overlay.textContent = count >= 1000 ? Math.floor(count/1000)+'K' : count;
     clone.appendChild(overlay);
 
-    clone.addEventListener('click', e => {
-      e.preventDefault();
-      playAndIncrement(img.alt);
+    clone.addEventListener('click', e=>{
+      incrementGameSafe(img.alt);
       window.location.href = clone.href;
-      setTimeout(renderTrending, 100);
     });
 
     container.appendChild(clone);
   });
 }
 
-document.querySelectorAll('#games a img').forEach(img => {
-  img.closest('a').addEventListener('click', () => {
-    playAndIncrement(img.alt);
-    setTimeout(renderTrending, 100);
+document.querySelectorAll('#games a img').forEach(img=>{
+  img.closest('a').addEventListener('click', ()=>{
+    incrementGameSafe(img.alt);
+    setTimeout(renderTrending,100);
   });
 });
 
