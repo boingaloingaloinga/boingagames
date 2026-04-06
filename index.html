@@ -1176,17 +1176,17 @@ function markPlayed(game) {
   localStorage.setItem(key, Date.now());
 }
 
-function tryIncrement(game) {
-  if (canIncrement(game)) {
-    incrementGame(game);
-    markPlayed(game);
-  }
-}
-
 async function incrementGame(game) {
   const key = normalizeKey(game);
   const gameRef = ref(db, 'games/' + key);
   await runTransaction(gameRef, current => (current || 0) + 1);
+}
+
+function playAndIncrement(game) {
+  if (canIncrement(game)) {
+    incrementGame(game);
+    markPlayed(game);
+  }
 }
 
 async function getAllCounts() {
@@ -1201,7 +1201,6 @@ async function checkMonthlyReset() {
   const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
 
   if(!snapshot.exists() || snapshot.val().lastReset !== thisMonth) {
-    // reset all game counts
     await runTransaction(ref(db, 'games'), () => ({}));
     await runTransaction(metaRef, () => ({ lastReset: thisMonth }));
   }
@@ -1237,8 +1236,8 @@ async function renderTrending() {
 
     clone.addEventListener('click', e => {
       e.preventDefault();
+      playAndIncrement(img.alt);
       window.location.href = clone.href;
-      tryIncrement(img.alt);
       setTimeout(renderTrending, 100);
     });
 
@@ -1248,7 +1247,7 @@ async function renderTrending() {
 
 document.querySelectorAll('#games a img').forEach(img => {
   img.closest('a').addEventListener('click', () => {
-    tryIncrement(img.alt);
+    playAndIncrement(img.alt);
     setTimeout(renderTrending, 100);
   });
 });
