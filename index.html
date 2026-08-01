@@ -1041,16 +1041,10 @@ document.querySelector('.closeBtn').onclick = function() {
 };
 
 document.getElementById('codeInput').addEventListener('input', function() {
-    if (this.value.trim().toLowerCase() === 'gaster') {
-        sessionStorage.setItem('gasterReload', 'true');
+    if (this.value.toLowerCase() === 'gaster') {
         window.location.reload();
     }
 });
-
-if (sessionStorage.getItem('gasterReload') === 'true') {
-    sessionStorage.removeItem('gasterReload');
-    window.scrollTo(0, 0);
-}
 
 document.getElementById('submitCode').onclick = function() {
 const input = document.getElementById('codeInput').value.trim();
@@ -1074,11 +1068,6 @@ return;
 
 if (input === "DEER") {
 window.location.href = 'games/deer/';
-return;
-}
-
-if (input === "the room in between") or (input === "The room in between") {
-window.location.href = '/boingagames/man.html';
 return;
 }
 
