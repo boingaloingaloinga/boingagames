@@ -1035,10 +1035,16 @@ document.getElementById('codeInputBar').style.display = 'block';
 };
 
 document.querySelector('.closeBtn').onclick = function() {
-document.getElementById('codeInputBar').style.display = 'none';
-document.getElementById('codeInput').value = ''
-document.getElementById('message').textContent = '';
+    document.getElementById('codeInputBar').style.display = 'none';
+    document.getElementById('codeInput').value = '';
+    document.getElementById('message').textContent = '';
 };
+
+document.getElementById('codeInput').addEventListener('input', function() {
+    if (this.value.toLowerCase() === 'gaster') {
+        window.location.reload();
+    }
+});
 
 document.getElementById('submitCode').onclick = function() {
 const input = document.getElementById('codeInput').value.trim();
