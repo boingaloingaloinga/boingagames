@@ -366,19 +366,26 @@ background-color: #e0e0e0;
 
 </head>
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   const STORAGE_KEY = 'favoriteGames';
   const MAX_FAVORITES = 10;
   const gamesContainer = document.getElementById('games');
   const favoritesBar = document.getElementById('favorites-bar');
 
-  function idFromHref(href) {
-    return href.replace(/^\/|\/$/g, '')
-                .split('/')
-                .filter(Boolean)
-                .pop();
+  if (!gamesContainer || !favoritesBar) {
+    console.error('Could not find #games or #favorites-bar on the page.');
+    return;
   }
 
+  // Turn a href like "games/bob-the-robber-2/" into a clean id: "bob-the-robber-2"
+  function idFromHref(href) {
+    return href.replace(/^\/|\/$/g, '')   // trim leading/trailing slashes
+                .split('/')
+                .filter(Boolean)
+                .pop();                   // last non-empty segment
+  }
+
+  // Build lookup data AND inject data-id + star span into every game link
   const gamesData = {};
   gamesContainer.querySelectorAll('a').forEach(a => {
     const href = a.getAttribute('href');
@@ -494,7 +501,7 @@ background-color: #e0e0e0;
   const favs = getFavorites();
   updateStarStates(favs);
   renderFavoritesBar(favs);
-})();
+});
 </script>
 <body>
 <div class="boinga-container">
@@ -769,6 +776,8 @@ border-color: #ffd700;
 <input type="text" id="gameSearch" placeholder="Search games...">
 <button id="sortBtn">Sort: Default</button>
 </div>
+
+<div id="favorites-bar"></div>
 
 <div id="games">
 <a href="games/bob-the-robber-2/"><img src="images/bob-the-robber-2.png" width="96" height="96" alt="Bob The Robber 2"></a>
