@@ -152,11 +152,11 @@ cursor: pointer;
   opacity: 1;
 }
 
-/* --- Favorites bar --- */
 #favorites-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   min-height: 96px;
   margin-bottom: 20px;
   padding: 10px;
@@ -166,8 +166,10 @@ cursor: pointer;
 
 .favorites-empty {
   margin: 0;
-  color: #888;
+  color: #FFFF00;
   font-size: 14px;
+  text-align: center;
+  width: 100%;
 }
 
 .content hr {
@@ -376,7 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // Turn a href like "games/bob-the-robber-2/" into a clean id: "bob-the-robber-2"
   function idFromHref(href) {
     return href.replace(/^\/|\/$/g, '')   // trim leading/trailing slashes
                 .split('/')
@@ -445,7 +446,7 @@ gamesContainer.querySelectorAll('a').forEach(a => {
     if (favs.length === 0) {
       const msg = document.createElement('p');
       msg.className = 'favorites-empty';
-      msg.textContent = 'Star your favorite games to see them here!';
+      msg.textContent = 'Star a game to add it to favorites!';
       favoritesBar.appendChild(msg);
       return;
     }
@@ -520,7 +521,7 @@ document.addEventListener('click', function(e) {
 <p class="changelog">CHANGELOG: </p>
 <p class="changelog">4/7/2026 Movies - Added Madagascar and Madagascar: Escape 2 Africa! 🦁🦓🦒🦛</p>
 <p class="changelog">8/3/2026 Games - None looool. </p>
-<p class="changelog">4/8/2026 Adjustment - Fixed Madagascar 2. </p>
+<p class="changelog">8/3/2026 Adjustment - Added a favorite's bar! ⭐</p>
 <p class="blake">Random Boinga Hater Of The Day: NONE CAUSE OF SUMMER</p>
 
 <!-- Themes -->
