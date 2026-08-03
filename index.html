@@ -100,27 +100,75 @@ border-radius: 5px;
 cursor: pointer;
 }
 
-#games a {
-display: inline-block;   /* ensures no stretching */
-width: 96px;             /* match your image */
-height: 96px;
-margin: 10px;
-transition: transform 0.2s ease-in-out;
+#games a, #favorites-bar a {
+  display: inline-block;
+  width: 96px;
+  height: 96px;
+  margin: 10px;
+  position: relative; /* needed so the star can be absolutely positioned */
+  transition: transform 0.2s ease-in-out;
 }
 
-#games a img {
-width: 100%;
-height: 100%;
-display: block; 
+#games a img, #favorites-bar a img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-:not(#games) img {
-transform: none !important;
-transition: none !important;
+:not(#games):not(#favorites-bar) img {
+  transform: none !important;
+  transition: none !important;
 }
 
-#games a:hover {
-transform: scale(1.1);
+#games a:hover, #favorites-bar a:hover {
+  transform: scale(1.1);
+}
+
+/* --- Star button --- */
+.game-star {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: #ffd700;
+  -webkit-text-stroke: 1px #333;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+  user-select: none;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.game-star:hover {
+  transform: scale(1.2);
+}
+
+#games a:hover .game-star,
+#favorites-bar a:hover .game-star,
+.game-star.favorited {
+  opacity: 1;
+}
+
+/* --- Favorites bar --- */
+#favorites-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 96px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+}
+
+.favorites-empty {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
 }
 
 .content hr {
@@ -317,6 +365,137 @@ background-color: #e0e0e0;
 </style>
 
 </head>
+<script>
+(function() {
+  const STORAGE_KEY = 'favoriteGames';
+  const MAX_FAVORITES = 10;
+  const gamesContainer = document.getElementById('games');
+  const favoritesBar = document.getElementById('favorites-bar');
+
+  function idFromHref(href) {
+    return href.replace(/^\/|\/$/g, '')
+                .split('/')
+                .filter(Boolean)
+                .pop();
+  }
+
+  const gamesData = {};
+  gamesContainer.querySelectorAll('a').forEach(a => {
+    const href = a.getAttribute('href');
+    const id = idFromHref(href);
+    const img = a.querySelector('img');
+
+    a.dataset.id = id;
+
+    const star = document.createElement('span');
+    star.className = 'game-star';
+    star.dataset.id = id;
+    star.textContent = '☆';
+    a.insertBefore(star, img);
+
+    gamesData[id] = {
+      href: href,
+      src: img.getAttribute('src'),
+      alt: img.getAttribute('alt')
+    };
+  });
+
+  function getFavorites() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveFavorites(favs) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
+  }
+
+  function updateStarStates(favs) {
+    document.querySelectorAll('.game-star').forEach(star => {
+      const id = star.dataset.id;
+      if (favs.includes(id)) {
+        star.classList.add('favorited');
+        star.textContent = '★';
+        star.title = 'Remove from favorites';
+      } else {
+        star.classList.remove('favorited');
+        star.textContent = '☆';
+        star.title = 'Add to favorites';
+      }
+    });
+  }
+
+  function renderFavoritesBar(favs) {
+    favoritesBar.innerHTML = '';
+
+    if (favs.length === 0) {
+      const msg = document.createElement('p');
+      msg.className = 'favorites-empty';
+      msg.textContent = 'Star your favorite games to see them here!';
+      favoritesBar.appendChild(msg);
+      return;
+    }
+
+    favs.forEach(id => {
+      const data = gamesData[id];
+      if (!data) return;
+
+      const a = document.createElement('a');
+      a.href = data.href;
+      a.dataset.id = id;
+
+      const star = document.createElement('span');
+      star.className = 'game-star favorited';
+      star.dataset.id = id;
+      star.textContent = '★';
+      star.title = 'Remove from favorites';
+
+      const img = document.createElement('img');
+      img.src = data.src;
+      img.width = 96;
+      img.height = 96;
+      img.alt = data.alt;
+
+      a.appendChild(star);
+      a.appendChild(img);
+      favoritesBar.appendChild(a);
+    });
+  }
+
+  function toggleFavorite(id) {
+    let favs = getFavorites();
+
+    if (favs.includes(id)) {
+      favs = favs.filter(f => f !== id);
+    } else {
+      if (favs.length >= MAX_FAVORITES) {
+        alert('You can only favorite up to ' + MAX_FAVORITES + ' games. Remove one first.');
+        return;
+      }
+      favs.push(id);
+    }
+
+    saveFavorites(favs);
+    updateStarStates(favs);
+    renderFavoritesBar(favs);
+  }
+
+  document.addEventListener('click', function(e) {
+    const star = e.target.closest('.game-star');
+    if (star) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFavorite(star.dataset.id);
+    }
+  });
+
+  const favs = getFavorites();
+  updateStarStates(favs);
+  renderFavoritesBar(favs);
+})();
+</script>
 <body>
 <div class="boinga-container">
 <img src="https://files.catbox.moe/vbm3pi.gif" alt="Boinga GIF">
@@ -327,7 +506,7 @@ background-color: #e0e0e0;
 <p class="changelog">Give me ideas on what game/movies to add by responding to this google form: https://forms.gle/gU3bP4VYG3JZJ4JJ9</p>
 <p class="changelog">CHANGELOG: </p>
 <p class="changelog">4/7/2026 Movies - Added Madagascar and Madagascar: Escape 2 Africa! 🦁🦓🦒🦛</p>
-<p class="changelog">7/22/2026 Games - Added Half Life 2 and Balatro! Deltarune has been updated to Chapter 5! 🔫🃏♥</p>
+<p class="changelog">8/3/2026 Games - None looool. </p>
 <p class="changelog">4/8/2026 Adjustment - Fixed Madagascar 2. </p>
 <p class="blake">Random Boinga Hater Of The Day: NONE CAUSE OF SUMMER</p>
 
@@ -835,7 +1014,6 @@ border-color: #ffd700;
 <a href="games/granny/"><img src="images/granny.png" width="96" height="96" alt="Granny"></a>
 <a href="games/halflife/"><img src="images/halflife.png" width="96" height="96" alt="Half-Life"></a>
 <a href="games/halflifeop/"><img src="images/halflifeop.png" width="96" height="96" alt="Half-Life: Opposing Force"></a>
-<a href="games/hl2/"><img src="images/hl2.webp" width="96" height="96" alt="Half-Life 2"></a>
 <a href="games/minertycoon/"><img src="images/minertycoon.jpg" width="96" height="96" alt="Idle Miner Tycoon"></a>
 <a href="games/cuphead/"><img src="images/cuphead.jpg" width="96" height="96" alt="Cuphead"></a>
 <a href="games/hollowknight/"><img src="images/hollowknight.jpg" width="96" height="96" alt="Hollow Knight"></a>
@@ -944,7 +1122,6 @@ border-color: #ffd700;
 <a href="games/hustle/"><img src="images/hustle.png" width="96" height="96" alt="Your Only Move Is HUSTLE"></a>
 <a href="games/bustaloop/"><img src="images/bustaloop.png" width="96" height="96" alt="Bust-a-Loop"></a>
 <a href="games/glover/"><img src="images/glover.jpg" width="96" height="96" alt="Glover"></a>
-<a href="games/balatro/"><img src="images/balatro.webp" width="96" height="96" alt="Balatro"></a>
 </div>
 
 <script>
