@@ -488,14 +488,15 @@ document.addEventListener('DOMContentLoaded', function() {
     renderFavoritesBar(favs);
   }
 
-  document.addEventListener('click', function(e) {
-    const star = e.target.closest('.game-star');
-    if (star) {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleFavorite(star.dataset.id);
-    }
-  });
+document.addEventListener('click', function(e) {
+  console.log('Clicked element:', e.target); // TEMP DEBUG LINE
+  const star = e.target.closest('.game-star');
+  if (star) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(star.dataset.id);
+  }
+});
 
   const favs = getFavorites();
   updateStarStates(favs);
