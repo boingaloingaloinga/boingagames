@@ -105,7 +105,7 @@ cursor: pointer;
   width: 96px;
   height: 96px;
   margin: 10px;
-  position: relative; /* needed so the star can be absolutely positioned */
+  position: relative; 
   transition: transform 0.2s ease-in-out;
 }
 
@@ -123,8 +123,6 @@ cursor: pointer;
 #games a:hover, #favorites-bar a:hover {
   transform: scale(1.1);
 }
-
-/* --- Star button --- */
 .game-star {
   position: absolute;
   top: 4px;
@@ -138,7 +136,8 @@ cursor: pointer;
   -webkit-text-stroke: 1px #333;
   cursor: pointer;
   opacity: 0;
-  z-index: 2;
+  z-index: 5;           /* raised, just to be safe */
+  pointer-events: auto;  /* ensures it's always clickable */
   user-select: none;
   transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
 }
