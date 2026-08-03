@@ -386,25 +386,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Build lookup data AND inject data-id + star span into every game link
   const gamesData = {};
-  gamesContainer.querySelectorAll('a').forEach(a => {
-    const href = a.getAttribute('href');
-    const id = idFromHref(href);
-    const img = a.querySelector('img');
+gamesContainer.querySelectorAll('a').forEach(a => {
+  const href = a.getAttribute('href');
+  const img = a.querySelector('img');
 
-    a.dataset.id = id;
+  if (!href || !img) {
+    console.warn('Skipping malformed game link:', a);
+    return; // skip this one, keep going
+  }
 
-    const star = document.createElement('span');
-    star.className = 'game-star';
-    star.dataset.id = id;
-    star.textContent = '☆';
-    a.insertBefore(star, img);
+  const id = idFromHref(href);
 
-    gamesData[id] = {
-      href: href,
-      src: img.getAttribute('src'),
-      alt: img.getAttribute('alt')
-    };
-  });
+  a.dataset.id = id;
+
+  const star = document.createElement('span');
+  star.className = 'game-star';
+  star.dataset.id = id;
+  star.textContent = '☆';
+  a.insertBefore(star, img);
+
+  gamesData[id] = {
+    href: href,
+    src: img.getAttribute('src'),
+    alt: img.getAttribute('alt')
+  };
+});
 
   function getFavorites() {
     try {
