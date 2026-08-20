@@ -1,0 +1,522 @@
+/* ==========================================================================
+   BOINGA GAMES — design tokens
+   ========================================================================== */
+:root{
+  --ink:        #14111f;   /* page background */
+  --panel:      #1e1a30;   /* cards / bars */
+  --panel-2:    #262143;   /* raised panels, inputs */
+  --line:       #362f57;   /* hairline borders */
+  --cloud:      #f4f1ff;   /* primary text on dark */
+  --dim:        #a89fcf;   /* secondary text */
+  --gold:       #ffc93c;   /* primary accent — the "Boinga" color */
+  --gold-ink:   #251c02;   /* text on gold */
+  --punch:      #ff5d73;   /* gag / alert accent (hater of the day, live badges) */
+  --grass:      #7bdc8f;   /* success / "new" accent */
+
+  --font-display: "Bungee", "Comic Sans MS", cursive, sans-serif;
+  --font-body: "Manrope", "Segoe UI", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-lift: 0 10px 24px rgba(0,0,0,.35);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--cloud);
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(255,201,60,.08), transparent 40%),
+    radial-gradient(circle at 88% 18%, rgba(255,93,115,.08), transparent 45%);
+  background-attachment: fixed;
+}
+
+img{ max-width:100%; display:block; }
+a{ color: inherit; text-decoration:none; }
+button, input{ font-family: inherit; }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+:focus-visible{
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.wrap{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+
+/* ==========================================================================
+   HERO / MARQUEE HEADER  — the signature element
+   ========================================================================== */
+.hero{
+  position: relative;
+  padding: 36px 20px 22px;
+  text-align:center;
+  overflow:hidden;
+}
+
+.hero-mascot{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+.hero-mascot img{
+  height:46px;
+  width:46px;
+  object-fit:contain;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.5));
+}
+
+.hero h1{
+  margin: 6px 0 4px;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 9vw, 76px);
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-shadow: 4px 4px 0 rgba(0,0,0,.35);
+}
+
+.hero .quote{
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: .5px;
+  color: var(--dim);
+}
+
+.hater-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top: 14px;
+  padding: 8px 16px;
+  background: rgba(255,93,115,.12);
+  border: 1px solid rgba(255,93,115,.4);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--punch);
+  font-weight: 700;
+}
+.hater-badge .dot{
+  width:7px; height:7px; border-radius:50%;
+  background: var(--punch);
+  box-shadow: 0 0 0 3px rgba(255,93,115,.25);
+}
+
+/* Marquee ticker for the changelog — replaces the stacked <p> spam */
+.ticker{
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  overflow:hidden;
+  white-space: nowrap;
+  position: relative;
+}
+.ticker::before, .ticker::after{
+  content:"";
+  position:absolute; top:0; bottom:0; width:40px; z-index:2;
+}
+.ticker::before{ left:0; background: linear-gradient(90deg, var(--panel), transparent); }
+.ticker::after{ right:0; background: linear-gradient(-90deg, var(--panel), transparent); }
+.ticker-track{
+  display:inline-flex;
+  gap:48px;
+  padding: 10px 0;
+  animation: scroll-ticker 38s linear infinite;
+}
+.ticker-track span{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--dim);
+}
+.ticker-track span b{ color: var(--gold); font-weight:700; }
+@keyframes scroll-ticker{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); }
+}
+
+.hero-links{
+  margin-top: 16px;
+  display:flex;
+  gap: 10px;
+  justify-content:center;
+  flex-wrap: wrap;
+}
+.pill-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--line);
+  background: var(--panel);
+  color: var(--cloud);
+  font-weight:700;
+  font-size: 14px;
+  cursor:pointer;
+  transition: transform .15s ease, border-color .15s ease, color .15s ease;
+}
+.pill-btn:hover{ transform: translateY(-2px); border-color: var(--gold); color: var(--gold); }
+.pill-btn.primary{ background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
+.pill-btn.primary:hover{ color: var(--gold-ink); filter: brightness(1.08); }
+
+/* ==========================================================================
+   TOOLBAR — search / sort / themes, sticky
+   ========================================================================== */
+.toolbar{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items:center;
+  padding: 14px 0;
+  margin-bottom: 18px;
+  background: linear-gradient(var(--ink) 78%, transparent);
+}
+
+.search-field{
+  flex: 1 1 240px;
+  position: relative;
+}
+.search-field input{
+  width:100%;
+  padding: 12px 14px 12px 40px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--line);
+  background: var(--panel);
+  color: var(--cloud);
+  font-size: 15px;
+}
+.search-field input::placeholder{ color: var(--dim); }
+.search-field input:focus{ border-color: var(--gold); }
+.search-field svg{
+  position:absolute; left:12px; top:50%; transform: translateY(-50%);
+  width:16px; height:16px; color: var(--dim); pointer-events:none;
+}
+
+.toolbar-btn{
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--line);
+  background: var(--panel);
+  color: var(--cloud);
+  font-size: 14px;
+  font-weight: 700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.toolbar-btn:hover{ border-color: var(--gold); }
+.toolbar-btn[aria-pressed="true"]{ border-color: var(--gold); color: var(--gold); }
+
+.result-count{
+  width:100%;
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: -6px;
+}
+
+/* ==========================================================================
+   THEME POPOVER
+   ========================================================================== */
+.theme-pop-wrap{ position: relative; }
+.theme-pop{
+  display:none;
+  position:absolute;
+  right:0; top: calc(100% + 8px);
+  width: 232px;
+  padding: 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
+  z-index: 30;
+}
+.theme-pop.open{ display:block; }
+.theme-pop h3{ margin: 0 0 10px; font-size: 12px; letter-spacing:.06em; text-transform:uppercase; color: var(--dim); }
+.swatch-grid{
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+.swatch{
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.15);
+  cursor:pointer;
+  padding:0;
+  position:relative;
+}
+.swatch:hover{ transform: scale(1.12); }
+.swatch[aria-pressed="true"]::after{
+  content:"";
+  position:absolute; inset:-4px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+}
+.theme-pop .upload-row{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--dim);
+}
+.theme-pop .upload-row input{ display:block; margin-top:6px; font-size:12px; color: var(--dim); width:100%; }
+
+/* ==========================================================================
+   FAVORITES SHELF
+   ========================================================================== */
+.favorites{
+  margin-bottom: 26px;
+}
+.favorites-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin-bottom: 8px;
+}
+.favorites-head h2{
+  margin:0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: .04em;
+  color: var(--gold);
+}
+.favorites-head span{ font-size:12px; color: var(--dim); }
+
+.favorites-shelf{
+  display:flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items:center;
+  min-height: 88px;
+  padding: 12px;
+  background: var(--panel);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-lg);
+}
+.favorites-empty{
+  margin: 0 auto;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+/* ==========================================================================
+   GAME GRID
+   ========================================================================== */
+.grid-heading{
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin: 8px 0 12px;
+}
+.grid-heading h2{
+  margin:0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: .04em;
+  color: var(--gold);
+}
+
+#games{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 14px;
+}
+
+.tile{
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.tile:hover, .tile:focus-visible{
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: var(--shadow-lift);
+  border-color: var(--gold);
+  z-index: 2;
+}
+.tile img{
+  width:100%; height:100%; object-fit:cover;
+}
+.tile .label{
+  position:absolute; left:0; right:0; bottom:0;
+  padding: 5px 6px 4px;
+  font-size: 10.5px;
+  line-height:1.2;
+  font-weight:700;
+  text-align:center;
+  color: var(--cloud);
+  background: linear-gradient(to top, rgba(0,0,0,.85), transparent);
+  opacity:0;
+  transition: opacity .15s ease;
+}
+.tile:hover .label, .tile:focus-visible .label{ opacity:1; }
+
+.star{
+  position:absolute; top:4px; left:4px;
+  width:22px; height:22px;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 16px;
+  color: var(--gold);
+  cursor:pointer;
+  opacity:0;
+  z-index: 5;
+  user-select:none;
+  transition: opacity .15s ease, transform .15s ease;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.6));
+}
+.star:hover{ transform: scale(1.2); }
+.tile:hover .star, .favorites-shelf .star, .star.favorited{ opacity:1; }
+
+.hidden{ display:none !important; }
+
+/* ==========================================================================
+   FOOTER — rating gag + easter egg entrance
+   ========================================================================== */
+.footer{
+  margin-top: 56px;
+  text-align:center;
+}
+
+.george-entrance{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding: 0;
+}
+.george-entrance img{
+  width: 148px; height: 148px;
+  border-radius: 50%;
+  object-fit:cover;
+  border: 3px solid var(--line);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.george-entrance:hover img{ border-color: var(--gold); transform: rotate(-4deg); }
+.george-entrance .hint{
+  font-size: 11px;
+  color: var(--dim);
+  font-family: var(--font-mono);
+}
+
+.rating-section{
+  margin: 40px auto 0;
+  max-width: 420px;
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+.rating-section h2{
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--gold);
+}
+.rating-row{
+  display:flex; gap:8px;
+}
+.rating-row input{
+  flex:1;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--line);
+  background: var(--panel-2);
+  color: var(--cloud);
+}
+.rating-result{
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--dim);
+  min-height: 1em;
+}
+
+/* ==========================================================================
+   CHEAT CONSOLE — secret code entry (replaces old bottom bar)
+   ========================================================================== */
+.cheat-console{
+  position: fixed;
+  inset: auto 0 0 0;
+  transform: translateY(100%);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+  z-index: 100;
+  background: var(--panel-2);
+  border-top: 2px solid var(--gold);
+  box-shadow: 0 -12px 30px rgba(0,0,0,.5);
+}
+.cheat-console.open{ transform: translateY(0); }
+.cheat-console-inner{
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px 20px 24px;
+  position: relative;
+}
+.cheat-console .eyebrow{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 10px;
+}
+.cheat-row{
+  display:flex; gap:8px;
+}
+.cheat-row input{
+  flex:1;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--line);
+  background: var(--ink);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+.cheat-row button{
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--gold);
+  color: var(--gold-ink);
+  font-weight:800;
+  cursor:pointer;
+}
+.cheat-message{
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--grass);
+  min-height: 1em;
+}
+.cheat-message.error{ color: var(--punch); }
+.cheat-close{
+  position:absolute; right:16px; top:14px;
+  background:none; border:none; color: var(--dim);
+  font-size:22px; line-height:1; cursor:pointer;
+}
+.cheat-close:hover{ color: var(--gold); }
+
+@media (max-width: 640px){
+  .hero h1{ letter-spacing: 0; }
+  #games{ grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 10px; }
+}
