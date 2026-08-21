@@ -1,3 +1,8 @@
+/* ==========================================================================
+   BOINGA GAMES — app.js
+   Game catalog, favorites, search/sort, themes, and the secret cheat console.
+   ========================================================================== */
+
 /* ---- Game catalog -------------------------------------------------------
    Each entry: { i, alt, src, href, ext } for a normal game link, or
    { i, alt, src, special, base } for the three Pokémon games that ask
@@ -411,12 +416,15 @@ function makeTile(game) {
 
   a.appendChild(makeStar(game.i, isFav));
 
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
   const img = document.createElement("img");
   img.src = game.src;
   img.alt = game.alt;
   img.loading = "lazy";
   img.width = 96; img.height = 96;
-  a.appendChild(img);
+  thumb.appendChild(img);
+  a.appendChild(thumb);
 
   const label = document.createElement("span");
   label.className = "label";
