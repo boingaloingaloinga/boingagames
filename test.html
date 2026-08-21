@@ -10,31 +10,38 @@
 <link rel="stylesheet" href="/main.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="hero">
-  <div class="hero-mascot">
-    <img src="https://files.catbox.moe/vbm3pi.gif" alt="" aria-hidden="true">
-    <h1>BOINGA</h1>
-    <img src="https://files.catbox.moe/vbm3pi.gif" alt="" aria-hidden="true">
+  <div class="hero-flyer">
+    <span class="tape" aria-hidden="true"></span>
+    <h1 class="misprint">BOINGA</h1>
+    <span class="hero-sticker" aria-hidden="true">
+      <img src="https://files.catbox.moe/vbm3pi.gif" alt="">
+    </span>
   </div>
   <p class="quote">"Boingaloingaloinga!"</p>
 
-  <span class="hater-badge"><span class="dot"></span>Random Boinga Hater Of The Day: none, it's summer</span>
+  <span class="hater-badge">Random Boinga Hater Of The Day: idk</span>
 
   <div class="hero-links">
-    <a class="pill-btn primary" href="movies/">Movies</a>
-    <a class="pill-btn" href="https://forms.gle/gU3bP4VYG3JZJ4JJ9" target="_blank" rel="noopener">Suggest a game</a>
+    <a class="ticket-btn primary" href="movies/">Movies →</a>
+    <a class="ticket-btn" href="https://forms.gle/gU3bP4VYG3JZJ4JJ9" target="_blank" rel="noopener">Suggest a game</a>
   </div>
 
-  <div class="ticker" role="marquee" aria-label="Changelog">
-    <div class="ticker-track">
-      <span><b>8/3/2026</b> &nbsp;Adjustment — Many games removed.. but HUGE site overhaul.</span>
-      <span><b>8/3/2026</b> &nbsp;Games — none..?</span>
-      <span><b>4/7/2026</b> &nbsp;Movies — added Madagascar and Madagascar: Escape 2 Africa 🦁🦓🦒🦛</span>
+  <div class="ticker-wrap">
+    <div class="ticker" role="marquee" aria-label="Changelog">
+      <div class="ticker-track">
+        <span><b>8/3/2026</b> Adjustment — added a favorites shelf</span>
+        <span><b>8/3/2026</b> Games — none, looool</span>
+        <span><b>4/7/2026</b> Movies — added Madagascar and Madagascar: Escape 2 Africa</span>
+        <span><b>8/3/2026</b> Adjustment — added a favorites shelf</span>
+        <span><b>8/3/2026</b> Games — none, looool</span>
+        <span><b>4/7/2026</b> Movies — added Madagascar and Madagascar: Escape 2 Africa</span>
+      </div>
     </div>
   </div>
 </header>
@@ -43,13 +50,12 @@
 
   <div class="toolbar">
     <div class="search-field">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="gameSearch" placeholder="Search 350+ games…" aria-label="Search games">
+      <input type="text" id="gameSearch" placeholder="Search..." aria-label="Search games">
     </div>
     <button id="sortBtn" class="toolbar-btn" aria-pressed="false">Sort: Default</button>
 
     <div class="theme-pop-wrap">
-      <button id="toggle-themes-btn" class="toolbar-btn">🎨 Theme</button>
+      <button id="toggle-themes-btn" class="toolbar-btn">Theme</button>
       <div id="theme-pop" class="theme-pop">
         <h3>Pick a theme</h3>
         <div id="swatch-grid" class="swatch-grid"></div>
@@ -79,11 +85,6 @@
   </section>
 
   <footer class="footer">
-    <button id="george-entrance" class="george-entrance" aria-label="Open the secret code console">
-      <img src="curious-george.png" alt="Curious George">
-      <span class="hint">psst — click me</span>
-    </button>
-
     <div class="rating-section">
       <h2>Rate this website</h2>
       <div class="rating-row">
@@ -92,6 +93,14 @@
       </div>
       <p id="ratingResult" class="rating-result"></p>
     </div>
+
+    <div class="credits">
+      <img class="credits-thumb" src="bg.png" alt="" aria-hidden="true">
+      <button id="george-entrance" class="credits-thumb" aria-label="George">
+        <img src="curious-george.png" alt="">
+      </button>
+      <p class="credits-text">the best website ever made ever</p>
+    </div>
   </footer>
 
 </main>
@@ -99,7 +108,6 @@
 <div id="cheat-console" class="cheat-console">
   <div class="cheat-console-inner">
     <button id="cheat-close" class="cheat-close" aria-label="Close">&times;</button>
-    <p class="eyebrow">&gt; Boinga cheat console</p>
     <div class="cheat-row">
       <input type="text" id="codeInput" placeholder="Enter your code…" autocomplete="off">
       <button id="submitCode">Enter</button>
